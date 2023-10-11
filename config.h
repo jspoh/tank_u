@@ -11,8 +11,6 @@ typedef struct {
 	float width, height;
 } Size;
 
-extern Size WINDOW_SIZE;
-
 typedef struct {
 	BYTE r, g, b, a;
 } Color;
@@ -20,5 +18,7 @@ typedef struct {
 typedef struct {
 	float x, y;
 } Vector;
+
+extern Size WINDOW_SIZE;
 
 #endif

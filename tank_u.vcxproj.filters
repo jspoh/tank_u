@@ -6,12 +6,20 @@
     <ClCompile Include="menu.c">
       <Filter>components\menu</Filter>
     </ClCompile>
+    <ClCompile Include="collision.c">
+      <Filter>util\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="game.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
     <ClInclude Include="menu.h">
       <Filter>components\menu</Filter>
     </ClInclude>
+    <ClInclude Include="collision.h">
+      <Filter>util\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="components">
@@ -19,6 +27,12 @@
     </Filter>
     <Filter Include="components\menu">
       <UniqueIdentifier>{cd7e6cbc-cd6b-444b-a162-7d7f0160217f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{7e16c889-0d0c-4d67-97c8-5e912e296f9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util\collision">
+      <UniqueIdentifier>{d5c55da1-6dd6-4eaa-9b4d-c2d3a1e7fed3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

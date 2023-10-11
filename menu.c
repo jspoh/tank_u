@@ -1,5 +1,6 @@
 #include "cprocessing.h"
 #include "config.h"
+#include "game.h"
 
 CP_Font font;
 
@@ -13,7 +14,7 @@ void menuInit(void) {
 
 void menuUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(150, 150, 150, 255));
-	//CP_Engine_SetNextGameState(menuInit, menuUpdate, menuExit);
+	CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
 }
 
 void menuExit(void) {
