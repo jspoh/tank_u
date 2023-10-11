@@ -3,10 +3,22 @@
   <ItemGroup>
     <ClCompile Include="config.c" />
     <ClCompile Include="main.c" />
-    <ClCompile Include="menu.c" />
+    <ClCompile Include="menu.c">
+      <Filter>components\menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
-    <ClInclude Include="menu.h" />
+    <ClInclude Include="menu.h">
+      <Filter>components\menu</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="components">
+      <UniqueIdentifier>{21b8618d-733f-4a7d-8858-9ca42fb37e60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu">
+      <UniqueIdentifier>{cd7e6cbc-cd6b-444b-a162-7d7f0160217f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
