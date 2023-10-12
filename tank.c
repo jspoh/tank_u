@@ -28,3 +28,15 @@ void Tank_move (Tank* Tank){
 
 }
 
+Tank tankConstructor(Position position, Color color, float health, int activePowerUps[3], float elapsedPowerTime, int activePermPowers[3]) {
+	Tank newTank;
+	newTank.position = position;
+	newTank.color = color;
+	newTank.health = health;
+	newTank.activePowerUps[3] = activePowerUps;
+	newTank.elapsedPowerTime = elapsedPowerTime;
+	newTank.activePermPowers[3] = activePermPowers;
+
+	return newTank;
+}
+
