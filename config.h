@@ -19,6 +19,12 @@ typedef struct {
 	float x, y;
 } Vector;
 
+typedef struct Position {
+	float x;
+	float y;
+	float direction;
+} Position;
+
 extern Size WINDOW_SIZE;
 
 #endif
