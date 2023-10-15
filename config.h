@@ -1,11 +1,11 @@
 #pragma once
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#include <stdint.h>
+
 
 #define FRAMERATE 60
 
-typedef unsigned char BYTE;
+typedef uint8_t BYTE;
 
 typedef struct {
 	float width, height;
@@ -26,5 +26,3 @@ typedef struct Position {
 } Position;
 
 extern Size WINDOW_SIZE;
-
-#endif
