@@ -158,12 +158,14 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     <ClCompile Include="game.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c" />
+    <ClCompile Include="tank.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="tank.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

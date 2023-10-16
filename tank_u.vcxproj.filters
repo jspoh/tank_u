@@ -10,6 +10,9 @@
       <Filter>util\collision</Filter>
     </ClCompile>
     <ClCompile Include="game.c" />
+    <ClCompile Include="tank.c">
+      <Filter>components\tank</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
@@ -20,6 +23,9 @@
       <Filter>util\collision</Filter>
     </ClInclude>
     <ClInclude Include="game.h" />
+    <ClInclude Include="tank.h">
+      <Filter>components\tank</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="components">
@@ -33,6 +39,9 @@
     </Filter>
     <Filter Include="util\collision">
       <UniqueIdentifier>{d5c55da1-6dd6-4eaa-9b4d-c2d3a1e7fed3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\tank">
+      <UniqueIdentifier>{3d540f20-0261-460b-991c-a02a4dba91b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
