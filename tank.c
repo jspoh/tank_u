@@ -27,7 +27,7 @@ void tank_draw(Tank * tank) {
 void tank_move (Tank* tank,int direction, int definedSpeed){
 
 	float speed = CP_System_GetDt() * definedSpeed;
-	switch (direction) 
+	switch (direction)
 	{
 	case UP:
 		tank->position.y -= speed;
