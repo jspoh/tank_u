@@ -4,18 +4,6 @@
 
 CP_Image tankImage1;
 
-// define the tank attributes 
-typedef struct Tank {
-	Position position;
-	Color color;
-	float health;
-	int activePowerUps[3];
-	float elapsedPowerTime;
-	int activePermPowers[3];
-}Tank;
-
-Tank player1;
-Tank player2;
 
 void tank_draw(Tank * tank) {
 	float tankWidth = 80.0f;
