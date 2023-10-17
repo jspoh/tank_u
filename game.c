@@ -2,6 +2,8 @@
 #include "config.h"
 #include "menu.h"
 
+// test
+
 CP_Font font;
 
 
