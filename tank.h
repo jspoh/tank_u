@@ -11,8 +11,11 @@ typedef struct Tank {
 }Tank;
 
 
-void tank_draw(Tank* Tank);
+//void drawTank(Tank* tank, int color);
+void drawTank(Tank* tank);
 
-void tank_move(Tank* Tank, int direction, int definedSpeed);
+void renderTank(void);
+
+void moveTank(Tank* Tank, int direction, int definedSpeed);
 
 Tank tankConstructor(Position position, Color color, float health, int activePowerUps[3],float elapsedPowerTime,int activePermPowers[3]);
