@@ -77,7 +77,6 @@ void drawTank(Tank* tank) {
 }
 
 
-//what to do if 
 void moveTank (Tank* tank,int direction, int definedSpeed){
 
 	float speed = CP_System_GetDt() * definedSpeed;
@@ -120,16 +119,13 @@ Tank tankConstructor(float x, float y, Color color, float health, int activePowe
 
 void renderTank(void) 
 {
-	//Color red;
-	//red.r = 255;
-	//red.g = 0;
-	//red.b = 0;
-	//red.a = 255;
-	////health can be changed later this is just to ensure that the code have something
-	//float full_health = 100.0f;
+	//get user to pick a color
+	Tank player1 = tankConstructor();
+	
 
-	//float elapsed_time = 0.0f;
-	//// need to add colour coding
-	//Tank player1 = tankConstructor(200.f, 400.f,/* expect a colour chosen by the user*/,full_health,{0},elapsed_time, {0});
-	//drawTank(player1);
+}
+
+float damageTakenTank(Tank* tank, float damage) 
+{
+	return tank->health -= damage;
 }
