@@ -21,7 +21,7 @@ An example on how to create a branch would be:
 git checkout -b TU1-main-menu-dev
 git add .
 git commit -m 'created new branch for main menu dev'
-git push --set-upstream TUI-main-menu-dev
+git push --set-upstream TU1-main-menu-dev
 ```
 
 Always create a new branch before making changes to the code.

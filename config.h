@@ -4,8 +4,12 @@
 
 
 #define FRAMERATE 60
+#define true 1
+#define false 0
 
 typedef uint8_t BYTE;
+
+typedef uint8_t bool;
 
 typedef struct {
 	float width, height;

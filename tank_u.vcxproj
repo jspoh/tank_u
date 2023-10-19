@@ -153,6 +153,7 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cannonball.c" />
     <ClCompile Include="collision.c" />
     <ClCompile Include="config.c" />
     <ClCompile Include="game.c" />
@@ -160,6 +161,7 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     <ClCompile Include="menu.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cannonball.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="game.h" />
