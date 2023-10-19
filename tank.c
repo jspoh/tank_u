@@ -13,6 +13,13 @@ CP_Image yellowTank;
 #define GREEN 2
 #define YELLOW 3
 
+extern Size WINDOW_SIZE;
+
+//used in draw tank
+Size base = { 80.f,70.f };
+Size top = { 70.f,60.f };
+Size turret = { 80.f,20.f };
+
 
 // used to draw tanks using images
 //void drawTank(Tank * tank, int color ) {
@@ -44,16 +51,8 @@ CP_Image yellowTank;
 //}
 
 void drawTank(Tank* tank) {
-	float baseWidth = 80.f;
-	float baseHeight = 70.f; 
-	
-	float topWidth = 70.0f;
-	float topHeight = 60.0f;
 
-	float turretWidth = 80.0f;
-	float turretHeight = 20.0f;
-
-	float posTurret_x = tank->position.x + (baseWidth / 2);
+	float posTurret_x = tank->position.x + (base.width / 2);
 
 	CP_Color baseColor = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	
@@ -64,15 +63,15 @@ void drawTank(Tank* tank) {
 
 	//draw the base of the tank
 	CP_Color_Fill(baseColor);
-	CP_Graphics_DrawRect(tank->position.x, tank->position.y, baseWidth, baseHeight);
+	CP_Graphics_DrawRect(tank->position.x, tank->position.y, base.width, base.height);
 
 	//draw the top of the tank
 	CP_Color_Fill(topColor);
-	CP_Graphics_DrawRect(tank->position.x, tank->position.y, topWidth , topHeight);
+	CP_Graphics_DrawRect(tank->position.x, tank->position.y, top.width , top.height);
 
 	//draw the turret of the tank
 	CP_Color_Fill(turretColor);
-	CP_Graphics_DrawRect(posTurret_x, tank->position.y, turretWidth , turretHeight);
+	CP_Graphics_DrawRect(posTurret_x, tank->position.y, turret.width , turret.height);
 
 }
 
@@ -116,12 +115,19 @@ Tank tankConstructor(float x, float y, Color color, float health, int activePowe
 	return newTank;
 }
 
-
 void renderTank(void) 
 {
-	//get user to pick a color
-	Tank player1 = tankConstructor();
+	//starting positions for player 1
+	float p1x = WINDOW_SIZE.width - 200.f;
+	float p1y = WINDOW_SIZE.height/2.f;
+
+	//starting position for player 2
+	float p2x = 200.f;
+	float p2y = WINDOW_SIZE.height/ 2.f;
+
 	
+	Tank* player1 = tankConstructor(p1x,p1y,);
+	Tank* player2 = tankConstructor(p2x,p2y,);
 
 }
 
