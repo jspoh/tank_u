@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdlib.h>
 
 
 #define FRAMERATE 60
@@ -30,3 +31,13 @@ typedef struct Position {
 } Position;
 
 extern Size WINDOW_SIZE;
+
+/***
+* @brief Initializes app wide variables
+* 
+* @returns int 1 if no issues, 0 if with failed to initialize properly
+*/
+int init(void);
+
+
+int getRand(int min, int max);
