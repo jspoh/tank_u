@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdlib.h>
 
 
 #define FRAMERATE 60
@@ -30,3 +31,6 @@ typedef struct Position {
 } Position;
 
 extern Size WINDOW_SIZE;
+
+
+int getRand(void);
