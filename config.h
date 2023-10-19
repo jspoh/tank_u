@@ -32,5 +32,12 @@ typedef struct Position {
 
 extern Size WINDOW_SIZE;
 
+/***
+* @brief Initializes app wide variables
+* 
+* @returns int 0 if no issues, 1 if with failed to initialize properly
+*/
+int init(void);
 
-int getRand(void);
+
+int getRand(int min, int max);
