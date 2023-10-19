@@ -8,8 +8,8 @@ int init(void) {
 	const unsigned long seed = time(NULL);  // good practice to const everything you dont change
 	srand(seed);
 
-	/* return 0 to specify no errors */
-	return 0;
+	/* return 1 to specify no errors */
+	return 1;
 }
 
 int getRand(int min, int max) {

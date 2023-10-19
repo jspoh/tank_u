@@ -35,7 +35,7 @@ extern Size WINDOW_SIZE;
 /***
 * @brief Initializes app wide variables
 * 
-* @returns int 0 if no issues, 1 if with failed to initialize properly
+* @returns int 1 if no issues, 0 if with failed to initialize properly
 */
 int init(void);
 
