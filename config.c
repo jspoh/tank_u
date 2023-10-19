@@ -5,7 +5,7 @@ Size WINDOW_SIZE = { 1600.f,900.f };
 
 int init(void) {
 	/* init rand seed */
-	const unsigned long seed = time(NULL);  // good practice to const everything you dont change
+	const unsigned long seed = (unsigned long)time(NULL);  // good practice to const everything you dont change
 	srand(seed);
 
 	/* return 1 to specify no errors */
