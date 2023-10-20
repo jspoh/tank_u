@@ -7,6 +7,9 @@
 CP_Font font;
 CP_Image menuBg;
 
+enum { LAUNCH_PAGE, MENU_PAGE };
+BYTE state = LAUNCH_PAGE;
+
 BYTE oAlpha = 255;
 
 Size btnSize = { 200.f,75.f };
@@ -66,10 +69,7 @@ void drawText(char* text, float x, float y, float size) {
 	CP_Font_DrawText(text, x, y);
 }
 
-void menuUpdate(void) {
-	CP_Graphics_ClearBackground(CP_Color_Create(150, 150, 150, 255));
-	CP_Image_Draw(menuBg, WINDOW_SIZE.width/2, WINDOW_SIZE.height/2, WINDOW_SIZE.width, WINDOW_SIZE.height, oAlpha);
-	
+void renderLaunchPage(void) {
 	drawTriangleBtn(startBtn);
 	drawText("Start", startContainer.pos.x + 50, startContainer.pos.y + 200, textSize);
 
@@ -79,6 +79,21 @@ void menuUpdate(void) {
 	else {
 		btnColor = CP_Color_Create(0, 0, 0, 220);
 	}
+
+	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+		state = MENU_PAGE;
+	}
+}
+
+void renderMenuPage(void) {
+
+}
+
+void menuUpdate(void) {
+	CP_Graphics_ClearBackground(CP_Color_Create(150, 150, 150, 255));
+	CP_Image_Draw(menuBg, WINDOW_SIZE.width/2, WINDOW_SIZE.height/2, WINDOW_SIZE.width, WINDOW_SIZE.height, oAlpha);
+	
+	state == LAUNCH_PAGE ? renderLaunchPage() : renderMenuPage();
 
 
 	//CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
