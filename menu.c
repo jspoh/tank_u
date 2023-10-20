@@ -22,8 +22,8 @@ Position b = { 1400.f, 650.f };
 Position c = { 1400.f, 750.f };
 Triangle startBtn;
 
-Position scPos = { 1400.f,650.f };
-Size scSize = { 100.f, 100.f };
+Position scPos = { 1350.f,600.f };
+Size scSize = { 200.f, 250.f };
 Rect startContainer;
 
 
@@ -71,7 +71,7 @@ void menuUpdate(void) {
 	CP_Image_Draw(menuBg, WINDOW_SIZE.width/2, WINDOW_SIZE.height/2, WINDOW_SIZE.width, WINDOW_SIZE.height, oAlpha);
 	
 	drawTriangleBtn(startBtn);
-	drawText("Start", 700.f, 485.f, textSize);
+	drawText("Start", startContainer.pos.x + 50, startContainer.pos.y + 200, textSize);
 
 	if (mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 		btnColor = CP_Color_Create(200, 200, 200, 220);
