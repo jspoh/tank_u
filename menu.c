@@ -12,7 +12,6 @@ BYTE state = LAUNCH_PAGE;
 
 BYTE oAlpha = 255;
 
-Size btnSize = { 200.f,75.f };
 float textSize = 50.f;
 
 CP_Color btnColor;
@@ -26,11 +25,17 @@ Position b = { 1400.f, 650.f };
 Position c = { 1400.f, 750.f };
 Triangle startBtn;
 
-Position scPos = { 1350.f,600.f };
-Size scSize = { 200.f, 250.f };
+Position _scPos = { 1350.f,600.f };
+Size _scSize = { 200.f, 250.f };
 Rect startContainer;
 
 Rect overlay;
+
+char buttons[][8] = { "Play", "Options", "Help", "Credit", "Exit" };
+Position _firstBtnPos;
+Size btnSize = { 200.f,75.f };
+float spaceBetweenBtns = 50.f;
+Rect firstBtn;
 
 
 void initVars(void) {
@@ -47,12 +52,14 @@ void initVars(void) {
 	startBtn.a = a;
 	startBtn.b = b;
 	startBtn.c = c;
-	startContainer.pos = scPos;
-	startContainer.size = scSize;
+	startContainer.pos = _scPos;
+	startContainer.size = _scSize;
 	overlay.pos.x = 0.f;
 	overlay.pos.y = 0.f;
 	overlay.size.width = WINDOW_SIZE.width;
 	overlay.size.height = WINDOW_SIZE.height;
+	_firstBtnPos.x = WINDOW_SIZE.width / 2;
+	_firstBtnPos.y = (WINDOW_SIZE.height - ((sizeof(buttons) / sizeof(buttons[0])) * btnSize.height + (sizeof(buttons) / sizeof(buttons[0]) - 1) * spaceBetweenBtns)) / 2;
 }
 
 void menuInit(void) {
@@ -64,16 +71,16 @@ void menuInit(void) {
 	initVars();
 }
 
-void drawRect(Rect r, CP_Color fillColor, CP_Color strokeColor) {
-	CP_Settings_Fill(fillColor);
-	CP_Settings_Stroke(strokeColor);
-	CP_Graphics_DrawRect(r.pos.x, r.pos.y, r.size.width, r.size.height);
+void drawRect(Rect *r, CP_Color *fillColor, CP_Color *strokeColor) {
+	CP_Settings_Fill(*fillColor);
+	CP_Settings_Stroke(*strokeColor);
+	CP_Graphics_DrawRect(r->pos.x, r->pos.y, r->size.width, r->size.height);
 }
 
-void drawTriangleBtn(Triangle t) {
+void drawTriangleBtn(Triangle *t) {
 	CP_Settings_Fill(btnColor);
 	CP_Settings_Stroke(white);
-	CP_Graphics_DrawTriangle(t.a.x, t.a.y, t.b.x, t.b.y, t.c.x, t.c.y);
+	CP_Graphics_DrawTriangle(t->a.x, t->a.y, t->b.x, t->b.y, t->c.x, t->c.y);
 }
 
 void drawText(char* text, float x, float y, float size) {
@@ -85,7 +92,7 @@ void drawText(char* text, float x, float y, float size) {
 }
 
 void renderLaunchPage(void) {
-	drawTriangleBtn(startBtn);
+	drawTriangleBtn(&startBtn);
 	drawText("Start", startContainer.pos.x + 50, startContainer.pos.y + 200, textSize);
 
 	if (mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
@@ -96,12 +103,21 @@ void renderLaunchPage(void) {
 	}
 
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+		btnColor = CP_Color_Create(200, 200, 200, 220);
 		state = MENU_PAGE;
 	}
 }
 
 void renderMenuPage(void) {
-	drawRect(overlay, oColor, invisColor);
+	drawRect(&overlay, &oColor, &invisColor);
+
+	for (int i = 0; i < sizeof(buttons) / sizeof(buttons[0]); i++) {
+		puts("woi");
+		Size rs = { firstBtn.size.width, firstBtn.size.height };
+		Position rp = { firstBtn.pos.x, firstBtn.pos.y };
+		Rect r = { rs, rp };
+		drawRect(&r, &btnColor, &invisColor);
+	}
 }
 
 void menuUpdate(void) {
