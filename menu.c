@@ -19,6 +19,7 @@ CP_Color btnColor;
 CP_Color invisColor;
 CP_Color black;
 CP_Color white;
+CP_Color oColor;
 
 Position a = { 1500.f, 700.f };
 Position b = { 1400.f, 650.f };
@@ -29,7 +30,30 @@ Position scPos = { 1350.f,600.f };
 Size scSize = { 200.f, 250.f };
 Rect startContainer;
 
+Rect overlay;
 
+
+void initVars(void) {
+	menuBg = CP_Image_Load("Assets/menu_bg.png");
+
+	/* colors */
+	btnColor = CP_Color_Create(0, 0, 0, 220);
+	invisColor = CP_Color_Create(0, 0, 0, 0);
+	black = CP_Color_Create(0, 0, 0, 255);
+	white = CP_Color_Create(255, 255, 255, 255);
+	oColor = CP_Color_Create(0, 0, 0, 200);
+
+	/* structs */
+	startBtn.a = a;
+	startBtn.b = b;
+	startBtn.c = c;
+	startContainer.pos = scPos;
+	startContainer.size = scSize;
+	overlay.pos.x = 0.f;
+	overlay.pos.y = 0.f;
+	overlay.size.width = WINDOW_SIZE.width;
+	overlay.size.height = WINDOW_SIZE.height;
+}
 
 void menuInit(void) {
 	font = CP_Font_Load("Assets/Exo2-Regular.ttf");
@@ -37,21 +61,12 @@ void menuInit(void) {
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
 	
-	menuBg = CP_Image_Load("Assets/menu_bg.png");	
-	btnColor = CP_Color_Create(0, 0, 0, 220);
-	invisColor = CP_Color_Create(0, 0, 0, 0);
-	black = CP_Color_Create(0, 0, 0, 255);
-	white = CP_Color_Create(255, 255, 255, 255);
-	startBtn.a = a;
-	startBtn.b = b;
-	startBtn.c = c;
-	startContainer.pos = scPos;
-	startContainer.size = scSize;
+	initVars();
 }
 
-void drawRectBtn(Rect r) {
-	CP_Settings_Fill(btnColor);
-	CP_Settings_Stroke(invisColor);
+void drawRect(Rect r, CP_Color fillColor, CP_Color strokeColor) {
+	CP_Settings_Fill(fillColor);
+	CP_Settings_Stroke(strokeColor);
 	CP_Graphics_DrawRect(r.pos.x, r.pos.y, r.size.width, r.size.height);
 }
 
@@ -86,7 +101,7 @@ void renderLaunchPage(void) {
 }
 
 void renderMenuPage(void) {
-
+	drawRect(overlay, oColor, invisColor);
 }
 
 void menuUpdate(void) {
