@@ -20,7 +20,6 @@ Size base = { 80.f,70.f };
 Size top = { 70.f,60.f };
 Size turret = { 80.f,20.f };
 
-
 // used to draw tanks using images
 //void drawTank(Tank * tank, int color ) {
 //	float tankWidth = 80.0f;
@@ -36,13 +35,13 @@ Size turret = { 80.f,20.f };
 //			CP_Image_DrawAdvanced(redTank , tank->position.x , tank->position.y , tankWidth , tankHeight , tank -> color.a, tank->position.direction);
 //			break;
 //		case BLUE :
-//			CP_Image_DrawAdvanced(redTank , tank->position.x , tank->position.y , tankWidth , tankHeight , tank -> color.a, tank->position.direction);
+//			CP_Image_DrawAdvanced(blueTank , tank->position.x , tank->position.y , tankWidth , tankHeight , tank -> color.a, tank->position.direction);
 //			break;
 //		case GREEN:
-//			CP_Image_DrawAdvanced(redTank , tank->position.x , tank->position.y , tankWidth , tankHeight , tank -> color.a, tank->position.direction);
+//			CP_Image_DrawAdvanced(greenTank , tank->position.x , tank->position.y , tankWidth , tankHeight , tank -> color.a, tank->position.direction);
 //			break;
 //		case YELLOW:
-//		CP_Image_DrawAdvanced(redTank , tank->position.x , tank->position.y , tankWidth , tankHeight , tank -> color.a, tank->position.direction);
+//		CP_Image_DrawAdvanced(yellowTank , tank->position.x , tank->position.y , tankWidth , tankHeight , tank -> color.a, tank->position.direction);
 //		break;
 //		default:
 //			break;
@@ -50,7 +49,7 @@ Size turret = { 80.f,20.f };
 //
 //}
 
-void drawTank(Tank* tank) {
+void _drawTank(Tank* tank) {
 
 	float posTurret_x = tank->position.x + (base.width / 2);
 
@@ -98,36 +97,65 @@ void moveTank (Tank* tank,int direction, int definedSpeed){
 	}
 }
 
-Tank tankConstructor(float x, float y, Color color, float health, int activePowerUps[3], float elapsedPowerTime, int activePermPowers[3]) {
-	Tank newTank;
-	newTank.position.x = x;
-	newTank.position.y = y;
-	newTank.color = color;
-	newTank.health = health;
-	newTank.activePowerUps[0] = activePowerUps[0];
-	newTank.activePowerUps[1] = activePowerUps[1];
-	newTank.activePowerUps[2] = activePowerUps[2];
-	newTank.elapsedPowerTime = elapsedPowerTime;
-	newTank.activePermPowers[0] = activePermPowers[0];
-	newTank.activePermPowers[1] = activePermPowers[1];
-	newTank.activePermPowers[2] = activePermPowers[2];
+Color _colorTank(int color) 
+{
+	Color newColor;
+	switch (color) {
+		case RED:
+			newColor.r = 255;
+			newColor.g = 0;
+			newColor.b = 0;
+			newColor.a = 255;
+			break;
+		case GREEN:
+			newColor.r = 0;
+			newColor.g = 255;
+			newColor.b = 0;
+			newColor.a = 255;
+			break;
+		case BLUE:
+			newColor.r = 0;
+			newColor.g = 0;
+			newColor.b = 255;
+			newColor.a = 255;
+			break;
+		case YELLOW:
+			newColor.r = 235;
+			newColor.g = 207;
+			newColor.b = 52;
+			newColor.a = 255;
+			break;
+		default:
+			break;
+	}
+	return newColor;
+}
 
+Tank* _tankConstructor(Position position, Color color, float health, int activePowerUps[3], float elapsedPowerTime, int activePermPowers[3]) {
+	Tank *newTank = {position, color, health, activePowerUps[3], elapsedPowerTime, activePermPowers[3] };
 	return newTank;
 }
 
 void renderTank(void) 
 {
-	//starting positions for player 1
-	float p1x = WINDOW_SIZE.width - 200.f;
-	float p1y = WINDOW_SIZE.height/2.f;
+	Position pos_p1 = { WINDOW_SIZE.width - 200.f,WINDOW_SIZE.height / 2.f };
 
-	//starting position for player 2
-	float p2x = 200.f;
-	float p2y = WINDOW_SIZE.height/ 2.f;
+	Position pos_p2 = { 200.f,WINDOW_SIZE.height / 2.f };
+
+	float fullHealth = 1000.0f;
+
+	//player1 color
+	Color p1Color = _colorTank(RED);
+
+	//player 2 color
+	Color p2Color = _colorTank(GREEN);
+
 
 	
-	Tank* player1 = tankConstructor(p1x,p1y,);
-	Tank* player2 = tankConstructor(p2x,p2y,);
+	Tank* player1 = _tankConstructor(pos_p1,p1Color,fullHealth,0,0,0);
+	_drawTank(player1);
+	Tank* player2 = _tankConstructor(pos_p2,p2Color,fullHealth,0,0,0);
+	_drawTank(player2);
 
 }
 
