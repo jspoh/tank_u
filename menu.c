@@ -60,6 +60,8 @@ void initVars(void) {
 	overlay.size.height = WINDOW_SIZE.height;
 	_firstBtnPos.x = WINDOW_SIZE.width / 2;
 	_firstBtnPos.y = 100.f;// (WINDOW_SIZE.height - ((sizeof(buttons) / sizeof(buttons[0])) * btnSize.height + (sizeof(buttons) / sizeof(buttons[0]) - 1) * spaceBetweenBtns)) / 2;
+	firstBtn.pos = _firstBtnPos;
+	firstBtn.size = btnSize;
 }
 
 void menuInit(void) {
@@ -103,7 +105,7 @@ void renderLaunchPage(void) {
 	}
 
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-		btnColor = CP_Color_Create(255, 255, 255, 255);
+		btnColor = CP_Color_Create(200, 200, 200, 220);
 		state = MENU_PAGE;
 	}
 }
@@ -112,7 +114,6 @@ void renderMenuPage(void) {
 	drawRect(&overlay, &oColor, &invisColor);
 
 	for (int i = 0; i < sizeof(buttons) / sizeof(buttons[0]); i++) {
-		puts("woi");
 		Size rs = { firstBtn.size.width, firstBtn.size.height };
 		Position rp = { firstBtn.pos.x, firstBtn.pos.y };
 		Rect r = { rs, rp };
