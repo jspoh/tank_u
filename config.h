@@ -30,6 +30,10 @@ typedef struct Position {
 	float direction;
 } Position;
 
+typedef struct {
+	Position a, b, c;
+} Triangle;
+
 extern Size WINDOW_SIZE;
 
 /***
