@@ -58,10 +58,10 @@ void initVars(void) {
 	overlay.pos.y = 0.f;
 	overlay.size.width = WINDOW_SIZE.width;
 	overlay.size.height = WINDOW_SIZE.height;
-	_firstBtnPos.x = WINDOW_SIZE.width / 2;
-	_firstBtnPos.y = 100.f;// (WINDOW_SIZE.height - ((sizeof(buttons) / sizeof(buttons[0])) * btnSize.height + (sizeof(buttons) / sizeof(buttons[0]) - 1) * spaceBetweenBtns)) / 2;
-	firstBtn.pos = _firstBtnPos;
 	firstBtn.size = btnSize;
+	_firstBtnPos.x = (WINDOW_SIZE.width / 2) - (firstBtn.size.width / 2);
+	_firstBtnPos.y = (WINDOW_SIZE.height - ((sizeof(buttons) / sizeof(buttons[0])) * btnSize.height + (sizeof(buttons) / sizeof(buttons[0]) - 1) * spaceBetweenBtns)) / 2;
+	firstBtn.pos = _firstBtnPos;
 }
 
 void menuInit(void) {
@@ -115,7 +115,7 @@ void renderMenuPage(void) {
 
 	for (int i = 0; i < sizeof(buttons) / sizeof(buttons[0]); i++) {
 		Size rs = { firstBtn.size.width, firstBtn.size.height };
-		Position rp = { firstBtn.pos.x, firstBtn.pos.y };
+		Position rp = { firstBtn.pos.x, firstBtn.pos.y + (i * (spaceBetweenBtns + rs.height)) };
 		Rect r = { rs, rp };
 		drawRect(&r, &btnColor, &invisColor);
 	}
