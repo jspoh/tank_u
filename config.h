@@ -34,6 +34,11 @@ typedef struct {
 	Position a, b, c;
 } Triangle;
 
+typedef struct {
+	Size size;
+	Position pos;
+} Rectangle;
+
 extern Size WINDOW_SIZE;
 
 /***
