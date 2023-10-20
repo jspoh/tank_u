@@ -59,7 +59,7 @@ void initVars(void) {
 	overlay.size.width = WINDOW_SIZE.width;
 	overlay.size.height = WINDOW_SIZE.height;
 	_firstBtnPos.x = WINDOW_SIZE.width / 2;
-	_firstBtnPos.y = (WINDOW_SIZE.height - ((sizeof(buttons) / sizeof(buttons[0])) * btnSize.height + (sizeof(buttons) / sizeof(buttons[0]) - 1) * spaceBetweenBtns)) / 2;
+	_firstBtnPos.y = 100.f;// (WINDOW_SIZE.height - ((sizeof(buttons) / sizeof(buttons[0])) * btnSize.height + (sizeof(buttons) / sizeof(buttons[0]) - 1) * spaceBetweenBtns)) / 2;
 }
 
 void menuInit(void) {
@@ -83,17 +83,17 @@ void drawTriangleBtn(Triangle *t) {
 	CP_Graphics_DrawTriangle(t->a.x, t->a.y, t->b.x, t->b.y, t->c.x, t->c.y);
 }
 
-void drawText(char* text, float x, float y, float size) {
+void drawText(char* text, float x, float y, float size, CP_Color* strokeColor) {
 	//CP_Settings_StrokeWeight(1.0f);
 	CP_Settings_TextSize(size);
-	CP_Settings_Stroke(black);
-	CP_Settings_Fill(black);
+	CP_Settings_Stroke(*strokeColor);
+	CP_Settings_Fill(*strokeColor);
 	CP_Font_DrawText(text, x, y);
 }
 
 void renderLaunchPage(void) {
 	drawTriangleBtn(&startBtn);
-	drawText("Start", startContainer.pos.x + 50, startContainer.pos.y + 200, textSize);
+	drawText("Start", startContainer.pos.x + 50, startContainer.pos.y + 200, textSize, &black);
 
 	if (mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 		btnColor = CP_Color_Create(200, 200, 200, 220);
@@ -103,7 +103,7 @@ void renderLaunchPage(void) {
 	}
 
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-		btnColor = CP_Color_Create(200, 200, 200, 220);
+		btnColor = CP_Color_Create(255, 255, 255, 255);
 		state = MENU_PAGE;
 	}
 }
@@ -131,4 +131,5 @@ void menuUpdate(void) {
 }
 
 void menuExit(void) {
+	CP_Image_Free(&menuBg);
 }
