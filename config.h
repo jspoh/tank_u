@@ -37,7 +37,7 @@ typedef struct {
 typedef struct {
 	Size size;
 	Position pos;
-} Rectangle;
+} Rect;
 
 extern Size WINDOW_SIZE;
 
