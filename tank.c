@@ -99,7 +99,7 @@ void moveTank (Tank* tank,int direction, int definedSpeed){
 
 Color _colorTank(int color) 
 {
-	Color newColor;
+	Color newColor = { 0,0,0,0 };
 	switch (color) {
 		case RED:
 			newColor.r = 255;
