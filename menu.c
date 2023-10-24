@@ -118,11 +118,32 @@ void renderMenuPage(void) {
 		Size rs = { firstBtn.size.width, firstBtn.size.height };
 		Position rp = { firstBtn.pos.x, firstBtn.pos.y + (i * (spaceBetweenBtns + rs.height)) };
 		Rect r = { rs, rp };
-		drawRect(&r, &btnColor, &invisColor);
+		CP_Color col;
+
+		/* detect hover and clicks */
+		if (mouseInRect(r, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				if (buttons[i] == "Play") {
+					printf("NEXT STATE");
+					CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
+					// end of function/file
+				}
+			}
+			/* if hover */
+			else {
+				col = CP_Color_Create(255, 255, 255, 220);
+			}
+		}
+		else {
+			col = CP_Color_Create(200, 200, 200, 220);
+		}
+
+		/* draw button on screen */
+		drawRect(&r, &col, &invisColor);
 
 		/* draw text on button*/
 		CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-		drawText(buttons[i], rp.x + rs.width/2, rp.y + rs.height/2, textSize, &black);
+		drawText(buttons[i], rp.x + rs.width / 2, rp.y + rs.height / 2, textSize, &black);
 	}
 }
 
@@ -131,9 +152,6 @@ void menuUpdate(void) {
 	CP_Image_Draw(menuBg, WINDOW_SIZE.width/2, WINDOW_SIZE.height/2, WINDOW_SIZE.width, WINDOW_SIZE.height, oAlpha);
 	
 	state == LAUNCH_PAGE ? renderLaunchPage() : renderMenuPage();
-
-
-	//CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
 }
 
 void menuExit(void) {
