@@ -37,6 +37,27 @@ Size btnSize = { 200.f,75.f };
 float spaceBetweenBtns = 50.f;
 Rect firstBtn;
 
+Rect fadeRectL;
+Rect fadeRectR;
+#define TRANSITION_DURATION 1
+float menuElapsedTime = 0;
+
+void drawRect(Rect* r, CP_Color* fillColor, CP_Color* strokeColor) {
+	CP_Settings_Fill(*fillColor);
+	CP_Settings_Stroke(*strokeColor);
+	CP_Graphics_DrawRect(r->pos.x, r->pos.y, r->size.width, r->size.height);
+}
+
+void transitIn(void) {
+	drawRect(&fadeRectL, &black, &black);
+	drawRect(&fadeRectR, &black, &black);
+
+	menuElapsedTime += CP_System_GetDt();
+	float pixels = (menuElapsedTime / TRANSITION_DURATION) * (WINDOW_SIZE.width / 2);
+
+	fadeRectL.pos.x = 0.f - pixels;
+	fadeRectR.pos.x = WINDOW_SIZE.width / 2 + pixels;
+}
 
 void initVars(void) {
 	menuBg = CP_Image_Load("Assets/menu_bg.png");
@@ -62,6 +83,16 @@ void initVars(void) {
 	_firstBtnPos.x = (WINDOW_SIZE.width / 2) - (firstBtn.size.width / 2);
 	_firstBtnPos.y = (WINDOW_SIZE.height - ((sizeof(buttons) / sizeof(buttons[0])) * btnSize.height + (sizeof(buttons) / sizeof(buttons[0]) - 1) * spaceBetweenBtns)) / 2;
 	firstBtn.pos = _firstBtnPos;
+
+	/* fade stuff */
+	Size _fadeRectLSize = { WINDOW_SIZE.width / 2, WINDOW_SIZE.height };
+	Position _fadeRectLPos = { 0.f, 0.f };
+	fadeRectL.size = _fadeRectLSize;
+	fadeRectL.pos = _fadeRectLPos;
+	Size _fadeRectRSize = { WINDOW_SIZE.width / 2, WINDOW_SIZE.height };
+	Position _fadeRectRPos = { WINDOW_SIZE.width / 2, 0.f };
+	fadeRectR.size = _fadeRectRSize;
+	fadeRectR.pos = _fadeRectRPos;
 }
 
 void menuInit(void) {
@@ -71,12 +102,6 @@ void menuInit(void) {
 	CP_System_SetFrameRate(FRAMERATE);
 	
 	initVars();
-}
-
-void drawRect(Rect *r, CP_Color *fillColor, CP_Color *strokeColor) {
-	CP_Settings_Fill(*fillColor);
-	CP_Settings_Stroke(*strokeColor);
-	CP_Graphics_DrawRect(r->pos.x, r->pos.y, r->size.width, r->size.height);
 }
 
 void drawTriangleBtn(Triangle *t) {
@@ -163,6 +188,7 @@ void menuUpdate(void) {
 	CP_Image_Draw(menuBg, WINDOW_SIZE.width/2, WINDOW_SIZE.height/2, WINDOW_SIZE.width, WINDOW_SIZE.height, oAlpha);
 	
 	state == LAUNCH_PAGE ? renderLaunchPage() : renderMenuPage();
+	transitIn();
 }
 
 void menuExit(void) {
