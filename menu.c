@@ -127,6 +127,8 @@ void initVars(void) {
 }
 
 void menuInit(void) {
+	menuState = FADE_IN;
+
 	font = CP_Font_Load("Assets/Exo2-Regular.ttf");
 	CP_Font_Set(font);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
@@ -151,6 +153,7 @@ void drawText(char* text, float x, float y, float size, CP_Color* strokeColor) {
 
 void renderLaunchPage(void) {
 	drawTriangleBtn(&startBtn);
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_MIDDLE);
 	drawText("Start", startContainer.pos.x + 50, startContainer.pos.y + 200, textSize, &black);
 
 	if (mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
@@ -159,7 +162,7 @@ void renderLaunchPage(void) {
 	else {
 		btnColor = CP_Color_Create(0, 0, 0, 220);
 	}
-
+	
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 		btnColor = CP_Color_Create(200, 200, 200, 220);
 		menuState = MENU_PAGE;
