@@ -123,8 +123,7 @@ void renderMenuPage(void) {
 		/* detect hover and clicks */
 		if (mouseInRect(r, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				if (buttons[i] == "Play") {
-					printf("NEXT STATE");
+				if (!strcmp(buttons[i], "Play")) {
 					CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
 					// end of function/file
 				}
