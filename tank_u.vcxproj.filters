@@ -13,6 +13,12 @@
     <ClCompile Include="cannonball.c">
       <Filter>components\cannonball</Filter>
     </ClCompile>
+    <ClCompile Include="options.c">
+      <Filter>components\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="splash.c">
+      <Filter>components\menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
@@ -25,6 +31,12 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="cannonball.h">
       <Filter>components\cannonball</Filter>
+    </ClInclude>
+    <ClInclude Include="options.h">
+      <Filter>components\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="splash.h">
+      <Filter>components\menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
