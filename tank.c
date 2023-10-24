@@ -49,7 +49,7 @@ Size turret = { 80.f,20.f };
 //
 //}
 
-void _drawTank(Tank* tank) {
+void _drawTank(Tank* tank)	 {
 
 	float posTurret_x = tank->position.x + (base.width / 2);
 
@@ -97,37 +97,9 @@ void moveTank (Tank* tank,int direction, int definedSpeed){
 	}
 }
 
-Color _colorTank(int color) 
+Color _colorTank(int r , int g , int b ,int a) 
 {
-	Color newColor = { 0,0,0,0 };
-	switch (color) {
-		case RED:
-			newColor.r = 255;
-			newColor.g = 0;
-			newColor.b = 0;
-			newColor.a = 255;
-			break;
-		case GREEN:
-			newColor.r = 0;
-			newColor.g = 255;
-			newColor.b = 0;
-			newColor.a = 255;
-			break;
-		case BLUE:
-			newColor.r = 0;
-			newColor.g = 0;
-			newColor.b = 255;
-			newColor.a = 255;
-			break;
-		case YELLOW:
-			newColor.r = 235;
-			newColor.g = 207;
-			newColor.b = 52;
-			newColor.a = 255;
-			break;
-		default:
-			break;
-	}
+	Color newColor = { r,g,b,a };
 	return newColor;
 }
 
@@ -153,10 +125,10 @@ void renderTank(void)
 	float fullHealth = 1000.0f;
 
 	//player1 color
-	Color p1Color = _colorTank(RED);
+	Color p1Color = _colorTank(255,0,0,255);
 
 	//player 2 color
-	Color p2Color = _colorTank(GREEN);
+	Color p2Color = _colorTank(0,255,0,255);
 
 
 	

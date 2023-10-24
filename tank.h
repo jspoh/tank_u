@@ -28,4 +28,4 @@ Tank* _tankConstructor(Position position, Color color, float health, int* active
 
 void damageTakenTank(Tank* tank, float damage);
 
-Color _colorTank(int color);
+Color _colorTank(int r, int g, int b, int a);
