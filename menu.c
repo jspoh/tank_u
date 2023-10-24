@@ -31,7 +31,7 @@ Rect startContainer;
 
 Rect overlay;
 
-char buttons[][8] = { "Play", "Options", "Help", "Credit", "Exit" };
+char buttons[][8] = { "Play", "Options", "Help", "Credits", "Exit" };
 Position _firstBtnPos;
 Size btnSize = { 200.f,75.f };
 float spaceBetweenBtns = 50.f;
@@ -126,6 +126,18 @@ void renderMenuPage(void) {
 				if (!strcmp(buttons[i], "Play")) {
 					CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
 					// end of function/file
+				}
+				else if (!strcmp(buttons[i], "Options")) {
+
+				}
+				else if (!strcmp(buttons[i], "Help")) {
+
+				}
+				else if (!strcmp(buttons[i], "Credits")) {
+
+				}
+				else {
+					CP_Engine_Terminate();
 				}
 			}
 			/* if hover */
