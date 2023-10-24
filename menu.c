@@ -7,8 +7,8 @@
 CP_Font font;
 CP_Image menuBg;
 
-enum { LAUNCH_PAGE, MENU_PAGE };
-BYTE state = LAUNCH_PAGE;
+enum { FADE_IN, LAUNCH_PAGE, MENU_PAGE };
+BYTE menuState = FADE_IN;
 
 BYTE oAlpha = 255;
 
@@ -48,7 +48,11 @@ void drawRect(Rect* r, CP_Color* fillColor, CP_Color* strokeColor) {
 	CP_Graphics_DrawRect(r->pos.x, r->pos.y, r->size.width, r->size.height);
 }
 
-void transitIn(void) {
+void menuFadeIn(void) {
+	if (fadeRectL.pos.x <= 0 && fadeRectR.pos.x >= WINDOW_SIZE.width) {
+		menuState = LAUNCH_PAGE;
+	}
+
 	drawRect(&fadeRectL, &black, &black);
 	drawRect(&fadeRectR, &black, &black);
 
@@ -57,6 +61,10 @@ void transitIn(void) {
 
 	fadeRectL.pos.x = 0.f - pixels;
 	fadeRectR.pos.x = WINDOW_SIZE.width / 2 + pixels;
+}
+
+void menuFadeOut(void) {
+
 }
 
 void initVars(void) {
@@ -131,7 +139,7 @@ void renderLaunchPage(void) {
 
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 		btnColor = CP_Color_Create(200, 200, 200, 220);
-		state = MENU_PAGE;
+		menuState = MENU_PAGE;
 	}
 }
 
@@ -186,9 +194,20 @@ void renderMenuPage(void) {
 void menuUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(150, 150, 150, 255));
 	CP_Image_Draw(menuBg, WINDOW_SIZE.width/2, WINDOW_SIZE.height/2, WINDOW_SIZE.width, WINDOW_SIZE.height, oAlpha);
-	
-	state == LAUNCH_PAGE ? renderLaunchPage() : renderMenuPage();
-	transitIn();
+
+	switch (menuState) {
+		case FADE_IN:
+			menuFadeIn();
+			break;
+		case LAUNCH_PAGE:
+			renderLaunchPage();
+			break;
+		case MENU_PAGE:
+			renderMenuPage();
+			break;
+		default:
+			break;
+	}
 }
 
 void menuExit(void) {
