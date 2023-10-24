@@ -114,10 +114,15 @@ void renderMenuPage(void) {
 	drawRect(&overlay, &oColor, &invisColor);
 
 	for (int i = 0; i < sizeof(buttons) / sizeof(buttons[0]); i++) {
+		/* draw rectangle button shape */
 		Size rs = { firstBtn.size.width, firstBtn.size.height };
 		Position rp = { firstBtn.pos.x, firstBtn.pos.y + (i * (spaceBetweenBtns + rs.height)) };
 		Rect r = { rs, rp };
 		drawRect(&r, &btnColor, &invisColor);
+
+		/* draw text on button*/
+		CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
+		drawText(buttons[i], rp.x + rs.width/2, rp.y + rs.height/2, textSize, &black);
 	}
 }
 
