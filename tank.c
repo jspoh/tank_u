@@ -131,10 +131,17 @@ Color _colorTank(int color)
 	return newColor;
 }
 
-Tank* _tankConstructor(Position position, Color color, float health, int* activePowerUps, float elapsedPowerTime, int* activePermPowers) 
+Tank* _tankConstructor(Position position, Color color, float health, int* activePowerUps, float elapsedPowerTime, int* activePermPowers)
 {
-	Tank newTank = {position, color, health, activePowerUps, elapsedPowerTime, activePermPowers };
-	return &newTank;
+	Tank* newTank = (Tank*)malloc(sizeof(Tank));
+	newTank->position = position;
+	newTank->color = color;
+	newTank->health = health;
+	newTank->activePowerUps = activePowerUps; // reslove this by allocation of memory again
+	newTank->elapsedPowerTime = elapsedPowerTime;
+	newTank->activePermPowers = activePermPowers; // reslove this by allocation of memory again
+
+	return newTank;
 }
 
 void renderTank(void) 
@@ -160,7 +167,7 @@ void renderTank(void)
 
 }
 
-float damageTakenTank(Tank* tank, float damage) 
+void damageTakenTank(Tank* tank, float damage) 
 {
-	return tank->health -= damage;
+	tank->health -= damage;
 }
