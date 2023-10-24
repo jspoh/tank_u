@@ -61,15 +61,15 @@ void _drawTank(Tank* tank) {
 	
 
 	//draw the base of the tank
-	CP_Color_Fill(baseColor);
+	CP_Settings_Fill(baseColor);
 	CP_Graphics_DrawRect(tank->position.x, tank->position.y, base.width, base.height);
 
 	//draw the top of the tank
-	CP_Color_Fill(topColor);
+	CP_Settings_Fill(topColor);
 	CP_Graphics_DrawRect(tank->position.x, tank->position.y, top.width , top.height);
 
 	//draw the turret of the tank
-	CP_Color_Fill(turretColor);
+	CP_Settings_Fill(turretColor);
 	CP_Graphics_DrawRect(posTurret_x, tank->position.y, turret.width , turret.height);
 
 }
@@ -131,9 +131,10 @@ Color _colorTank(int color)
 	return newColor;
 }
 
-Tank* _tankConstructor(Position position, Color color, float health, int activePowerUps[3], float elapsedPowerTime, int activePermPowers[3]) {
-	Tank *newTank = {position, color, health, activePowerUps[3], elapsedPowerTime, activePermPowers[3] };
-	return newTank;
+Tank* _tankConstructor(Position position, Color color, float health, int* activePowerUps, float elapsedPowerTime, int* activePermPowers) 
+{
+	Tank newTank = {position, color, health, activePowerUps, elapsedPowerTime, activePermPowers };
+	return &newTank;
 }
 
 void renderTank(void) 
