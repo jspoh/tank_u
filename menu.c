@@ -2,12 +2,14 @@
 #include "config.h"
 #include "game.h"
 #include "collision.h"
+#include "backdrop.h"
+#include "options.h"
 #include <stdio.h>
 
 CP_Font font;
 CP_Image menuBg;
 
-enum { FADE_IN, LAUNCH_PAGE, MENU_PAGE, FADE_TO_GAME };
+enum { FADE_IN, LAUNCH_PAGE, MENU_PAGE, FADE_TO_GAME, OPTIONS_PAGE };
 BYTE menuState = FADE_IN;
 
 BYTE oAlpha = 255;
@@ -80,7 +82,7 @@ void menuFadeToGame(void) {
 
 	menuElapsedTime += CP_System_GetDt();
 	//fadeOpacity = (BYTE)(255 * menuElapsedTime / GAME_TRANSITION_DURATION);
-	fadeOpacity = min(255, (255 * menuElapsedTime / GAME_TRANSITION_DURATION));
+	fadeOpacity = (BYTE)min(255, (255 * menuElapsedTime / GAME_TRANSITION_DURATION));
 	CP_Color tCol = CP_Color_Create(0, 0, 0, fadeOpacity);
 	drawRect2(&oFadeRect, tCol, tCol);
 }
@@ -153,7 +155,7 @@ void drawText(char* text, float x, float y, float size, CP_Color* strokeColor) {
 
 void renderLaunchPage(void) {
 	drawTriangleBtn(&startBtn);
-	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_MIDDLE);
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_BOTTOM);
 	drawText("Start", startContainer.pos.x + 50, startContainer.pos.y + 200, textSize, &black);
 
 	if (mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
@@ -170,7 +172,7 @@ void renderLaunchPage(void) {
 }
 
 void renderMenuPage(void) {
-	drawRect(&overlay, &oColor, &invisColor);
+	renderBackdrop();
 
 	for (int i = 0; i < sizeof(buttons) / sizeof(buttons[0]); i++) {
 		/* draw rectangle button shape */
@@ -183,7 +185,7 @@ void renderMenuPage(void) {
 		if (mouseInRect(r, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 				if (!strcmp(buttons[i], "Options")) {
-
+					menuState = OPTIONS_PAGE;
 				}
 				else if (!strcmp(buttons[i], "Help")) {
 
@@ -239,6 +241,9 @@ void menuUpdate(void) {
 			break;
 		case FADE_TO_GAME:
 			renderMenuPage();
+			break;
+		case OPTIONS_PAGE:
+			renderOptions();
 			break;
 		default:
 			break;

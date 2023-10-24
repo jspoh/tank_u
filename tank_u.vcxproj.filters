@@ -19,6 +19,9 @@
     <ClCompile Include="splash.c">
       <Filter>components\menu</Filter>
     </ClCompile>
+    <ClCompile Include="backdrop.c">
+      <Filter>util\backdrop</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
@@ -38,6 +41,9 @@
     <ClInclude Include="splash.h">
       <Filter>components\menu</Filter>
     </ClInclude>
+    <ClInclude Include="backdrop.h">
+      <Filter>util\backdrop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="components">
@@ -54,6 +60,9 @@
     </Filter>
     <Filter Include="components\cannonball">
       <UniqueIdentifier>{a8879b22-df87-4a97-aad4-fb3afcfa1219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util\backdrop">
+      <UniqueIdentifier>{e7ebf866-7dd5-463b-b520-451664b86e72}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
