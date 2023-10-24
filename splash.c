@@ -63,12 +63,6 @@ void splashScreenFadeInOut() {
 	CP_Image_Draw(logo, WINDOW_SIZE.width / 2, WINDOW_SIZE.height / 2, (float)CP_Image_GetWidth(logo), (float)CP_Image_GetHeight(logo), opacity);
 }
 
-void drawCursor() {
-	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-	CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20);
-}
-
-
 void splash_screen_init(void) {
 	logo = CP_Image_Load("Assets/DigiPen_BLACK.png");
 	CP_System_SetFrameRate(FRAMERATE);
@@ -78,7 +72,6 @@ void splash_screen_init(void) {
 void splash_screen_update(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
 	splashScreenFadeInOut();
-	drawCursor();
 }
 
 void splash_screen_exit(void) {

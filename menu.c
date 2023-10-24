@@ -7,7 +7,7 @@
 CP_Font font;
 CP_Image menuBg;
 
-enum { FADE_IN, LAUNCH_PAGE, MENU_PAGE };
+enum { FADE_IN, LAUNCH_PAGE, MENU_PAGE, FADE_TO_GAME };
 BYTE menuState = FADE_IN;
 
 BYTE oAlpha = 255;
@@ -39,8 +39,11 @@ Rect firstBtn;
 
 Rect fadeRectL;
 Rect fadeRectR;
+Rect oFadeRect;
 #define TRANSITION_DURATION 1
 float menuElapsedTime = 0;
+#define GAME_TRANSITION_DURATION 0.5
+BYTE fadeOpacity = 0;
 
 void drawRect(Rect* r, CP_Color* fillColor, CP_Color* strokeColor) {
 	CP_Settings_Fill(*fillColor);
@@ -48,8 +51,15 @@ void drawRect(Rect* r, CP_Color* fillColor, CP_Color* strokeColor) {
 	CP_Graphics_DrawRect(r->pos.x, r->pos.y, r->size.width, r->size.height);
 }
 
+void drawRect2(Rect* r, CP_Color fillColor, CP_Color strokeColor) {
+	CP_Settings_Fill(fillColor);
+	CP_Settings_Stroke(strokeColor);
+	CP_Graphics_DrawRect(r->pos.x, r->pos.y, r->size.width, r->size.height);
+}
+
 void menuFadeIn(void) {
 	if (fadeRectL.pos.x <= 0 && fadeRectR.pos.x >= WINDOW_SIZE.width) {
+		menuElapsedTime = 0;
 		menuState = LAUNCH_PAGE;
 	}
 
@@ -63,8 +73,16 @@ void menuFadeIn(void) {
 	fadeRectR.pos.x = WINDOW_SIZE.width / 2 + pixels;
 }
 
-void menuFadeOut(void) {
+void menuFadeToGame(void) {
+	if (fadeOpacity == 255) {
+		CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
+	}
 
+	menuElapsedTime += CP_System_GetDt();
+	//fadeOpacity = (BYTE)(255 * menuElapsedTime / GAME_TRANSITION_DURATION);
+	fadeOpacity = min(255, (255 * menuElapsedTime / GAME_TRANSITION_DURATION));
+	CP_Color tCol = CP_Color_Create(0, 0, 0, fadeOpacity);
+	drawRect2(&oFadeRect, tCol, tCol);
 }
 
 void initVars(void) {
@@ -97,10 +115,15 @@ void initVars(void) {
 	Position _fadeRectLPos = { 0.f, 0.f };
 	fadeRectL.size = _fadeRectLSize;
 	fadeRectL.pos = _fadeRectLPos;
+
 	Size _fadeRectRSize = { WINDOW_SIZE.width / 2, WINDOW_SIZE.height };
 	Position _fadeRectRPos = { WINDOW_SIZE.width / 2, 0.f };
 	fadeRectR.size = _fadeRectRSize;
 	fadeRectR.pos = _fadeRectRPos;
+
+	Position _oFadeRectPos = { 0.f, 0.f };
+	oFadeRect.size = WINDOW_SIZE;
+	oFadeRect.pos = _oFadeRectPos;
 }
 
 void menuInit(void) {
@@ -156,11 +179,7 @@ void renderMenuPage(void) {
 		/* detect hover and clicks */
 		if (mouseInRect(r, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				if (!strcmp(buttons[i], "Play")) {
-					CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
-					// end of function/file
-				}
-				else if (!strcmp(buttons[i], "Options")) {
+				if (!strcmp(buttons[i], "Options")) {
 
 				}
 				else if (!strcmp(buttons[i], "Help")) {
@@ -169,7 +188,7 @@ void renderMenuPage(void) {
 				else if (!strcmp(buttons[i], "Credits")) {
 
 				}
-				else {
+				else if (!strcmp(buttons[i], "Exit")) {
 					CP_Engine_Terminate();
 				}
 			}
@@ -188,6 +207,16 @@ void renderMenuPage(void) {
 		/* draw text on button*/
 		CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 		drawText(buttons[i], rp.x + rs.width / 2, rp.y + rs.height / 2, textSize, &black);
+
+		if (mouseInRect(r, CP_Input_GetMouseX(), CP_Input_GetMouseY()) && CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+			if (!strcmp(buttons[i], "Play")) {
+				menuState = FADE_TO_GAME;
+			}
+		}
+	}
+
+	if (menuState == FADE_TO_GAME) {
+		menuFadeToGame();
 	}
 }
 
@@ -203,6 +232,9 @@ void menuUpdate(void) {
 			renderLaunchPage();
 			break;
 		case MENU_PAGE:
+			renderMenuPage();
+			break;
+		case FADE_TO_GAME:
 			renderMenuPage();
 			break;
 		default:
