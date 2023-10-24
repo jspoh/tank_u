@@ -1,7 +1,6 @@
 #include "cprocessing.h"
 #include "config.h"
 #include "menu.h"
-#include <stdio.h>
 
 #define FRAMERATE 60
 #define TOTAL_DURATION 2
@@ -42,14 +41,12 @@ void splashScreenFadeInOut() {
 	
 	switch (splashState) {
 		case FADE_IN:
-			puts("fade in");
 			fadeIn();
 			if (opacity == 255) {
 				splashState = SHOW_LOGO;
 			}
 			break;
 		case SHOW_LOGO:
-			puts("show logo");
 			elapsedShow += dt;
 			if (elapsedShow >= SHOW_DURATION) {
 				elapsedTime = FADE_DURATION;
@@ -57,7 +54,6 @@ void splashScreenFadeInOut() {
 			}
 			break;
 		case FADE_OUT:
-			puts("fade out");
 			fadeOut();
 			break;
 		default:
