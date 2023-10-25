@@ -4,6 +4,7 @@
 #include "collision.h"
 #include "backdrop.h"
 #include "options.h"
+#include "utils.h"
 #include <stdio.h>
 
 CP_Font font;
@@ -46,12 +47,6 @@ Rect oFadeRect;
 float menuElapsedTime = 0;
 #define GAME_TRANSITION_DURATION 0.5
 BYTE fadeOpacity = 0;
-
-void drawRect(Rect* r, CP_Color* fillColor, CP_Color* strokeColor) {
-	CP_Settings_Fill(*fillColor);
-	CP_Settings_Stroke(*strokeColor);
-	CP_Graphics_DrawRect(r->pos.x, r->pos.y, r->size.width, r->size.height);
-}
 
 void drawRect2(Rect* r, CP_Color fillColor, CP_Color strokeColor) {
 	CP_Settings_Fill(fillColor);
