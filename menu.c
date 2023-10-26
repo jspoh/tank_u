@@ -72,6 +72,8 @@ void menuFadeIn(void) {
 
 void menuFadeToGame(void) {
 	if (fadeOpacity == 255) {
+		fadeOpacity = 0;
+		menuElapsedTime = 0;
 		CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
 	}
 
