@@ -15,6 +15,8 @@ enum { PLAYER_1, PLAYER_2 };
 Tank tanks[NUM_PLAYERS] = { 0 };
 Size tankSize = { 75.f, 100.f };
 
+extern Keybinds keybindings[];
+
 void _drawTank(Tank* tank) {
 	Rect r = {
 		tankSize,
@@ -70,9 +72,10 @@ void moveTanks(void) {
 	const float dt = CP_System_GetDt();
 	const float distance = dt * MOVEMENT_SPEED;
 
-	/* player 1 tank */
-	if (CP_Input_KeyDown(KEY_W)) {
-		tanks[0].pos.y -= distance;
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		if (CP_Input_KeyDown(keybindings[i].up)) {
+			tanks[i].pos.y -= distance;
+		}
 	}
 }
 
