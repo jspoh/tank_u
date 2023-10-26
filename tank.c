@@ -27,26 +27,26 @@ void _drawTank(Tank* tank) {
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
 	drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
 
-	/* draw turret base */
-	strokeCol = CP_Color_Create(0, 0, 0, 255);
-	float newWidth = r.size.width * 0.6f;
-	float newHeight = r.size.height * 0.6f;
-	r.pos.x += (r.size.width - newWidth) / 2;
-	r.pos.y += (r.size.height - newHeight) / 2;
-	r.size.width = newWidth;
-	r.size.height = newHeight;
-	drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
-
-	/* draw turret */
-	strokeCol = CP_Color_Create(0, 0, 0, 255);
-	newWidth = r.size.width * 0.2f;
-	newHeight = r.size.height * 0.6f;
-	r.pos.x = r.pos.x + (r.size.width - newWidth) / 2;
-	//r.pos.y -= newHeight;
-	r.pos.y -= r.size.height;
-	r.size.width = newWidth;
+	///* draw turret base */
+	//strokeCol = CP_Color_Create(0, 0, 0, 255);
+	//float newWidth = r.size.width * 0.6f;
+	//float newHeight = r.size.height * 0.6f;
+	//r.pos.x += (r.size.width - newWidth) / 2;
+	//r.pos.y += (r.size.height - newHeight) / 2;
+	//r.size.width = newWidth;
 	//r.size.height = newHeight;
-	drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
+	//drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
+
+	///* draw turret */
+	//strokeCol = CP_Color_Create(0, 0, 0, 255);
+	//newWidth = r.size.width * 0.2f;
+	//newHeight = r.size.height * 0.6f;
+	//r.pos.x = r.pos.x + (r.size.width - newWidth) / 2;
+	////r.pos.y -= newHeight;
+	//r.pos.y -= r.size.height;
+	//r.size.width = newWidth;
+	////r.size.height = newHeight;
+	//drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
 }
 
 void setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
