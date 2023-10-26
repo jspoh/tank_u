@@ -4,11 +4,12 @@
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "math.h"
 
 #define MAX_HEALTH 100.f
 #define NUM_PLAYERS 2
 #define MOVEMENT_SPEED 100
-#define TURN_SPEED 10
+#define TURN_SPEED 100
 
 enum { LEFT, RIGHT };
 enum { PLAYER_1, PLAYER_2 };
@@ -71,11 +72,59 @@ void _turnTank(Tank* tank, int direction) {
 void moveTanks(void) {
 	const float dt = CP_System_GetDt();
 	const float distance = dt * MOVEMENT_SPEED;
+	const float dDegrees = dt * TURN_SPEED;  // dDegrees as in change in degrees like dx, dy (differentiate)
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
+		Tank* t = &tanks[i];
+
 		if (CP_Input_KeyDown(keybindings[i].up)) {
-			tanks[i].pos.y -= distance;
+			if (t->pos.direction != 0 && t->pos.direction >= 180) {
+				t->pos.direction += dDegrees;
+			}
+			else if (t->pos.direction != 0 && t->pos.direction <= 180) {
+				t->pos.direction -= dDegrees;
+			}
+			else {
+				t->pos.y -= distance;
+			}
 		}
+		else if (CP_Input_KeyDown(keybindings[i].right)) {
+			if (t->pos.direction >= 270 || t->pos.direction < 90) {
+				t->pos.direction += dDegrees;
+			}
+			else if (t->pos.direction > 90 && t->pos.direction <= 270) {
+				t->pos.direction -= dDegrees;
+			}
+			else {
+				t->pos.x += distance;
+			}
+		}
+		else if (CP_Input_KeyDown(keybindings[i].left)) {
+			if (t->pos.direction < 270 && t->pos.direction >= 90) {
+				t->pos.direction += dDegrees;
+			}
+			else if (t->pos.direction > 270 || t->pos.direction <= 90) {
+				t->pos.direction += 360 - dDegrees;
+			}
+			else {
+				t->pos.x -= distance;
+			}
+		}
+		else if (CP_Input_KeyDown(keybindings[i].down)) {
+			if (t->pos.direction < 180) {
+				t->pos.direction += dDegrees;
+			}
+			else if (t->pos.direction > 180) {
+				t->pos.direction -= dDegrees;
+			}
+			else {
+				t->pos.y += distance;
+			}
+		}
+		printf("before mod => %d - %f\n", i, t->pos.direction);
+		t->pos.direction = t->pos.direction >= 0 ? t->pos.direction : -t->pos.direction;
+		t->pos.direction = (int)ceil(t->pos.direction) % 360;
+		printf("after  mod => %d - %f\n", i, t->pos.direction);
 	}
 }
 
