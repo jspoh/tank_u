@@ -25,7 +25,7 @@ void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	//CP_Color strokeCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	drawRectAdvanced(&r, &fillCol, &strokeCol);
+	drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
 
 	/* draw turret base */
 	strokeCol = CP_Color_Create(0, 0, 0, 255);
@@ -35,7 +35,7 @@ void _drawTank(Tank* tank) {
 	r.pos.y += (r.size.height - newHeight) / 2;
 	r.size.width = newWidth;
 	r.size.height = newHeight;
-	drawRectAdvanced(&r, &fillCol, &strokeCol);
+	drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
 
 	/* draw turret */
 	strokeCol = CP_Color_Create(0, 0, 0, 255);
@@ -46,7 +46,7 @@ void _drawTank(Tank* tank) {
 	r.pos.y -= r.size.height;
 	r.size.width = newWidth;
 	//r.size.height = newHeight;
-	drawRectAdvanced(&r, &fillCol, &strokeCol);
+	drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
 }
 
 void setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
@@ -127,6 +127,8 @@ Tank _tankConstructor(Position pos, Color color) {
 	tank.color = color;
 	tank.health = MAX_HEALTH;
 	tank.size = tankSize;
+	tank.center.x = tank.pos.x + tank.size.width / 2;
+	tank.center.y = tank.pos.y + tank.size.height / 2;
 			   
 	/* add tank to tanks array */
 	bool valid = false;

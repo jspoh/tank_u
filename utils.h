@@ -7,4 +7,4 @@ typedef struct {
 
 
 void drawRect(Rect* r, CP_Color* fillColor, CP_Color* strokeColor);
-void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor);
+void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Position* center);
