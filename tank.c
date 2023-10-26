@@ -76,13 +76,14 @@ void moveTanks(void) {
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Tank* t = &tanks[i];
+		float old = t->pos.direction;
 
 		if (CP_Input_KeyDown(keybindings[i].up)) {
 			if (t->pos.direction != 0 && t->pos.direction >= 180) {
 				t->pos.direction += dDegrees;
 			}
 			else if (t->pos.direction != 0 && t->pos.direction <= 180) {
-				t->pos.direction -= dDegrees;
+				t->pos.direction -= dDegrees / 2;
 			}
 			else {
 				t->pos.y -= distance;
@@ -93,7 +94,7 @@ void moveTanks(void) {
 				t->pos.direction += dDegrees;
 			}
 			else if (t->pos.direction > 180) {
-				t->pos.direction -= dDegrees;
+				t->pos.direction -= dDegrees / 2;
 			}
 			else {
 				t->pos.y += distance;
@@ -105,10 +106,10 @@ void moveTanks(void) {
 			}
 			else if (t->pos.direction > 270 || t->pos.direction <= 90) {
 				if (t->pos.direction == 0) {
-					t->pos.direction += 359 - ceil(dDegrees);
+					t->pos.direction = (float)(360 - ceil(dDegrees));
 				}
 				else {
-					t->pos.direction -= dDegrees;
+					t->pos.direction -= dDegrees / 2;
 				}
 			}
 			else {
@@ -120,14 +121,14 @@ void moveTanks(void) {
 				t->pos.direction += dDegrees;
 			}
 			else if (t->pos.direction > 90 && t->pos.direction <= 270) {
-				t->pos.direction -= dDegrees;
+				t->pos.direction -= dDegrees / 2;
 			}
 			else {
 				t->pos.x += distance;
 			}
 		}
 		t->pos.direction = t->pos.direction >= 0 ? t->pos.direction : -t->pos.direction;
-		t->pos.direction = (int)(t->pos.direction) % 360;
+		t->pos.direction = (float)((int)(t->pos.direction) % 360);
 	}
 }
 
