@@ -4,14 +4,7 @@
 #include "tank.h"
 
 CP_Font font;
-// create struct for cannon ball
-typedef struct CannonBall {
-	int roundness;
-	int velocity;
-	int damage;
-	int bounce;
-	int shoot;
-} CannonBall;
+
 
 void gameInit(void) {
 	font = CP_Font_Load("Assets/Exo2-Regular.ttf");
