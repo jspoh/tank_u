@@ -88,15 +88,15 @@ void moveTanks(void) {
 				t->pos.y -= distance;
 			}
 		}
-		else if (CP_Input_KeyDown(keybindings[i].right)) {
-			if (t->pos.direction >= 270 || t->pos.direction < 90) {
+		else if (CP_Input_KeyDown(keybindings[i].down)) {
+			if (t->pos.direction < 180) {
 				t->pos.direction += dDegrees;
 			}
-			else if (t->pos.direction > 90 && t->pos.direction <= 270) {
+			else if (t->pos.direction > 180) {
 				t->pos.direction -= dDegrees;
 			}
 			else {
-				t->pos.x += distance;
+				t->pos.y += distance;
 			}
 		}
 		else if (CP_Input_KeyDown(keybindings[i].left)) {
@@ -115,21 +115,19 @@ void moveTanks(void) {
 				t->pos.x -= distance;
 			}
 		}
-		else if (CP_Input_KeyDown(keybindings[i].down)) {
-			if (t->pos.direction < 180) {
+		else if (CP_Input_KeyDown(keybindings[i].right)) {
+			if (t->pos.direction >= 270 || t->pos.direction < 90) {
 				t->pos.direction += dDegrees;
 			}
-			else if (t->pos.direction > 180) {
+			else if (t->pos.direction > 90 && t->pos.direction <= 270) {
 				t->pos.direction -= dDegrees;
 			}
 			else {
-				t->pos.y += distance;
+				t->pos.x += distance;
 			}
 		}
-		printf("before mod => %d - %f\n", i, t->pos.direction);
 		t->pos.direction = t->pos.direction >= 0 ? t->pos.direction : -t->pos.direction;
 		t->pos.direction = (int)(t->pos.direction) % 360;
-		printf("after  mod => %d - %f\n", i, t->pos.direction);
 	}
 }
 
