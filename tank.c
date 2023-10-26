@@ -1,162 +1,63 @@
 #include "config.h"
 #include "cprocessing.h"
 #include "tank.h"
+#include "utils.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-//images for different tank colours
-CP_Image redTank;
-CP_Image blueTank;
-CP_Image greenTank;
-CP_Image yellowTank;
-
-#define RED 0
-#define BLUE 1
-#define GREEN 2
-#define YELLOW 3
-
-extern Size WINDOW_SIZE;
-
-//used in draw tank
-Size base = { 80.f,70.f };
-Size top = { 70.f,60.f };
-Size turret = { 80.f,20.f };
-
-#define NUM_ELEMENTS 3
-
-// used to draw tanks using images
-//void drawTank(Tank * tank, int color ) {
-//	float tankWidth = 80.0f;
-//	float tankHeight = 80.0f;
-//	redTank =CP_Image_Load("./Assets/Tank/redTank.png");
-//	blueTank =CP_Image_Load("./Assets/Tank/blueTank.png");
-//	greenTank =CP_Image_Load("./Assets/Tank/greenTank.png");
-//	yellowTank =CP_Image_Load("./Assets/Tank/yellowTank.png");
-//	// include the image that you would like to add in
-//
-//	switch (color) {
-//		case RED :
-//			CP_Image_DrawAdvanced(redTank , tank->position.x , tank->position.y , tankWidth , tankHeight , tank -> color.a, tank->position.direction);
-//			break;
-//		case BLUE :
-//			CP_Image_DrawAdvanced(blueTank , tank->position.x , tank->position.y , tankWidth , tankHeight , tank -> color.a, tank->position.direction);
-//			break;
-//		case GREEN:
-//			CP_Image_DrawAdvanced(greenTank , tank->position.x , tank->position.y , tankWidth , tankHeight , tank -> color.a, tank->position.direction);
-//			break;
-//		case YELLOW:
-//		CP_Image_DrawAdvanced(yellowTank , tank->position.x , tank->position.y , tankWidth , tankHeight , tank -> color.a, tank->position.direction);
-//		break;
-//		default:
-//			break;
-//	}
-//
-//}
+Size tankSize = { 75.f, 100.f };
+Tank tanks[NUM_PLAYERS] = { 0 };
 
 void _drawTank(Tank* tank) {
+	Rect r = {
+		tankSize,
+		tank->pos
+	};
+	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
+	CP_Color strokeCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
+	drawRect(&r, &fillCol, &strokeCol);
+}
 
-	float posTurret_x = tank->position.x + (base.width / 2);
-
-	CP_Color baseColor = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
-
-	CP_Color topColor = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, (tank->color.a - 50));
-
-	CP_Color turretColor = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, (tank->color.a - 100));
-
-
-	//draw the base of the tank
-	CP_Settings_Fill(baseColor);
-	CP_Graphics_DrawRect(tank->position.x, tank->position.y, base.width, base.height);
-
-	//draw the top of the tank
-	CP_Settings_Fill(topColor);
-	CP_Graphics_DrawRect(tank->position.x, tank->position.y, top.width, top.height);
-
-	//draw the turret of the tank
-	CP_Settings_Fill(turretColor);
-	CP_Graphics_DrawRect(posTurret_x, tank->position.y, turret.width, turret.height);
-
+void setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
+	tank->color.r = r;
+	tank->color.g = g;
+	tank->color.b = b;
+	tank->color.a = a;
 }
 
 
 void moveTank(Tank* tank, int direction, int definedSpeed) {
 
-	float speed = CP_System_GetDt() * definedSpeed;
-	switch (direction)
-	{
-	case UP:
-		tank->position.y -= speed;
-		break;
-	case RIGHT:
-		tank->position.x += speed;
-		break;
-	case DOWN:
-		tank->position.y += speed;
-		break;
-	case LEFT:
-		tank->position.x -= speed;
-		break;
-	default:
-		break;
+}
+
+
+Tank tankConstructor(Position pos, Color color, float health) {
+	Tank tank = { 0 };
+	tank.pos = pos;
+	tank.color = color;
+	tank.health = MAX_HEALTH;
+
+	/* add tank to tanks array */
+	bool valid = false;
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		if (tanks->pos.x == 0.f) {
+			tanks[i] = tank;
+			valid = true; 
+		}
 	}
-}
+	if (!valid) {
+		fprintf(stderr, "error: maximum number of tanks created (based on NUM_PLAYERS)\n");
+		exit(1);
+	}
 
-Color _colorTank(int r, int g, int b, int a)
-{
-	Color newColor = { r,g,b,a };
-	return newColor;
-}
-
-
-
-
-Tank* tankConstructor(Position position, Color color, float health, int* activePowerUps, float elapsedPowerTime, int* activePermPowers)
-{
-	Tank* newTank = (Tank*)malloc(sizeof(Tank));
-	newTank->position = position;
-	newTank->color = color;
-	newTank->health = health;
-	//NUM_ELEMENTS = 3 
-	newTank->activePowerUps = (int*)malloc(sizeof(int) * NUM_ELEMENTS);
-	memcpy(newTank->activePowerUps, activePowerUps, sizeof(int) * NUM_ELEMENTS);
-	newTank->elapsedPowerTime = elapsedPowerTime;
-	newTank->activePermPowers = (int*)malloc(sizeof(int) * NUM_ELEMENTS);
-	memcpy(newTank->activePowerUps, activePowerUps, sizeof(int) * NUM_ELEMENTS);
-
-	return &newTank;
-}
-
-void tankDestructor(Tank* tank) {
-	// Free dynamically allocated memory inside the tank structure
-	free(tank->activePowerUps);
-	free(tank->activePermPowers);
-
-	// Free the tank structure itself
-	free(tank);
+	return tank;
 }
 
 void renderTank(void)
 {
-	Position pos_p1 = { WINDOW_SIZE.width - 200.f,WINDOW_SIZE.height / 2.f };
-
-	Position pos_p2 = { 200.f,WINDOW_SIZE.height / 2.f };
-
-	float fullHealth = 1000.0f;
-
-	//player1 color
-	Color p1Color = _colorTank(255, 0, 0, 255);
-
-	//player 2 color
-	Color p2Color = _colorTank(0, 255, 0, 255);
-
-
-
-	Tank* player1 = tankConstructor(pos_p1, p1Color, fullHealth, 0, 0, 0);
-	_drawTank(player1);
-	Tank* player2 = tankConstructor(pos_p2, p2Color, fullHealth, 0, 0, 0);
-	_drawTank(player2);
-
+	
 }
 
-void damageTakenTank(Tank* tank, float damage)
-{
+void damageTank(Tank* tank, float damage) {
 	tank->health -= damage;
 }

@@ -4,11 +4,16 @@
 #include "config.h"
 
 #define POWERUPS_COUNT 3
+#define MAX_HEALTH 100.f
+#define NUM_PLAYERS 2
 
 enum { UP, RIGHT, DOWN, LEFT };
+enum { PLAYER_1, PLAYER_2 };
+
+extern tankSize;
 
 typedef struct {
-	Position position;
+	Position pos;
 	Color color;
 	float health;
 	int activePowerUps[POWERUPS_COUNT]; 
@@ -19,10 +24,6 @@ typedef struct {
 
 void renderTank(void);
 
-void moveTank(Tank* Tank, int direction, int definedSpeed);
+Tank tankConstructor(Position pos, Color color, float health);
 
-Tank* tankConstructor(Position position, Color color, float health, int activePowerUps[], float elapsedPowerTime, int activePermPowers[]);
-
-void tankDestructor(Tank* tank);
-
-void damageTakenTank(Tank* tank, float damage);
+void damageTank(Tank* tank, float damage);
