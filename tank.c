@@ -14,7 +14,29 @@ void _drawTank(Tank* tank) {
 		tank->pos
 	};
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
-	CP_Color strokeCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
+	//CP_Color strokeCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
+	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
+	drawRect(&r, &fillCol, &strokeCol);
+
+	/* draw turret base */
+	strokeCol = CP_Color_Create(0, 0, 0, 255);
+	float newWidth = r.size.width * 0.6f;
+	float newHeight = r.size.height * 0.6f;
+	r.pos.x += (r.size.width - newWidth) / 2;
+	r.pos.y += (r.size.height - newHeight) / 2;
+	r.size.width = newWidth;
+	r.size.height = newHeight;
+	drawRect(&r, &fillCol, &strokeCol);
+
+	/* draw turret */
+	strokeCol = CP_Color_Create(0, 0, 0, 255);
+	newWidth = r.size.width * 0.2f;
+	newHeight = r.size.height * 0.6f;
+	r.pos.x = r.pos.x + (r.size.width - newWidth) / 2;
+	//r.pos.y -= newHeight;
+	r.pos.y -= r.size.height;
+	r.size.width = newWidth;
+	//r.size.height = newHeight;
 	drawRect(&r, &fillCol, &strokeCol);
 }
 
@@ -31,7 +53,7 @@ void moveTank(Tank* tank, int direction, int definedSpeed) {
 }
 
 
-Tank tankConstructor(Position pos, Color color, float health) {
+Tank _tankConstructor(Position pos, Color color) {
 	Tank tank = { 0 };
 	tank.pos = pos;
 	tank.color = color;
@@ -40,9 +62,10 @@ Tank tankConstructor(Position pos, Color color, float health) {
 	/* add tank to tanks array */
 	bool valid = false;
 	for (int i = 0; i < NUM_PLAYERS; i++) {
-		if (tanks->pos.x == 0.f) {
+		if (tanks[i].pos.x == 0.f) {
 			tanks[i] = tank;
 			valid = true; 
+			break;
 		}
 	}
 	if (!valid) {
@@ -53,9 +76,16 @@ Tank tankConstructor(Position pos, Color color, float health) {
 	return tank;
 }
 
-void renderTank(void)
-{
-	
+Tank createTank(float posX, float posY, BYTE r, BYTE g, BYTE b, BYTE a) {
+	Position pos = { posX, posY };
+	Color col = { r,g,b,a };
+	return _tankConstructor(pos, col);
+}
+
+void renderTank(void) {
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		_drawTank(&tanks[i]);
+	}
 }
 
 void damageTank(Tank* tank, float damage) {

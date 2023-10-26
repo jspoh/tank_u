@@ -25,6 +25,9 @@
     <ClCompile Include="utils.c">
       <Filter>util</Filter>
     </ClCompile>
+    <ClCompile Include="tank.c">
+      <Filter>components\tank</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
@@ -50,6 +53,9 @@
     <ClInclude Include="utils.h">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="tank.h">
+      <Filter>components\tank</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="components">
@@ -69,6 +75,9 @@
     </Filter>
     <Filter Include="components\menu\backdrop">
       <UniqueIdentifier>{e7ebf866-7dd5-463b-b520-451664b86e72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\tank">
+      <UniqueIdentifier>{fec5f9c2-b566-41cb-a439-8d38301f93e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -10,7 +10,6 @@
 enum { UP, RIGHT, DOWN, LEFT };
 enum { PLAYER_1, PLAYER_2 };
 
-extern tankSize;
 
 typedef struct {
 	Position pos;
@@ -24,6 +23,6 @@ typedef struct {
 
 void renderTank(void);
 
-Tank tankConstructor(Position pos, Color color, float health);
+Tank createTank(float posX, float posY, BYTE r, BYTE g, BYTE b, BYTE a);
 
 void damageTank(Tank* tank, float damage);
