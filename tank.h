@@ -8,8 +8,10 @@
 
 typedef struct {
 	Position pos;
+	Size size;
 	Color color;
 	float health;
+	Position center;
 	int activePowerUps[POWERUPS_COUNT]; 
 	float elapsedPowerTime;
 	int activePermPowers[POWERUPS_COUNT];

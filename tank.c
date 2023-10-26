@@ -11,7 +11,6 @@
 #define MOVEMENT_SPEED 100
 #define TURN_SPEED 100
 
-enum { LEFT, RIGHT };
 enum { PLAYER_1, PLAYER_2 };
 Tank tanks[NUM_PLAYERS] = { 0 };
 Size tankSize = { 75.f, 100.f };
@@ -55,17 +54,6 @@ void setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
 	tank->color.g = g;
 	tank->color.b = b;
 	tank->color.a = a;
-}
-
-void _turnTank(Tank* tank, int direction) {
-	switch (direction) {
-		case LEFT:
-			break;
-		case RIGHT:
-			break;
-		default:
-			break;
-	}
 }
 
 
@@ -138,7 +126,8 @@ Tank _tankConstructor(Position pos, Color color) {
 	tank.pos = pos;
 	tank.color = color;
 	tank.health = MAX_HEALTH;
-
+	tank.size = tankSize;
+			   
 	/* add tank to tanks array */
 	bool valid = false;
 	for (int i = 0; i < NUM_PLAYERS; i++) {
