@@ -104,7 +104,12 @@ void moveTanks(void) {
 				t->pos.direction += dDegrees;
 			}
 			else if (t->pos.direction > 270 || t->pos.direction <= 90) {
-				t->pos.direction += 360 - dDegrees;
+				if (t->pos.direction == 0) {
+					t->pos.direction += 359 - ceil(dDegrees);
+				}
+				else {
+					t->pos.direction -= dDegrees;
+				}
 			}
 			else {
 				t->pos.x -= distance;
@@ -123,7 +128,7 @@ void moveTanks(void) {
 		}
 		printf("before mod => %d - %f\n", i, t->pos.direction);
 		t->pos.direction = t->pos.direction >= 0 ? t->pos.direction : -t->pos.direction;
-		t->pos.direction = (int)ceil(t->pos.direction) % 360;
+		t->pos.direction = (int)(t->pos.direction) % 360;
 		printf("after  mod => %d - %f\n", i, t->pos.direction);
 	}
 }
