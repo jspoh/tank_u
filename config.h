@@ -27,7 +27,7 @@ typedef struct {
 typedef struct Position {
 	float x;
 	float y;
-	Vector direction;
+	float direction;  // angle
 } Position;
 
 typedef struct {

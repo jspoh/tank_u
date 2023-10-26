@@ -5,8 +5,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Size tankSize = { 75.f, 100.f };
+#define MAX_HEALTH 100.f
+#define NUM_PLAYERS 2
+#define MOVEMENT_SPEED 100
+#define TURN_SPEED 10
+
+enum { LEFT, RIGHT };
+enum { PLAYER_1, PLAYER_2 };
 Tank tanks[NUM_PLAYERS] = { 0 };
+Size tankSize = { 75.f, 100.f };
 
 void _drawTank(Tank* tank) {
 	Rect r = {
@@ -16,7 +23,7 @@ void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	//CP_Color strokeCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	drawRect(&r, &fillCol, &strokeCol);
+	drawRectAdvanced(&r, &fillCol, &strokeCol);
 
 	/* draw turret base */
 	strokeCol = CP_Color_Create(0, 0, 0, 255);
@@ -26,7 +33,7 @@ void _drawTank(Tank* tank) {
 	r.pos.y += (r.size.height - newHeight) / 2;
 	r.size.width = newWidth;
 	r.size.height = newHeight;
-	drawRect(&r, &fillCol, &strokeCol);
+	drawRectAdvanced(&r, &fillCol, &strokeCol);
 
 	/* draw turret */
 	strokeCol = CP_Color_Create(0, 0, 0, 255);
@@ -37,7 +44,7 @@ void _drawTank(Tank* tank) {
 	r.pos.y -= r.size.height;
 	r.size.width = newWidth;
 	//r.size.height = newHeight;
-	drawRect(&r, &fillCol, &strokeCol);
+	drawRectAdvanced(&r, &fillCol, &strokeCol);
 }
 
 void setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
@@ -47,9 +54,26 @@ void setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
 	tank->color.a = a;
 }
 
+void _turnTank(Tank* tank, int direction) {
+	switch (direction) {
+		case LEFT:
+			break;
+		case RIGHT:
+			break;
+		default:
+			break;
+	}
+}
 
-void moveTank(Tank* tank, int direction, int definedSpeed) {
 
+void moveTanks(void) {
+	const float dt = CP_System_GetDt();
+	const float distance = dt * MOVEMENT_SPEED;
+
+	/* player 1 tank */
+	if (CP_Input_KeyDown(KEY_W)) {
+		tanks[0].pos.y -= distance;
+	}
 }
 
 
@@ -90,4 +114,11 @@ void renderTank(void) {
 
 void damageTank(Tank* tank, float damage) {
 	tank->health -= damage;
+}
+
+void resetTank(void) {
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		Tank tank = { 0 };
+		tanks[i] = tank;
+	}
 }
