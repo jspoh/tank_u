@@ -80,6 +80,8 @@ void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Posit
 	const Position TL = {
 		r->pos.x, r->pos.y
 	};
+
+	// center of rect to top of circle, irregardless of rect facing
 	const Vector OT = {
 		0, -1
 	};
@@ -102,26 +104,29 @@ void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Posit
 	//printf("%f, %f @ %f degrees\n", O.x, O.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected 1061.88, 508.84 @ 45 degrees
 	/* end get rect center */
 
-
+	// center of rect to top left of rect (not circle!)
 	Vector OTL = {
 		r->pos.x - O.x,
 		r->pos.y - O.y
 	};
 
 	float radius = getDistance(r->pos.x, r->pos.y, O.x, O.y);
-	printf("radius: %f\n", radius);  // radius is consistent (expected 62.5 with 75x100 rect)
+	//printf("radius: %f\n", radius);  // radius is consistent (expected 62.5 with 75x100 rect)
 
 	/* angle between OT and OTL*/
 	float angleOtOtlRad = acos(dotProduct(OT, OTL) / (magnitude(OT) * magnitude(OTL)));
 	float angleOtOtl = radiansToDegrees(angleOtOtlRad);
 
 	float defaultAngle = -90 - angleOtOtl;
+	printf("default angle: %f\n", defaultAngle);  // expected -126.87 with a rect of 75x100
 
 	float newX = radius * cos(defaultAngle + r->pos.direction) + O.x;
 	float newY = radius * sin(defaultAngle + r->pos.direction) + O.y;
 
 	r->pos.x = newX;
 	r->pos.y = newY;
+
+	printf("tl: %f ,%f\n", r->pos.x, r->pos.y);
 
 	CP_Settings_Fill(*fillColor);
 	CP_Settings_Stroke(*strokeColor);

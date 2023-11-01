@@ -129,6 +129,9 @@ Tank _tankConstructor(Position pos, Color color) {
 	tank.size = tankSize;
 	tank.center.x = tank.pos.x + tank.size.width / 2;
 	tank.center.y = tank.pos.y + tank.size.height / 2;
+
+	// !TODO remove this
+	//tank.pos.direction = 45;
 			   
 	/* add tank to tanks array */
 	bool valid = false;
@@ -168,4 +171,10 @@ void resetTank(void) {
 		Tank tank = { 0 };
 		tanks[i] = tank;
 	}
+}
+
+void debugTank(void) {
+	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 100));
+	CP_Graphics_DrawRect(1000, 500, 75, 100);
+	CP_Graphics_DrawCircle(1037.5, 550, 125);
 }
