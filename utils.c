@@ -13,27 +13,69 @@ float getDistance(float x1, float y1, float x2, float y2) {
 	return sqrt(pow(x2 - x1, 2.0) + pow(y2 - y1, 2.0));
 }
 
-void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Position* pivot) {
-	float radius = getDistance(r->pos.x, r->pos.y, pivot->x, pivot->y);
+float dotProduct(Vector v, Vector u) {
+	return v.x * u.x + v.y * u.y;
+}
 
-	/*center of circle to top left of rect(origin drawing point)*/
-	Vector centerToRectTL = {
+float magnitude(Vector v) {
+	return sqrt(pow(v.x, 2.0) + pow(v.y, 2.0));
+}
+
+float radiansToDegrees(float radians) {
+	return radians * 180 / M_PI;
+}
+
+/**
+ * @brief	Implemtation method:
+ *			let O be center of rect(and the circle the top left corner creates when pivoting on the rect's center
+ *			let TL be the top left corner of the rectangle
+ *			let TR be the top right corner of the rectangle
+ *			let BL be the bottom left corner of the rectangle
+ *			let BR be the bottom right corner of the rectangle
+ *			let radius be radius of the aforementioned circle
+ *			let w be width of the rectangle
+ *			let h be height of the rectangle
+ *			let defaultAngle be the angle used for calculation when rect is straight (when rect.pos.direction is 0)
+ *
+ *			using formula
+ *			x = r cos(angle)
+ *			y = r sin(angle)
+ * 
+ *			refer to math workings for more clarification if required
+ * 
+ * !TODO
+*/
+void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Position* pivot) {
+	Position TL = {
+		r->pos.x, r->pos.y
+	};
+	//Position TR = 
+
+	Position O = {
+		r->pos.x + r->size.width / 2,
+		r->pos.y + r->size.height / 2
+	};
+
+	Vector OT = {
+		0, -1
+	};
+	Vector OTL = {
 		r->pos.x - pivot->x,
 		r->pos.y - pivot->y
 	};
-	/*center of circle to rightmost side of circle*/
-	Vector centerToRight = {
-		radius,
-		0.f
-	};
 
-	/* angle */
-	float modifierAngle = acos((centerToRectTL.x * centerToRight.x + centerToRectTL.y * centerToRight.y) / pow(radius, 2.0));
+	float radius = getDistance(r->pos.x, r->pos.y, pivot->x, pivot->y);
 
-	printf("mod angle: %f\n", modifierAngle);
+	/* angle between OT and OTL*/
+	float angleOtOtlRad = acos(dotProduct(OT, OTL) / (magnitude(OT) * magnitude(OTL)));
+	float angleOtOtl = radiansToDegrees(angleOtOtlRad);
 
-	float newX = radius * cos(r->pos.direction - modifierAngle) + pivot->x;
-	float newY = radius * sin(r->pos.direction - modifierAngle) + pivot->y;
+	float defaultAngle = -90 - angleOtOtl;
+
+	float newX = radius * cos(defaultAngle + r->pos.direction) + O.x;
+	float newY = radius * sin(defaultAngle + r->pos.direction) + O.y;
+
+	printf("%f\n", defaultAngle + r->pos.direction);
 
 	r->pos.x = newX;
 	r->pos.y = newY;
