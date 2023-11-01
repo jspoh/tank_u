@@ -25,6 +25,37 @@ float radiansToDegrees(float radians) {
 	return radians * 180 / M_PI;
 }
 
+float degreesToRadians(float degrees) {
+	return degrees * M_PI / 180;
+}
+
+/**
+* @brief			Generally, the vector OT will be passed in as an argument
+*		
+*												cos(angle)	sin(angle)
+*					Using 2x2 rotation matrix: 
+*												-sin(angle)	cos(angle)
+* 
+* @param v			generally will be OT (origin to top where origin refers to center of rect)
+* @param degrees	clockwise degrees of rotation
+*/
+Vector rotateVectorClockwise(Vector v, float degrees) {
+	Vector u = { 0 };
+	float radians = degreesToRadians(degrees);
+	u.x = cos(radians) * v.x + sin(radians) * v.y;
+	u.y = (-sin(radians)) * v.x + cos(radians) * v.y;
+	return u;
+}
+
+/**
+* @brief Position pos + Vector v
+* 
+*/
+Position translatePosition(Position pos, Vector v) {
+	Position result = { pos.x + v.x, pos.y + v.y };
+	return result;
+}
+
 /**
  * @brief	Implemtation method:
  *			let O be center of rect(and the circle the top left corner creates when pivoting on the rect's center
@@ -46,25 +77,39 @@ float radiansToDegrees(float radians) {
  * !TODO
 */
 void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Position* pivot) {
-	Position TL = {
+	const Position TL = {
 		r->pos.x, r->pos.y
 	};
-	//Position TR = 
-
-	Position O = {
-		r->pos.x + r->size.width / 2,
-		r->pos.y + r->size.height / 2
-	};
-
-	Vector OT = {
+	const Vector OT = {
 		0, -1
 	};
+
+	/* get rect center */
+	Vector currentDirection = rotateVectorClockwise(OT, r->pos.direction);  // is a unit vector
+	//printf("%f ,%f @ %f degrees\n", currentDirection.x, currentDirection.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected -0.707107, -0.707107 @ 45 degrees
+	Vector n = { -currentDirection.y, currentDirection.x };  // normal vector to current direction
+
+	// Vector v is used to define a scalar of vector currentDirection
+	float scalar = r->size.height / 2;
+	Vector v = { scalar * -currentDirection.x, scalar * -currentDirection.y };
+	// ML refers to midpoint of the left side of the rectangle
+	const Position ML = translatePosition(TL, v);
+
+	scalar = r->size.width / 2;
+	v.x = scalar * n.x;
+	v.y = scalar * n.y;
+	const Position O = translatePosition(ML, v);
+	//printf("%f, %f @ %f degrees\n", O.x, O.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected 1061.88, 508.84 @ 45 degrees
+	/* end get rect center */
+
+
 	Vector OTL = {
-		r->pos.x - pivot->x,
-		r->pos.y - pivot->y
+		r->pos.x - O.x,
+		r->pos.y - O.y
 	};
 
-	float radius = getDistance(r->pos.x, r->pos.y, pivot->x, pivot->y);
+	float radius = getDistance(r->pos.x, r->pos.y, O.x, O.y);
+	printf("radius: %f\n", radius);  // radius is consistent (expected 62.5 with 75x100 rect)
 
 	/* angle between OT and OTL*/
 	float angleOtOtlRad = acos(dotProduct(OT, OTL) / (magnitude(OT) * magnitude(OTL)));
@@ -74,8 +119,6 @@ void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Posit
 
 	float newX = radius * cos(defaultAngle + r->pos.direction) + O.x;
 	float newY = radius * sin(defaultAngle + r->pos.direction) + O.y;
-
-	printf("%f\n", defaultAngle + r->pos.direction);
 
 	r->pos.x = newX;
 	r->pos.y = newY;
