@@ -75,6 +75,7 @@ void moveTanks(void) {
 			}
 			else {
 				t->pos.y -= distance;
+				puts("moving!");
 			}
 		}
 		else if (CP_Input_KeyDown(keybindings[i].down)) {
@@ -86,6 +87,7 @@ void moveTanks(void) {
 			}
 			else {
 				t->pos.y += distance;
+				puts("moving!");
 			}
 		}
 		else if (CP_Input_KeyDown(keybindings[i].left)) {
@@ -102,6 +104,7 @@ void moveTanks(void) {
 			}
 			else {
 				t->pos.x -= distance;
+				puts("moving!");
 			}
 		}
 		else if (CP_Input_KeyDown(keybindings[i].right)) {
@@ -113,6 +116,7 @@ void moveTanks(void) {
 			}
 			else {
 				t->pos.x += distance;
+				puts("moving!");
 			}
 		}
 		t->pos.direction = t->pos.direction >= 0 ? t->pos.direction : -t->pos.direction;

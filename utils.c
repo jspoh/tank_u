@@ -117,9 +117,10 @@ void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Posit
 	//float angleOtOtlRad = acos(degreesToRadians(dotProduct(OT, OTL) / (magnitude(OT) * magnitude(OTL))));
 	float angleOtOtlRad = acos(dotProduct(OT, OTL) / (magnitude(OT) * magnitude(OTL)));
 	float angleOtOtl = radiansToDegrees(angleOtOtlRad);
+	//printf("angleOtOtl: %f\n", angleOtOtl);
 
 	float defaultAngle = -90 - angleOtOtl;
-	printf("default angle: %f\n", defaultAngle);  // expected -126.87 with a rect of 75x100
+	//printf("default angle: %f\n", defaultAngle);  // expected -126.87 with a rect of 75x100
 
 	float newX = radius * cos(degreesToRadians(defaultAngle + r->pos.direction)) + O.x;
 	float newY = radius * sin(degreesToRadians(defaultAngle + r->pos.direction)) + O.y;
@@ -127,7 +128,7 @@ void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Posit
 	r->pos.x = newX;
 	r->pos.y = newY;
 
-	printf("tl: %f ,%f\n", r->pos.x, r->pos.y);
+	//printf("tl: %f ,%f\n", r->pos.x, r->pos.y);
 
 	CP_Settings_Fill(*fillColor);
 	CP_Settings_Stroke(*strokeColor);
