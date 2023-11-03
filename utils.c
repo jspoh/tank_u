@@ -32,9 +32,9 @@ float degreesToRadians(float degrees) {
 /**
 * @brief			Generally, the vector OT will be passed in as an argument
 *		
-*												cos(angle)	sin(angle)
-*					Using 2x2 rotation matrix: 
-*												-sin(angle)	cos(angle)
+*															cos(angle)	sin(angle)
+*					Using 2x2 CLOCKWISE rotation matrix: 
+*															-sin(angle)	cos(angle)
 * 
 * @param v			generally will be OT (origin to top where origin refers to center of rect)
 * @param degrees	clockwise degrees of rotation
