@@ -6,6 +6,7 @@
 #include "options.h"
 #include "utils.h"
 #include <stdio.h>
+#include "utils.h"
 
 CP_Font font;
 CP_Image menuBg;
@@ -132,6 +133,7 @@ void menuInit(void) {
 	CP_Font_Set(font);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
+	CP_Settings_RectMode(CP_POSITION_CORNER);
 	
 	initVars();
 }

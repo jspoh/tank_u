@@ -28,6 +28,9 @@
     <ClCompile Include="tank.c">
       <Filter>components\tank</Filter>
     </ClCompile>
+    <ClCompile Include="tank_utils.c">
+      <Filter>components\tank</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
@@ -54,6 +57,9 @@
       <Filter>util</Filter>
     </ClInclude>
     <ClInclude Include="tank.h">
+      <Filter>components\tank</Filter>
+    </ClInclude>
+    <ClInclude Include="tank_utils.h">
       <Filter>components\tank</Filter>
     </ClInclude>
   </ItemGroup>
