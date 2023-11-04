@@ -59,9 +59,9 @@ Vector getDVector(Tank* t) {
 }
 
 /**
-* !TODO: should plug in change in angle instead of the current angle it is facing
+* !TODO: might have issues
 */
-Position getTankCenter(Tank* t) {
+Position getTankCenterCorner(Tank* t) {
 	const Position TL = t->pos;
 
 	/* get rect center */
@@ -85,6 +85,41 @@ Position getTankCenter(Tank* t) {
 	return O;
 }
 
+
+/* when using CP_POSITION_CENTER */
+Position getTurretPos(Tank* t, Size turretSize) {
+	double scalar = 3 + sqrt(pow(t->size.width / 2.0, 2.0) + pow(t->size.height / 2.0, 2.0));  // center of rect to top left
+
+	Position O = { 0 };
+	O.x = t->pos.x + scalar * t->pos.d.x;
+	O.y = t->pos.y + scalar * t->pos.d.y;
+
+	scalar = turretSize.width / 2;
+
+	Vector n = { t->pos.d.y, -t->pos.d.x };
+	O.x += scalar * n.x;
+	O.y += scalar * n.y;
+
+	return O;
+}
+
+double getModifierAngle(Tank* t, Position rectTL) {
+	Position O = { t->pos.x, t->pos.y };
+	Vector OTL = {
+		rectTL.x - O.x,
+		rectTL.y - O.y
+	};
+
+	// angle between d vector and OT L
+	double angledOtlRad = acos(dotProduct(t->pos.d, OTL) / (magnitude(t->pos.d) * magnitude(OTL)));
+	double angledOtl = radiansToDegrees(angledOtlRad);
+
+	// modifier angle
+	double defaultAngle = 90 + angledOtl;
+
+	return defaultAngle;
+}
+
 /**
  * @brief	Implemtation method:
  *			let O be center of rect(and the circle the top left corner creates when pivoting on the rect's center
@@ -106,61 +141,33 @@ Position getTankCenter(Tank* t) {
  *
 */
 void drawTankAdvanced(Tank* t, CP_Color* fillColor, CP_Color* strokeColor) {
-	/*
-	// top left pos of rect
-	const Position TL = t->pos;
-	//printf("TL: %f, %f. Actual: %f, %f\n", TL.x, TL.y, t->pos.x, t->pos.y);
-
-	// current directional vector of tank
-	const Vector OT = getDVector(t);
-
-	Position O = getTankCenter(t);
-
-	// center of rect to top left of rect (not circle!)
-	Vector OTL = {
-		TL.x - O.x,
-		TL.y - O.y
-	};
-
-	double radius = getDistance(TL.x, TL.y, O.x, O.y);
-	//printf("radius: %f\n", radius);  // radius is consistent (expected 62.5 with 75x100 rect)
-
-	// angle between d vector and OT L
-	double angleOtOtlRad = acos(dotProduct(OT, OTL) / (magnitude(OT) * magnitude(OTL)));
-	double angleOtOtl = radiansToDegrees(angleOtOtlRad);
-	//printf("angleOtOtl: %f\n", angleOtOtl);  // expected 36.87 when clockwise direction is 0 deg
-
-	// modifier angle
-	double defaultAngle = 90 + angleOtOtl;
-	printf("default angle: %f\n", defaultAngle);  // expected -126.87 with a rect of 75x100. should not change ever
-
-	double newX = radius * cos(degreesToRadians(TL.direction - defaultAngle)) + O.x;
-	double newY = radius * sin(degreesToRadians(TL.direction - defaultAngle)) + O.y;
-
-
-	t->pos.x = newX;
-	t->pos.y = newY;
-
-	//printf("tl: %f ,%f\n", t->pos.x, t->pos.y);
-	//O = getRectCenter(r);
-	//printf("Center: %f, %f\n", O.x, O.y);
-
-	//printf("%f %f %f %f %f\n", t->pos.x, t->pos.y, t->size.width, t->size.height, t->pos.direction);
-	*/
-
 	/*tank base*/
+	CP_Settings_RectMode(CP_POSITION_CENTER);
 	CP_Settings_Fill(*fillColor);
 	CP_Settings_Stroke(*strokeColor);
 	CP_Graphics_DrawRectAdvanced((float)t->pos.x, (float)t->pos.y, (float)t->size.width, (float)t->size.height, (float)t->pos.direction, 10.f);
 
-	/*turret base*/
 	Position pos = { 0 };
 	Size size = { 0 };
-	double newWidth = t->size.width * 0.6f;
-	double newHeight = t->size.height * 0.6f;
-	pos.x = t->pos.x + (t->size.width - newWidth) / 2;
-	pos.y = t->pos.y + (t->size.height - newHeight) / 2;
-	size.width = newWidth;
-	size.height = newHeight;
+
+	/*turret base*/ 
+	pos.x = t->pos.x;
+	pos.y = t->pos.y;
+	size.width = t->size.width * 0.6f;
+	size.height = t->size.height * 0.6f;
 	CP_Graphics_DrawRectAdvanced((float)pos.x, (float)pos.y, (float)size.width, (float)size.height, (float)t->pos.direction, 10.f);
+
+	/*turret*/
+	CP_Settings_RectMode(CP_POSITION_CORNER);
+
+	size.width *= 0.3;
+	size.height *= 0.6;
+	Position O = getTurretPos(t, size);
+
+	pos.x = O.x;
+	pos.y = O.y;
+
+
+	CP_Graphics_DrawRectAdvanced((float)pos.x, (float)pos.y, (float)size.width, (float)size.height, (float)t->pos.direction, 0.f);
+	CP_Settings_RectMode(CP_POSITION_CENTER);
 }
