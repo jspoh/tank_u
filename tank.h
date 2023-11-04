@@ -6,7 +6,7 @@
 #define POWERUPS_COUNT 3
 
 
-typedef struct {
+typedef struct _tank {
 	Position pos;
 	Size size;
 	Color color;

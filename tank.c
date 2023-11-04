@@ -65,31 +65,51 @@ void _moveTanks(void) {
 		Tank* t = &tanks[i];
 		float old = t->pos.direction;
 
+		/*movement*/
 		if (CP_Input_KeyDown(keybindings[i].up)) {
-			t->pos.y -= distance;
-			puts("moving!");
+			t->pos.x += t->pos.d.x * distance;
+			t->pos.y += t->pos.d.y * distance;
 		}
 		else if (CP_Input_KeyDown(keybindings[i].down)) {
-			t->pos.y += distance;
-			puts("moving!");
+			t->pos.x -= t->pos.d.x * distance;
+			t->pos.y -= t->pos.d.y * distance;
 		}
 
 		/*directional input*/
 		if (CP_Input_KeyDown(keybindings[i].left)) {
-			if (t->pos.direction == 0) {
-				t->pos.direction = (float)(360 - ceil(dDegrees));
+			if (CP_Input_KeyDown(keybindings[i].down)) {  // if reversing
+				t->pos.direction += dDegrees;
+				t->pos.dDir = dDegrees;
 			}
 			else {
-				t->pos.direction -= dDegrees / 2;
-				t->pos.dDir = -(dDegrees/2);
+				if (t->pos.direction == 0) {
+					t->pos.direction = (float)(360 - ceil(dDegrees));
+				}
+				else {
+					t->pos.direction -= dDegrees / 2;
+					t->pos.dDir = -(dDegrees / 2);
+				}
 			}
 		}
 		if (CP_Input_KeyDown(keybindings[i].right)) {
-			t->pos.direction += dDegrees;
-			t->pos.dDir = dDegrees;
+			if (CP_Input_KeyDown(keybindings[i].down)) {  // if reversing
+				if (t->pos.direction == 0) {
+					t->pos.direction = (float)(360 - ceil(dDegrees));
+				}
+				else {
+					t->pos.direction -= dDegrees / 2;
+					t->pos.dDir = -(dDegrees / 2);
+				}
+			} 
+			else {
+				t->pos.direction += dDegrees;
+				t->pos.dDir = dDegrees;
+			}
 		}
 		t->pos.direction = t->pos.direction >= 0 ? t->pos.direction : -t->pos.direction;
 		t->pos.direction = (float)((int)(t->pos.direction) % 360);
+		t->pos.d = getDVector(t);
+		printf("d: %f, %f\n", t->pos.d.x, t->pos.d.y);
 	}
 }
 

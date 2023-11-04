@@ -42,7 +42,7 @@ float degreesToRadians(float degrees) {
 Vector rotateVectorClockwise(Vector v, float degrees) {
 	Vector u = { 0 };
 	float radians = degreesToRadians(degrees);
-	u.x = cos(radians) * v.x + sin(radians) * v.y;
+	u.x = -(cos(radians) * v.x + sin(radians) * v.y);
 	u.y = (-sin(radians)) * v.x + cos(radians) * v.y;
 	return u;
 }
