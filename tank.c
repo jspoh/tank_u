@@ -21,34 +21,10 @@ Size tankSize = { 75.f, 100.f };
 extern Keybinds keybindings[];
 
 void _drawTank(Tank* tank) {
-	//printf("%f %f %f %f %f\n", tank->pos.x, tank->pos.y, tank->size.width, tank->size.height, tank->pos.direction);
-
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
-	//CP_Color strokeCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
 	drawTankAdvanced(tank, &fillCol, &strokeCol);
 
-	//Rect r = { 0 };
-	///* draw turret base */
-	//strokeCol = CP_Color_Create(0, 0, 0, 255);
-	//double newWidth = r.size.width * 0.6f;
-	//double newHeight = r.size.height * 0.6f;
-	//r.pos.x += (r.size.width - newWidth) / 2;
-	//r.pos.y += (r.size.height - newHeight) / 2;
-	//r.size.width = newWidth;
-	//r.size.height = newHeight;
-	//drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
-
-	///* draw turret */
-	//strokeCol = CP_Color_Create(0, 0, 0, 255);
-	//newWidth = r.size.width * 0.2f;
-	//newHeight = r.size.height * 0.6f;
-	//r.pos.x = r.pos.x + (r.size.width - newWidth) / 2;
-	////r.pos.y -= newHeight;
-	//r.pos.y -= r.size.height;
-	//r.size.width = newWidth;
-	////r.size.height = newHeight;
-	//drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
 }
 
 void _setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
@@ -147,7 +123,6 @@ void _moveTanks(void) {
 		t->pos.direction = t->pos.direction >= 0 ? t->pos.direction : -t->pos.direction;
 		t->pos.direction = (double)((int)(t->pos.direction) % 360);
 		t->pos.d = getDVector(t);
-		//printf("d: %f, %f\n", t->pos.d.x, t->pos.d.y);
 	}
 }
 
@@ -192,16 +167,22 @@ void _damageTank(Tank* tank, double damage) {
 	tank->health -= damage;
 }
 
+/*!
+* @brief logic to handle shooting, collecting, using powerups
+*/
+void _actionTank(void) {
+
+}
+
 
 void initTank(void) {
-	CP_Settings_RectMode(CP_POSITION_CENTER);
-
 	_createTank(WINDOW_SIZE.width/6, WINDOW_SIZE.height/2, 90.f, 0, 255, 0, 255);
 	_createTank(WINDOW_SIZE.width/6*5, WINDOW_SIZE.height/2, 270.f, 255, 0, 0, 255);
 }
 
 void updateTank(void) {
 	_moveTanks();
+	_actionTank();
 	_renderTank();
 }
 
