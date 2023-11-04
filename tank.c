@@ -74,18 +74,32 @@ void _moveTanks(void) {
 			const double distance = dt * t->speed;
 
 			if (CP_Input_KeyDown(keybindings[i].up)) {
-				t->pos.x += t->pos.d.x * distance;
-				t->pos.y += t->pos.d.y * distance;
-				t->currentDir = FRONT;
+				if (t->currentDir == BACK && t->speed > 0) {  // braking
+					t->speed -= 2 * DECELERATION * dt;
+					t->pos.x -= t->pos.d.x * distance;
+					t->pos.y -= t->pos.d.y * distance;
+				}
+				else {
+					t->pos.x += t->pos.d.x * distance;
+					t->pos.y += t->pos.d.y * distance;
+					t->currentDir = FRONT;
+				}
 			}
 			else if (CP_Input_KeyDown(keybindings[i].down)) {
-				t->pos.x -= t->pos.d.x * distance;
-				t->pos.y -= t->pos.d.y * distance;
-				t->currentDir = BACK;
+				if (t->currentDir == FRONT && t->speed > 0) {  // braking
+					t->speed -= 2 * DECELERATION * dt;
+					t->pos.x += t->pos.d.x * distance;
+					t->pos.y += t->pos.d.y * distance;
+				}
+				else {
+					t->pos.x -= t->pos.d.x * distance;
+					t->pos.y -= t->pos.d.y * distance;
+					t->currentDir = BACK;
+				}
 			}
 		}
 		else {
-			t->speed -= DECELERATION * dt;  // add speed
+			t->speed -= DECELERATION * dt; 
 			t->speed = t->speed < 0 ? 0 : t->speed;  // limit speed to MOVEMENT_SPEED
 			const double distance = dt * t->speed;
 
@@ -101,7 +115,7 @@ void _moveTanks(void) {
 
 		/*directional input*/
 		if (CP_Input_KeyDown(keybindings[i].left)) {
-			if (CP_Input_KeyDown(keybindings[i].down)) {  // if reversing, invert directions
+			if (t->currentDir == BACK) {  // if reversing, invert directions
 				t->pos.direction += dDegrees;
 				t->pos.dDir = dDegrees;
 			}
@@ -116,7 +130,7 @@ void _moveTanks(void) {
 			}
 		}
 		if (CP_Input_KeyDown(keybindings[i].right)) {
-			if (CP_Input_KeyDown(keybindings[i].down)) {  // if reversing, invert directions
+			if (t->currentDir == BACK) {  // if reversing, invert directions
 				if (t->pos.direction == 0) {
 					t->pos.direction = (double)(360 - ceil(dDegrees));
 				}

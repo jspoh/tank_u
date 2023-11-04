@@ -148,7 +148,19 @@ void drawTankAdvanced(Tank* t, CP_Color* fillColor, CP_Color* strokeColor) {
 	//printf("%f %f %f %f %f\n", t->pos.x, t->pos.y, t->size.width, t->size.height, t->pos.direction);
 	*/
 
+	/*tank base*/
 	CP_Settings_Fill(*fillColor);
 	CP_Settings_Stroke(*strokeColor);
 	CP_Graphics_DrawRectAdvanced((float)t->pos.x, (float)t->pos.y, (float)t->size.width, (float)t->size.height, (float)t->pos.direction, 10.f);
+
+	/*turret base*/
+	Position pos = { 0 };
+	Size size = { 0 };
+	double newWidth = t->size.width * 0.6f;
+	double newHeight = t->size.height * 0.6f;
+	pos.x = t->pos.x + (t->size.width - newWidth) / 2;
+	pos.y = t->pos.y + (t->size.height - newHeight) / 2;
+	size.width = newWidth;
+	size.height = newHeight;
+	CP_Graphics_DrawRectAdvanced((float)pos.x, (float)pos.y, (float)size.width, (float)size.height, (float)t->pos.direction, 10.f);
 }
