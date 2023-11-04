@@ -8,7 +8,9 @@
 
 #define MAX_HEALTH 100.f
 #define NUM_PLAYERS 2
-#define MOVEMENT_SPEED 100
+#define MOVEMENT_SPEED 500
+#define ACCELERATION 200
+#define DECELERATION (ACCELERATION * 3)
 #define TURN_SPEED 100
 
 enum { PLAYER_1, PLAYER_2 };
@@ -58,7 +60,6 @@ void _setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
 
 void _moveTanks(void) {
 	const float dt = CP_System_GetDt();
-	const float distance = dt * MOVEMENT_SPEED;
 	const float dDegrees = dt * TURN_SPEED;  // dDegrees as in change in degrees like dx, dy (differentiate)
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
@@ -66,18 +67,40 @@ void _moveTanks(void) {
 		float old = t->pos.direction;
 
 		/*movement*/
-		if (CP_Input_KeyDown(keybindings[i].up)) {
-			t->pos.x += t->pos.d.x * distance;
-			t->pos.y += t->pos.d.y * distance;
+		if (CP_Input_KeyDown(keybindings[i].up) || CP_Input_KeyDown(keybindings[i].down)) {
+			t->speed += ACCELERATION * dt;  // add speed
+			t->speed = t->speed > MOVEMENT_SPEED ? MOVEMENT_SPEED : t->speed;  // limit speed to MOVEMENT_SPEED
+			const float distance = dt * t->speed;
+
+			if (CP_Input_KeyDown(keybindings[i].up)) {
+				t->pos.x += t->pos.d.x * distance;
+				t->pos.y += t->pos.d.y * distance;
+				t->currentDir = FRONT;
+			}
+			else if (CP_Input_KeyDown(keybindings[i].down)) {
+				t->pos.x -= t->pos.d.x * distance;
+				t->pos.y -= t->pos.d.y * distance;
+				t->currentDir = BACK;
+			}
 		}
-		else if (CP_Input_KeyDown(keybindings[i].down)) {
-			t->pos.x -= t->pos.d.x * distance;
-			t->pos.y -= t->pos.d.y * distance;
+		else {
+			t->speed -= DECELERATION * dt;  // add speed
+			t->speed = t->speed < 0 ? 0 : t->speed;  // limit speed to MOVEMENT_SPEED
+			const float distance = dt * t->speed;
+
+			if (t->currentDir == FRONT) {
+				t->pos.x += t->pos.d.x * distance;
+				t->pos.y += t->pos.d.y * distance;
+			}
+			else {
+				t->pos.x -= t->pos.d.x * distance;
+				t->pos.y -= t->pos.d.y * distance;
+			}
 		}
 
 		/*directional input*/
 		if (CP_Input_KeyDown(keybindings[i].left)) {
-			if (CP_Input_KeyDown(keybindings[i].down)) {  // if reversing
+			if (CP_Input_KeyDown(keybindings[i].down)) {  // if reversing, invert directions
 				t->pos.direction += dDegrees;
 				t->pos.dDir = dDegrees;
 			}
@@ -92,7 +115,7 @@ void _moveTanks(void) {
 			}
 		}
 		if (CP_Input_KeyDown(keybindings[i].right)) {
-			if (CP_Input_KeyDown(keybindings[i].down)) {  // if reversing
+			if (CP_Input_KeyDown(keybindings[i].down)) {  // if reversing, invert directions
 				if (t->pos.direction == 0) {
 					t->pos.direction = (float)(360 - ceil(dDegrees));
 				}
@@ -109,7 +132,7 @@ void _moveTanks(void) {
 		t->pos.direction = t->pos.direction >= 0 ? t->pos.direction : -t->pos.direction;
 		t->pos.direction = (float)((int)(t->pos.direction) % 360);
 		t->pos.d = getDVector(t);
-		printf("d: %f, %f\n", t->pos.d.x, t->pos.d.y);
+		//printf("d: %f, %f\n", t->pos.d.x, t->pos.d.y);
 	}
 }
 
@@ -120,11 +143,6 @@ Tank _tankConstructor(Position pos, Color color) {
 	tank.color = color;
 	tank.health = MAX_HEALTH;
 	tank.size = tankSize;
-	tank.center.x = tank.pos.x + tank.size.width / 2;
-	tank.center.y = tank.pos.y + tank.size.height / 2;
-
-	// !TODO remove this
-	//tank.pos.direction = 45;
 			   
 	/* add tank to tanks array */
 	bool valid = false;
@@ -143,8 +161,8 @@ Tank _tankConstructor(Position pos, Color color) {
 	return tank;
 }
 
-Tank _createTank(float posX, float posY, BYTE r, BYTE g, BYTE b, BYTE a) {
-	Position pos = { posX, posY };
+Tank _createTank(float posX, float posY, float direction, BYTE r, BYTE g, BYTE b, BYTE a) {
+	Position pos = { posX, posY, direction };
 	Color col = { r,g,b,a };
 	return _tankConstructor(pos, col);
 }
@@ -163,8 +181,8 @@ void _damageTank(Tank* tank, float damage) {
 void initTank(void) {
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 
-	_createTank(1000.f, 500.f, 0, 255, 0, 255);
-	_createTank(1000.f, 500.f, 255, 0, 0, 255);
+	_createTank(WINDOW_SIZE.width/6, WINDOW_SIZE.height/2, 90.f, 0, 255, 0, 255);
+	_createTank(WINDOW_SIZE.width/6*5, WINDOW_SIZE.height/2, 270.f, 255, 0, 0, 255);
 }
 
 void updateTank(void) {
