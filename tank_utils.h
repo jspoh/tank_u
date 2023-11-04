@@ -7,7 +7,6 @@
 #define M_PI 3.141592653589793238462643383279502884197
 
 
-void drawRect(Rect* r, CP_Color* fillColor, CP_Color* strokeColor);
 void drawTankAdvanced(Tank* t, CP_Color* fillColor, CP_Color* strokeColor);
 
 Vector getDVector(Tank* t);
