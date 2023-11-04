@@ -109,7 +109,7 @@ Position getTankCenter(Tank* t) {
  *
  *			refer to math workings for more clarification if required
  *
- * !TODO
+ * 
 */
 void drawTankAdvanced(Tank* t, CP_Color* fillColor, CP_Color* strokeColor) {
 	/*

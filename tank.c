@@ -23,9 +23,9 @@ void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	//CP_Color strokeCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	CP_Settings_RectMode(CP_POSITION_CENTER);
 	drawTankAdvanced(tank, &fillCol, &strokeCol);
 
+	//Rect r = { 0 };
 	///* draw turret base */
 	//strokeCol = CP_Color_Create(0, 0, 0, 255);
 	//float newWidth = r.size.width * 0.6f;
@@ -48,7 +48,7 @@ void _drawTank(Tank* tank) {
 	//drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
 }
 
-void setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
+void _setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
 	tank->color.r = r;
 	tank->color.g = g;
 	tank->color.b = b;
@@ -56,7 +56,7 @@ void setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
 }
 
 
-void moveTanks(void) {
+void _moveTanks(void) {
 	const float dt = CP_System_GetDt();
 	const float distance = dt * MOVEMENT_SPEED;
 	const float dDegrees = dt * TURN_SPEED;  // dDegrees as in change in degrees like dx, dy (differentiate)
@@ -66,65 +66,27 @@ void moveTanks(void) {
 		float old = t->pos.direction;
 
 		if (CP_Input_KeyDown(keybindings[i].up)) {
-			if (t->pos.direction != 0 && t->pos.direction >= 180) {
-				t->pos.direction += dDegrees;
-				t->pos.dDir = dDegrees;
-			}
-			else if (t->pos.direction != 0 && t->pos.direction <= 180) {
-				t->pos.direction -= dDegrees / 2;
-				t->pos.dDir = -(dDegrees/2);
-			}
-			else {
-				t->pos.y -= distance;
-				puts("moving!");
-			}
+			t->pos.y -= distance;
+			puts("moving!");
 		}
 		else if (CP_Input_KeyDown(keybindings[i].down)) {
-			if (t->pos.direction < 180) {
-				t->pos.direction += dDegrees;
-				t->pos.dDir = dDegrees;
+			t->pos.y += distance;
+			puts("moving!");
+		}
+
+		/*directional input*/
+		if (CP_Input_KeyDown(keybindings[i].left)) {
+			if (t->pos.direction == 0) {
+				t->pos.direction = (float)(360 - ceil(dDegrees));
 			}
-			else if (t->pos.direction > 180) {
+			else {
 				t->pos.direction -= dDegrees / 2;
 				t->pos.dDir = -(dDegrees/2);
 			}
-			else {
-				t->pos.y += distance;
-				puts("moving!");
-			}
 		}
-		else if (CP_Input_KeyDown(keybindings[i].left)) {
-			if (t->pos.direction < 270 && t->pos.direction >= 90) {
-				t->pos.direction += dDegrees;
-				t->pos.dDir = dDegrees;
-			}
-			else if (t->pos.direction > 270 || t->pos.direction <= 90) {
-				if (t->pos.direction == 0) {
-					t->pos.direction = (float)(360 - ceil(dDegrees));
-				}
-				else {
-					t->pos.direction -= dDegrees / 2;
-					t->pos.dDir = -(dDegrees/2);
-				}
-			}
-			else {
-				t->pos.x -= distance;
-				puts("moving!");
-			}
-		}
-		else if (CP_Input_KeyDown(keybindings[i].right)) {
-			if (t->pos.direction >= 270 || t->pos.direction < 90) {
-				t->pos.direction += dDegrees;
-				t->pos.dDir = dDegrees;
-			}
-			else if (t->pos.direction > 90 && t->pos.direction <= 270) {
-				t->pos.direction -= dDegrees / 2;
-				t->pos.dDir = -(dDegrees/2);
-			}
-			else {
-				t->pos.x += distance;
-				puts("moving!");
-			}
+		if (CP_Input_KeyDown(keybindings[i].right)) {
+			t->pos.direction += dDegrees;
+			t->pos.dDir = dDegrees;
 		}
 		t->pos.direction = t->pos.direction >= 0 ? t->pos.direction : -t->pos.direction;
 		t->pos.direction = (float)((int)(t->pos.direction) % 360);
@@ -161,23 +123,36 @@ Tank _tankConstructor(Position pos, Color color) {
 	return tank;
 }
 
-Tank createTank(float posX, float posY, BYTE r, BYTE g, BYTE b, BYTE a) {
+Tank _createTank(float posX, float posY, BYTE r, BYTE g, BYTE b, BYTE a) {
 	Position pos = { posX, posY };
 	Color col = { r,g,b,a };
 	return _tankConstructor(pos, col);
 }
 
-void renderTank(void) {
+void _renderTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		_drawTank(&tanks[i]);
 	}
 }
 
-void damageTank(Tank* tank, float damage) {
+void _damageTank(Tank* tank, float damage) {
 	tank->health -= damage;
 }
 
-void resetTank(void) {
+
+void initTank(void) {
+	CP_Settings_RectMode(CP_POSITION_CENTER);
+
+	_createTank(1000.f, 500.f, 0, 255, 0, 255);
+	_createTank(1000.f, 500.f, 255, 0, 0, 255);
+}
+
+void updateTank(void) {
+	_moveTanks();
+	_renderTank();
+}
+
+void destroyTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Tank tank = { 0 };
 		tanks[i] = tank;

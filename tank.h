@@ -18,12 +18,6 @@ typedef struct {
 } Tank;
 
 
-void renderTank(void);
-
-Tank createTank(float posX, float posY, BYTE r, BYTE g, BYTE b, BYTE a);
-
-void moveTanks(void);
-
-void damageTank(Tank* tank, float damage);
-
-void resetTank(void);
+void initTank(void);
+void updateTank(void);
+void destroyTank(void);
