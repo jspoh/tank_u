@@ -25,7 +25,7 @@ void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	//CP_Color strokeCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
+	drawRectAdvanced(&r, &fillCol, &strokeCol);
 
 	///* draw turret base */
 	//strokeCol = CP_Color_Create(0, 0, 0, 255);

@@ -32,6 +32,7 @@ void gameInit(void) {
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
 	createTank(-37.5f, -50.f, 0, 255, 0, 255);
+	//createTank(1000.f, 500.f, 0, 255, 0, 255);
 	//createTank(1000.f, 500.f, 255, 0, 0, 255);
 	keybindings[0] = P1_KEYBINDS;
 	keybindings[1] = P2_KEYBINDS;

@@ -56,12 +56,15 @@ Position translatePosition(Position pos, Vector v) {
 	return result;
 }
 
+/**
+* !TODO: should plug in change in angle instead of the current angle it is facing
+*/
 Position getRectCenter(Rect* r) {
-	const Position TL = { r->pos.x, r->pos.y };
+	const Position TL = r->pos;
 	const Vector OT = { 0, -1 };
 
 	/* get rect center */
-	Vector currentDirection = rotateVectorClockwise(OT, r->pos.direction);  // is a unit vector
+	Vector currentDirection = rotateVectorClockwise(OT, TL.direction);  // is a unit vector
 	//printf("%f ,%f @ %f degrees\n", currentDirection.x, currentDirection.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected -0.707107, -0.707107 @ 45 degrees
 	Vector n = { -currentDirection.y, currentDirection.x };  // normal vector to current direction
 
@@ -101,10 +104,11 @@ Position getRectCenter(Rect* r) {
  * 
  * !TODO
 */
-void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Position* pivot) {
-	const Position TL = {
-		r->pos.x, r->pos.y
-	};
+void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor) {
+	// top left pos of rect
+	const Position TL = r->pos;
+	printf("TL: %f, %f. Actual: %f, %f\n", TL.x, TL.y, r->pos.x, r->pos.y);
+
 	// center of rect to top of circle, irregardless of rect facing
 	const Vector OT = {
 		0, -1
@@ -114,11 +118,11 @@ void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Posit
 
 	// center of rect to top left of rect (not circle!)
 	Vector OTL = {
-		r->pos.x - O.x,
-		r->pos.y - O.y
+		TL.x - O.x,
+		TL.y - O.y
 	};
 
-	float radius = getDistance(r->pos.x, r->pos.y, O.x, O.y);
+	float radius = getDistance(TL.x, TL.y, O.x, O.y);
 	//printf("radius: %f\n", radius);  // radius is consistent (expected 62.5 with 75x100 rect)
 
 	/* angle between OT and OTL*/
@@ -130,14 +134,16 @@ void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Posit
 	float defaultAngle = -90 - angleOtOtl;
 	//printf("default angle: %f\n", defaultAngle);  // expected -126.87 with a rect of 75x100
 
-	float newX = radius * cos(degreesToRadians(defaultAngle + r->pos.direction)) + O.x;
-	float newY = radius * sin(degreesToRadians(defaultAngle + r->pos.direction)) + O.y;
+	float newX = radius * cos(degreesToRadians(defaultAngle + TL.direction)) + O.x;
+	float newY = radius * sin(degreesToRadians(defaultAngle + TL.direction)) + O.y;
 
 
 	r->pos.x = newX;
 	r->pos.y = newY;
 
 	//printf("tl: %f ,%f\n", r->pos.x, r->pos.y);
+	//O = getRectCenter(r);
+	//printf("Center: %f, %f\n", O.x, O.y);
 
 	CP_Settings_Fill(*fillColor);
 	CP_Settings_Stroke(*strokeColor);
