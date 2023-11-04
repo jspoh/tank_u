@@ -58,6 +58,6 @@
 // }
 
 
-int checkTankCollision(Tank t1, Tank t2) {
+int willCollide(Tank* t1, Tank* t2) {
 	return -1;
 }

@@ -17,6 +17,30 @@ Size tankSize = { 75.f, 100.f };
 
 extern Keybinds keybindings[];
 
+int willCollide(Tank* t1, Tank* t2, Position futurePositionOft1) {
+	//r1.x < r2.x + r2.width
+	Position r1;
+	Position r2;
+
+	r1.x = futurePositionOft1.x - (t1->size.width / 2);
+	r1.y = futurePositionOft1.y + (t1->size.height / 2);
+	
+	r2.x = t2->pos.x - (t2->size.width / 2);
+	r2.y = t2->pos.y + (t2->size.height / 2);
+	if (r1.x < r2.x + t2->size.width &&
+		r1.x + t1->size.width > r2.x &&
+		r1.y < r2.y + t2->size.height &&
+		r1.y + t1->size.height > r2.y)
+	{
+		return 1; // Colliding
+	}
+	else
+	{
+		return 0; // Not Colliding
+	}
+	return 1;
+}
+
 void _drawTank(Tank* tank) {
 	Rect r = {
 		tankSize,
@@ -65,22 +89,37 @@ void moveTanks(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Tank* t = &tanks[i];
 		float old = t->pos.direction;
+		
+		Position current = t->pos;
+		Position futurePosition = current;
+
+		//printf("Tank %d is at %.2f, %.2f\n", i, current.x, current.y);
 		if (CP_Input_KeyDown(keybindings[i].up)) {
-			//t->pos.direction = 0;
-			t->pos.y -= distance;
+			futurePosition.y -= distance;
 		}
 		else if (CP_Input_KeyDown(keybindings[i].down)) {
-			//t->pos.direction = 180;
-			t->pos.y += distance;
+			futurePosition.y += distance;
 		}
 		else if (CP_Input_KeyDown(keybindings[i].left)) {
-			//t->pos.direction = 270;
-			t->pos.x -= distance;
+			futurePosition.x -= distance;
 		}
 		else if (CP_Input_KeyDown(keybindings[i].right)) {
-			//t->pos.direction = 90;
-			t->pos.x += distance;
+			futurePosition.x += distance;
 		}
+
+		//printf("Tank might move to %.2f, %.2f pending obstacles\n", futurePosition.x, futurePosition.y);
+		for (int j = 0; j < NUM_PLAYERS; j++) {
+			if (i != j) {
+				Tank* other = &tanks[j];
+				if (willCollide(t, other, futurePosition)) {
+
+					//printf("Tank %d will collide with Tank %d", i, j);
+					futurePosition = current;
+					break;
+				}
+			}
+		}
+		t->pos = futurePosition;
 	}
 }
 
