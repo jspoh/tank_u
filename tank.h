@@ -12,10 +12,10 @@ typedef struct _tank {
 	Position pos;
 	Size size;
 	Color color;
-	float health;
-	float speed;
+	double health;
+	double speed;
 	BYTE currentDir;
-	float elapsedPowerTime;
+	double elapsedPowerTime;
 	int activePowerUps[POWERUPS_COUNT]; 
 	int activePermPowers[POWERUPS_COUNT];
 } Tank;

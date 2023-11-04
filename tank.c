@@ -30,8 +30,8 @@ void _drawTank(Tank* tank) {
 	//Rect r = { 0 };
 	///* draw turret base */
 	//strokeCol = CP_Color_Create(0, 0, 0, 255);
-	//float newWidth = r.size.width * 0.6f;
-	//float newHeight = r.size.height * 0.6f;
+	//double newWidth = r.size.width * 0.6f;
+	//double newHeight = r.size.height * 0.6f;
 	//r.pos.x += (r.size.width - newWidth) / 2;
 	//r.pos.y += (r.size.height - newHeight) / 2;
 	//r.size.width = newWidth;
@@ -59,18 +59,18 @@ void _setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
 
 
 void _moveTanks(void) {
-	const float dt = CP_System_GetDt();
-	const float dDegrees = dt * TURN_SPEED;  // dDegrees as in change in degrees like dx, dy (differentiate)
+	const double dt = CP_System_GetDt();
+	const double dDegrees = dt * TURN_SPEED;  // dDegrees as in change in degrees like dx, dy (differentiate)
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Tank* t = &tanks[i];
-		float old = t->pos.direction;
+		double old = t->pos.direction;
 
 		/*movement*/
 		if (CP_Input_KeyDown(keybindings[i].up) || CP_Input_KeyDown(keybindings[i].down)) {
 			t->speed += ACCELERATION * dt;  // add speed
 			t->speed = t->speed > MOVEMENT_SPEED ? MOVEMENT_SPEED : t->speed;  // limit speed to MOVEMENT_SPEED
-			const float distance = dt * t->speed;
+			const double distance = dt * t->speed;
 
 			if (CP_Input_KeyDown(keybindings[i].up)) {
 				t->pos.x += t->pos.d.x * distance;
@@ -86,7 +86,7 @@ void _moveTanks(void) {
 		else {
 			t->speed -= DECELERATION * dt;  // add speed
 			t->speed = t->speed < 0 ? 0 : t->speed;  // limit speed to MOVEMENT_SPEED
-			const float distance = dt * t->speed;
+			const double distance = dt * t->speed;
 
 			if (t->currentDir == FRONT) {
 				t->pos.x += t->pos.d.x * distance;
@@ -106,7 +106,7 @@ void _moveTanks(void) {
 			}
 			else {
 				if (t->pos.direction == 0) {
-					t->pos.direction = (float)(360 - ceil(dDegrees));
+					t->pos.direction = (double)(360 - ceil(dDegrees));
 				}
 				else {
 					t->pos.direction -= dDegrees / 2;
@@ -117,7 +117,7 @@ void _moveTanks(void) {
 		if (CP_Input_KeyDown(keybindings[i].right)) {
 			if (CP_Input_KeyDown(keybindings[i].down)) {  // if reversing, invert directions
 				if (t->pos.direction == 0) {
-					t->pos.direction = (float)(360 - ceil(dDegrees));
+					t->pos.direction = (double)(360 - ceil(dDegrees));
 				}
 				else {
 					t->pos.direction -= dDegrees / 2;
@@ -130,7 +130,7 @@ void _moveTanks(void) {
 			}
 		}
 		t->pos.direction = t->pos.direction >= 0 ? t->pos.direction : -t->pos.direction;
-		t->pos.direction = (float)((int)(t->pos.direction) % 360);
+		t->pos.direction = (double)((int)(t->pos.direction) % 360);
 		t->pos.d = getDVector(t);
 		//printf("d: %f, %f\n", t->pos.d.x, t->pos.d.y);
 	}
@@ -161,7 +161,7 @@ Tank _tankConstructor(Position pos, Color color) {
 	return tank;
 }
 
-Tank _createTank(float posX, float posY, float direction, BYTE r, BYTE g, BYTE b, BYTE a) {
+Tank _createTank(double posX, double posY, double direction, BYTE r, BYTE g, BYTE b, BYTE a) {
 	Position pos = { posX, posY, direction };
 	Color col = { r,g,b,a };
 	return _tankConstructor(pos, col);
@@ -173,7 +173,7 @@ void _renderTank(void) {
 	}
 }
 
-void _damageTank(Tank* tank, float damage) {
+void _damageTank(Tank* tank, double damage) {
 	tank->health -= damage;
 }
 

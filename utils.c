@@ -6,26 +6,26 @@
 void drawRect(Rect* r, CP_Color* fillColor, CP_Color* strokeColor) {
 	CP_Settings_Fill(*fillColor);
 	CP_Settings_Stroke(*strokeColor);
-	CP_Graphics_DrawRect(r->pos.x, r->pos.y, r->size.width, r->size.height);
+	CP_Graphics_DrawRect((float)r->pos.x, (float)r->pos.y, (float)r->size.width, (float)r->size.height);
 }
 
-float getDistance(float x1, float y1, float x2, float y2) {
+double getDistance(double x1, double y1, double x2, double y2) {
 	return sqrt(pow(x2 - x1, 2.0) + pow(y2 - y1, 2.0));
 }
 
-float dotProduct(Vector v, Vector u) {
+double dotProduct(Vector v, Vector u) {
 	return v.x * u.x + v.y * u.y;
 }
 
-float magnitude(Vector v) {
+double magnitude(Vector v) {
 	return sqrt(pow(v.x, 2.0) + pow(v.y, 2.0));
 }
 
-float radiansToDegrees(float radians) {
+double radiansToDegrees(double radians) {
 	return radians * 180 / M_PI;
 }
 
-float degreesToRadians(float degrees) {
+double degreesToRadians(double degrees) {
 	return degrees * M_PI / 180;
 }
 
@@ -39,9 +39,9 @@ float degreesToRadians(float degrees) {
 * @param v			generally will be OT (origin to top where origin refers to center of rect)
 * @param degrees	clockwise CHANGE in degrees of rotation
 */
-Vector rotateVectorClockwise(Vector v, float degrees) {
+Vector rotateVectorClockwise(Vector v, double degrees) {
 	Vector u = { 0 };
-	float radians = degreesToRadians(degrees);
+	double radians = degreesToRadians(degrees);
 	u.x = -(cos(radians) * v.x + sin(radians) * v.y);
 	u.y = (-sin(radians)) * v.x + cos(radians) * v.y;
 	return u;
@@ -76,7 +76,7 @@ Position getTankCenter(Tank* t) {
 	Vector n = { -currentDirection.y, currentDirection.x };  // normal vector to current direction
 
 	// Vector v is used to define a scalar of vector currentDirection
-	float scalar = t->size.height / 2;
+	double scalar = t->size.height / 2;
 	Vector v = { scalar * -currentDirection.x, scalar * -currentDirection.y };
 	// ML refers to midpoint of the left side of the rectangle
 	const Position ML = translatePosition(TL, v);
@@ -128,20 +128,20 @@ void drawTankAdvanced(Tank* t, CP_Color* fillColor, CP_Color* strokeColor) {
 		TL.y - O.y
 	};
 
-	float radius = getDistance(TL.x, TL.y, O.x, O.y);
+	double radius = getDistance(TL.x, TL.y, O.x, O.y);
 	//printf("radius: %f\n", radius);  // radius is consistent (expected 62.5 with 75x100 rect)
 
 	// angle between d vector and OT L
-	float angleOtOtlRad = acos(dotProduct(OT, OTL) / (magnitude(OT) * magnitude(OTL)));
-	float angleOtOtl = radiansToDegrees(angleOtOtlRad);
+	double angleOtOtlRad = acos(dotProduct(OT, OTL) / (magnitude(OT) * magnitude(OTL)));
+	double angleOtOtl = radiansToDegrees(angleOtOtlRad);
 	//printf("angleOtOtl: %f\n", angleOtOtl);  // expected 36.87 when clockwise direction is 0 deg
 
 	// modifier angle
-	float defaultAngle = 90 + angleOtOtl;
+	double defaultAngle = 90 + angleOtOtl;
 	printf("default angle: %f\n", defaultAngle);  // expected -126.87 with a rect of 75x100. should not change ever
 
-	float newX = radius * cos(degreesToRadians(TL.direction - defaultAngle)) + O.x;
-	float newY = radius * sin(degreesToRadians(TL.direction - defaultAngle)) + O.y;
+	double newX = radius * cos(degreesToRadians(TL.direction - defaultAngle)) + O.x;
+	double newY = radius * sin(degreesToRadians(TL.direction - defaultAngle)) + O.y;
 
 
 	t->pos.x = newX;
@@ -156,5 +156,5 @@ void drawTankAdvanced(Tank* t, CP_Color* fillColor, CP_Color* strokeColor) {
 
 	CP_Settings_Fill(*fillColor);
 	CP_Settings_Stroke(*strokeColor);
-	CP_Graphics_DrawRectAdvanced(t->pos.x, t->pos.y, t->size.width, t->size.height, t->pos.direction, 0);
+	CP_Graphics_DrawRectAdvanced((float)t->pos.x, (float)t->pos.y, (float)t->size.width, (float)t->size.height, (float)t->pos.direction, 10.f);
 }
