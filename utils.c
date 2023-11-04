@@ -56,6 +56,31 @@ Position translatePosition(Position pos, Vector v) {
 	return result;
 }
 
+Position getRectCenter(Rect* r) {
+	const Position TL = { r->pos.x, r->pos.y };
+	const Vector OT = { 0, -1 };
+
+	/* get rect center */
+	Vector currentDirection = rotateVectorClockwise(OT, r->pos.direction);  // is a unit vector
+	//printf("%f ,%f @ %f degrees\n", currentDirection.x, currentDirection.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected -0.707107, -0.707107 @ 45 degrees
+	Vector n = { -currentDirection.y, currentDirection.x };  // normal vector to current direction
+
+	// Vector v is used to define a scalar of vector currentDirection
+	float scalar = r->size.height / 2;
+	Vector v = { scalar * -currentDirection.x, scalar * -currentDirection.y };
+	// ML refers to midpoint of the left side of the rectangle
+	const Position ML = translatePosition(TL, v);
+
+	scalar = r->size.width / 2;
+	v.x = scalar * n.x;
+	v.y = scalar * n.y;
+	const Position O = translatePosition(ML, v);
+	//printf("%f, %f @ %f degrees\n", O.x, O.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected 1061.88, 508.84 @ 45 degrees
+	/* end get rect center */
+
+	return O;
+}
+
 /**
  * @brief	Implemtation method:
  *			let O be center of rect(and the circle the top left corner creates when pivoting on the rect's center
@@ -80,29 +105,12 @@ void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Posit
 	const Position TL = {
 		r->pos.x, r->pos.y
 	};
-
 	// center of rect to top of circle, irregardless of rect facing
 	const Vector OT = {
 		0, -1
 	};
 
-	/* get rect center */
-	Vector currentDirection = rotateVectorClockwise(OT, r->pos.direction);  // is a unit vector
-	//printf("%f ,%f @ %f degrees\n", currentDirection.x, currentDirection.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected -0.707107, -0.707107 @ 45 degrees
-	Vector n = { -currentDirection.y, currentDirection.x };  // normal vector to current direction
-
-	// Vector v is used to define a scalar of vector currentDirection
-	float scalar = r->size.height / 2;
-	Vector v = { scalar * -currentDirection.x, scalar * -currentDirection.y };
-	// ML refers to midpoint of the left side of the rectangle
-	const Position ML = translatePosition(TL, v);
-
-	scalar = r->size.width / 2;
-	v.x = scalar * n.x;
-	v.y = scalar * n.y;
-	const Position O = translatePosition(ML, v);
-	//printf("%f, %f @ %f degrees\n", O.x, O.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected 1061.88, 508.84 @ 45 degrees
-	/* end get rect center */
+	const Position O = getRectCenter(r);
 
 	// center of rect to top left of rect (not circle!)
 	Vector OTL = {
@@ -124,6 +132,7 @@ void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Posit
 
 	float newX = radius * cos(degreesToRadians(defaultAngle + r->pos.direction)) + O.x;
 	float newY = radius * sin(degreesToRadians(defaultAngle + r->pos.direction)) + O.y;
+
 
 	r->pos.x = newX;
 	r->pos.y = newY;

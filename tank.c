@@ -181,4 +181,7 @@ void debugTank(void) {
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 100));
 	CP_Graphics_DrawRect(1000, 500, 75, 100);
 	CP_Graphics_DrawCircle(1037.5, 550, 125);
+
+	CP_Graphics_DrawRect(-37.5f, -50.f, 75, 100);
+	CP_Graphics_DrawCircle(0, 0, 125);
 }
