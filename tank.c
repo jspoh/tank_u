@@ -47,6 +47,8 @@ void _drawTank(Tank* tank) {
 	//r.size.width = newWidth;
 	////r.size.height = newHeight;
 	//drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
+
+	tank->pos = r.pos;
 }
 
 void setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
