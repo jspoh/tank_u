@@ -1,7 +1,7 @@
 #include "config.h"
 #include "cprocessing.h"
 #include "tank.h"
-#include "utils.h"
+#include "tank_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "math.h"
