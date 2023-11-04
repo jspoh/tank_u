@@ -1,4 +1,6 @@
 #include "utils.h"
+#include <math.h>
+#include <stdio.h>
 
 
 void drawRect(Rect* r, CP_Color* fillColor, CP_Color* strokeColor) {
