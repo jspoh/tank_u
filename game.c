@@ -31,7 +31,8 @@ void gameInit(void) {
 	CP_Font_Set(font);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
-	createTank(1000.f, 500.f, 0, 255, 0, 255);
+	createTank(WINDOW_SIZE.width/2.f, WINDOW_SIZE.height/2.f, 255, 255, 0, 255);
+	createTank(1000.f, 500.f, 255, 0, 0, 255);
 	//createTank(1000.f, 500.f, 255, 0, 0, 255);
 	keybindings[0] = P1_KEYBINDS;
 	keybindings[1] = P2_KEYBINDS;
@@ -48,7 +49,7 @@ void gameUpdate(void) {
 
 	renderTank();
 
-	debugTank();
+	// debugTank();
 }
 
 void gameExit(void) {

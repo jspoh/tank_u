@@ -77,59 +77,6 @@ Position translatePosition(Position pos, Vector v) {
  * !TODO
 */
 void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor, Position* pivot) {
-	const Position TL = {
-		r->pos.x, r->pos.y
-	};
-
-	// center of rect to top of circle, irregardless of rect facing
-	const Vector OT = {
-		0, -1
-	};
-
-	/* get rect center */
-	Vector currentDirection = rotateVectorClockwise(OT, r->pos.direction);  // is a unit vector
-	//printf("%f ,%f @ %f degrees\n", currentDirection.x, currentDirection.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected -0.707107, -0.707107 @ 45 degrees
-	Vector n = { -currentDirection.y, currentDirection.x };  // normal vector to current direction
-
-	// Vector v is used to define a scalar of vector currentDirection
-	float scalar = r->size.height / 2;
-	Vector v = { scalar * -currentDirection.x, scalar * -currentDirection.y };
-	// ML refers to midpoint of the left side of the rectangle
-	const Position ML = translatePosition(TL, v);
-
-	scalar = r->size.width / 2;
-	v.x = scalar * n.x;
-	v.y = scalar * n.y;
-	const Position O = translatePosition(ML, v);
-	//printf("%f, %f @ %f degrees\n", O.x, O.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected 1061.88, 508.84 @ 45 degrees
-	/* end get rect center */
-
-	// center of rect to top left of rect (not circle!)
-	Vector OTL = {
-		r->pos.x - O.x,
-		r->pos.y - O.y
-	};
-
-	float radius = getDistance(r->pos.x, r->pos.y, O.x, O.y);
-	//printf("radius: %f\n", radius);  // radius is consistent (expected 62.5 with 75x100 rect)
-
-	/* angle between OT and OTL*/
-	//float angleOtOtlRad = acos(degreesToRadians(dotProduct(OT, OTL) / (magnitude(OT) * magnitude(OTL))));
-	float angleOtOtlRad = acos(dotProduct(OT, OTL) / (magnitude(OT) * magnitude(OTL)));
-	float angleOtOtl = radiansToDegrees(angleOtOtlRad);
-	//printf("angleOtOtl: %f\n", angleOtOtl);
-
-	float defaultAngle = -90 - angleOtOtl;
-	//printf("default angle: %f\n", defaultAngle);  // expected -126.87 with a rect of 75x100
-
-	float newX = radius * cos(degreesToRadians(defaultAngle + r->pos.direction)) + O.x;
-	float newY = radius * sin(degreesToRadians(defaultAngle + r->pos.direction)) + O.y;
-
-	r->pos.x = newX;
-	r->pos.y = newY;
-
-	//printf("tl: %f ,%f\n", r->pos.x, r->pos.y);
-
 	CP_Settings_Fill(*fillColor);
 	CP_Settings_Stroke(*strokeColor);
 	CP_Graphics_DrawRectAdvanced(r->pos.x, r->pos.y, r->size.width, r->size.height, r->pos.direction, 0);

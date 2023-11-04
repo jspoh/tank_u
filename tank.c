@@ -65,65 +65,24 @@ void moveTanks(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Tank* t = &tanks[i];
 		float old = t->pos.direction;
-
 		if (CP_Input_KeyDown(keybindings[i].up)) {
-			if (t->pos.direction != 0 && t->pos.direction >= 180) {
-				t->pos.direction += dDegrees;
-			}
-			else if (t->pos.direction != 0 && t->pos.direction <= 180) {
-				t->pos.direction -= dDegrees / 2;
-			}
-			else {
-				t->pos.y -= distance;
-				puts("moving!");
-			}
+			//t->pos.direction = 0;
+			t->pos.y -= distance;
 		}
 		else if (CP_Input_KeyDown(keybindings[i].down)) {
-			if (t->pos.direction < 180) {
-				t->pos.direction += dDegrees;
-			}
-			else if (t->pos.direction > 180) {
-				t->pos.direction -= dDegrees / 2;
-			}
-			else {
-				t->pos.y += distance;
-				puts("moving!");
-			}
+			//t->pos.direction = 180;
+			t->pos.y += distance;
 		}
 		else if (CP_Input_KeyDown(keybindings[i].left)) {
-			if (t->pos.direction < 270 && t->pos.direction >= 90) {
-				t->pos.direction += dDegrees;
-			}
-			else if (t->pos.direction > 270 || t->pos.direction <= 90) {
-				if (t->pos.direction == 0) {
-					t->pos.direction = (float)(360 - ceil(dDegrees));
-				}
-				else {
-					t->pos.direction -= dDegrees / 2;
-				}
-			}
-			else {
-				t->pos.x -= distance;
-				puts("moving!");
-			}
+			//t->pos.direction = 270;
+			t->pos.x -= distance;
 		}
 		else if (CP_Input_KeyDown(keybindings[i].right)) {
-			if (t->pos.direction >= 270 || t->pos.direction < 90) {
-				t->pos.direction += dDegrees;
-			}
-			else if (t->pos.direction > 90 && t->pos.direction <= 270) {
-				t->pos.direction -= dDegrees / 2;
-			}
-			else {
-				t->pos.x += distance;
-				puts("moving!");
-			}
+			//t->pos.direction = 90;
+			t->pos.x += distance;
 		}
-		t->pos.direction = t->pos.direction >= 0 ? t->pos.direction : -t->pos.direction;
-		t->pos.direction = (float)((int)(t->pos.direction) % 360);
 	}
 }
-
 
 Tank _tankConstructor(Position pos, Color color) {
 	Tank tank = { 0 };
