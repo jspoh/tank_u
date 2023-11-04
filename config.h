@@ -28,6 +28,7 @@ typedef struct Position {
 	float x;
 	float y;
 	float direction;  // angle
+	float dDir;  // change in angle from previous frame
 } Position;
 
 typedef struct {

@@ -18,14 +18,13 @@ Size tankSize = { 75.f, 100.f };
 extern Keybinds keybindings[];
 
 void _drawTank(Tank* tank) {
-	Rect r = {
-		tankSize,
-		tank->pos
-	};
+	//printf("%f %f %f %f %f\n", tank->pos.x, tank->pos.y, tank->size.width, tank->size.height, tank->pos.direction);
+
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	//CP_Color strokeCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	drawRectAdvanced(&r, &fillCol, &strokeCol);
+	CP_Settings_RectMode(CP_POSITION_CENTER);
+	drawTankAdvanced(tank, &fillCol, &strokeCol);
 
 	///* draw turret base */
 	//strokeCol = CP_Color_Create(0, 0, 0, 255);
@@ -47,8 +46,6 @@ void _drawTank(Tank* tank) {
 	//r.size.width = newWidth;
 	////r.size.height = newHeight;
 	//drawRectAdvanced(&r, &fillCol, &strokeCol, &tank->center);
-
-	tank->pos = r.pos;
 }
 
 void setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
@@ -71,9 +68,11 @@ void moveTanks(void) {
 		if (CP_Input_KeyDown(keybindings[i].up)) {
 			if (t->pos.direction != 0 && t->pos.direction >= 180) {
 				t->pos.direction += dDegrees;
+				t->pos.dDir = dDegrees;
 			}
 			else if (t->pos.direction != 0 && t->pos.direction <= 180) {
 				t->pos.direction -= dDegrees / 2;
+				t->pos.dDir = -(dDegrees/2);
 			}
 			else {
 				t->pos.y -= distance;
@@ -83,9 +82,11 @@ void moveTanks(void) {
 		else if (CP_Input_KeyDown(keybindings[i].down)) {
 			if (t->pos.direction < 180) {
 				t->pos.direction += dDegrees;
+				t->pos.dDir = dDegrees;
 			}
 			else if (t->pos.direction > 180) {
 				t->pos.direction -= dDegrees / 2;
+				t->pos.dDir = -(dDegrees/2);
 			}
 			else {
 				t->pos.y += distance;
@@ -95,6 +96,7 @@ void moveTanks(void) {
 		else if (CP_Input_KeyDown(keybindings[i].left)) {
 			if (t->pos.direction < 270 && t->pos.direction >= 90) {
 				t->pos.direction += dDegrees;
+				t->pos.dDir = dDegrees;
 			}
 			else if (t->pos.direction > 270 || t->pos.direction <= 90) {
 				if (t->pos.direction == 0) {
@@ -102,6 +104,7 @@ void moveTanks(void) {
 				}
 				else {
 					t->pos.direction -= dDegrees / 2;
+					t->pos.dDir = -(dDegrees/2);
 				}
 			}
 			else {
@@ -112,9 +115,11 @@ void moveTanks(void) {
 		else if (CP_Input_KeyDown(keybindings[i].right)) {
 			if (t->pos.direction >= 270 || t->pos.direction < 90) {
 				t->pos.direction += dDegrees;
+				t->pos.dDir = dDegrees;
 			}
 			else if (t->pos.direction > 90 && t->pos.direction <= 270) {
 				t->pos.direction -= dDegrees / 2;
+				t->pos.dDir = -(dDegrees/2);
 			}
 			else {
 				t->pos.x += distance;
@@ -177,13 +182,4 @@ void resetTank(void) {
 		Tank tank = { 0 };
 		tanks[i] = tank;
 	}
-}
-
-void debugTank(void) {
-	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 100));
-	CP_Graphics_DrawRect(1000, 500, 75, 100);
-	CP_Graphics_DrawCircle(1037.5, 550, 125);
-
-	CP_Graphics_DrawRect(-37.5f, -50.f, 75, 100);
-	CP_Graphics_DrawCircle(0, 0, 125);
 }

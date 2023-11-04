@@ -31,13 +31,13 @@ float degreesToRadians(float degrees) {
 
 /**
 * @brief			Generally, the vector OT will be passed in as an argument
-*		
+*
 *															cos(angle)	sin(angle)
-*					Using 2x2 CLOCKWISE rotation matrix: 
+*					Using 2x2 CLOCKWISE rotation matrix:
 *															-sin(angle)	cos(angle)
-* 
+*
 * @param v			generally will be OT (origin to top where origin refers to center of rect)
-* @param degrees	clockwise degrees of rotation
+* @param degrees	clockwise CHANGE in degrees of rotation
 */
 Vector rotateVectorClockwise(Vector v, float degrees) {
 	Vector u = { 0 };
@@ -49,32 +49,39 @@ Vector rotateVectorClockwise(Vector v, float degrees) {
 
 /**
 * @brief Position pos + Vector v
-* 
+*
 */
 Position translatePosition(Position pos, Vector v) {
 	Position result = { pos.x + v.x, pos.y + v.y };
 	return result;
 }
 
+/***
+* Get directional vector
+*/
+Vector getDVector(Tank* t) {
+	const Vector OT = { 0,-1};  // vector facing upwards
+	return rotateVectorClockwise(OT, t->pos.direction);
+}
+
 /**
 * !TODO: should plug in change in angle instead of the current angle it is facing
 */
-Position getRectCenter(Rect* r) {
-	const Position TL = r->pos;
-	const Vector OT = { 0, -1 };
+Position getTankCenter(Tank* t) {
+	const Position TL = t->pos;
 
 	/* get rect center */
-	Vector currentDirection = rotateVectorClockwise(OT, TL.direction);  // is a unit vector
+	Vector currentDirection = getDVector(t);  // is a unit vector
 	//printf("%f ,%f @ %f degrees\n", currentDirection.x, currentDirection.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected -0.707107, -0.707107 @ 45 degrees
 	Vector n = { -currentDirection.y, currentDirection.x };  // normal vector to current direction
 
 	// Vector v is used to define a scalar of vector currentDirection
-	float scalar = r->size.height / 2;
+	float scalar = t->size.height / 2;
 	Vector v = { scalar * -currentDirection.x, scalar * -currentDirection.y };
 	// ML refers to midpoint of the left side of the rectangle
 	const Position ML = translatePosition(TL, v);
 
-	scalar = r->size.width / 2;
+	scalar = t->size.width / 2;
 	v.x = scalar * n.x;
 	v.y = scalar * n.y;
 	const Position O = translatePosition(ML, v);
@@ -99,22 +106,21 @@ Position getRectCenter(Rect* r) {
  *			using formula
  *			x = r cos(angle)
  *			y = r sin(angle)
- * 
+ *
  *			refer to math workings for more clarification if required
- * 
+ *
  * !TODO
 */
-void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor) {
+void drawTankAdvanced(Tank* t, CP_Color* fillColor, CP_Color* strokeColor) {
+	/*
 	// top left pos of rect
-	const Position TL = r->pos;
-	printf("TL: %f, %f. Actual: %f, %f\n", TL.x, TL.y, r->pos.x, r->pos.y);
+	const Position TL = t->pos;
+	//printf("TL: %f, %f. Actual: %f, %f\n", TL.x, TL.y, t->pos.x, t->pos.y);
 
-	// center of rect to top of circle, irregardless of rect facing
-	const Vector OT = {
-		0, -1
-	};
+	// current directional vector of tank
+	const Vector OT = getDVector(t);
 
-	const Position O = getRectCenter(r);
+	Position O = getTankCenter(t);
 
 	// center of rect to top left of rect (not circle!)
 	Vector OTL = {
@@ -125,27 +131,30 @@ void drawRectAdvanced(Rect* r, CP_Color* fillColor, CP_Color* strokeColor) {
 	float radius = getDistance(TL.x, TL.y, O.x, O.y);
 	//printf("radius: %f\n", radius);  // radius is consistent (expected 62.5 with 75x100 rect)
 
-	/* angle between OT and OTL*/
-	//float angleOtOtlRad = acos(degreesToRadians(dotProduct(OT, OTL) / (magnitude(OT) * magnitude(OTL))));
+	// angle between d vector and OT L
 	float angleOtOtlRad = acos(dotProduct(OT, OTL) / (magnitude(OT) * magnitude(OTL)));
 	float angleOtOtl = radiansToDegrees(angleOtOtlRad);
-	//printf("angleOtOtl: %f\n", angleOtOtl);
+	//printf("angleOtOtl: %f\n", angleOtOtl);  // expected 36.87 when clockwise direction is 0 deg
 
-	float defaultAngle = -90 - angleOtOtl;
-	//printf("default angle: %f\n", defaultAngle);  // expected -126.87 with a rect of 75x100
+	// modifier angle
+	float defaultAngle = 90 + angleOtOtl;
+	printf("default angle: %f\n", defaultAngle);  // expected -126.87 with a rect of 75x100. should not change ever
 
-	float newX = radius * cos(degreesToRadians(defaultAngle + TL.direction)) + O.x;
-	float newY = radius * sin(degreesToRadians(defaultAngle + TL.direction)) + O.y;
+	float newX = radius * cos(degreesToRadians(TL.direction - defaultAngle)) + O.x;
+	float newY = radius * sin(degreesToRadians(TL.direction - defaultAngle)) + O.y;
 
 
-	r->pos.x = newX;
-	r->pos.y = newY;
+	t->pos.x = newX;
+	t->pos.y = newY;
 
-	//printf("tl: %f ,%f\n", r->pos.x, r->pos.y);
+	//printf("tl: %f ,%f\n", t->pos.x, t->pos.y);
 	//O = getRectCenter(r);
 	//printf("Center: %f, %f\n", O.x, O.y);
 
+	//printf("%f %f %f %f %f\n", t->pos.x, t->pos.y, t->size.width, t->size.height, t->pos.direction);
+	*/
+
 	CP_Settings_Fill(*fillColor);
 	CP_Settings_Stroke(*strokeColor);
-	CP_Graphics_DrawRectAdvanced(r->pos.x, r->pos.y, r->size.width, r->size.height, r->pos.direction, 0);
+	CP_Graphics_DrawRectAdvanced(t->pos.x, t->pos.y, t->size.width, t->size.height, t->pos.direction, 0);
 }

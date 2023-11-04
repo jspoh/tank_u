@@ -27,5 +27,3 @@ void moveTanks(void);
 void damageTank(Tank* tank, float damage);
 
 void resetTank(void);
-
-void debugTank(void);
