@@ -1,3 +1,3 @@
 #pragma once
 
-bool mouseInRect(Rect r, float mouseX, float mouseY);
+bool mouseInRect(Rect r, double mouseX, double mouseY);

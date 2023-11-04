@@ -15,7 +15,7 @@ BYTE menuState = FADE_IN;
 
 BYTE oAlpha = 255;
 
-float textSize = 50.f;
+double textSize = 50.0;
 
 CP_Color btnColor;
 CP_Color invisColor;
@@ -23,35 +23,35 @@ CP_Color black;
 CP_Color white;
 CP_Color oColor;
 
-Position a = { 1500.f, 700.f };
-Position b = { 1400.f, 650.f };
-Position c = { 1400.f, 750.f };
+Position a = { 1500.0, 700.0 };
+Position b = { 1400.0, 650.0 };
+Position c = { 1400.0, 750.0 };
 Triangle startBtn;
 
-Position _scPos = { 1350.f,600.f };
-Size _scSize = { 200.f, 250.f };
+Position _scPos = { 1350.0,600.0 };
+Size _scSize = { 200.0, 250.0 };
 Rect startContainer;
 
 Rect overlay;
 
 char buttons[][8] = { "Play", "Options", "Help", "Credits", "Exit" };
 Position _firstBtnPos;
-Size btnSize = { 200.f,75.f };
-float spaceBetweenBtns = 50.f;
+Size btnSize = { 200.0,75.0 };
+double spaceBetweenBtns = 50.0;
 Rect firstBtn;
 
 Rect fadeRectL;
 Rect fadeRectR;
 Rect oFadeRect;
 #define TRANSITION_DURATION 1
-float menuElapsedTime = 0;
+double menuElapsedTime = 0;
 #define GAME_TRANSITION_DURATION 0.5
 BYTE fadeOpacity = 0;
 
 void drawRect2(Rect* r, CP_Color fillColor, CP_Color strokeColor) {
 	CP_Settings_Fill(fillColor);
 	CP_Settings_Stroke(strokeColor);
-	CP_Graphics_DrawRect(r->pos.x, r->pos.y, r->size.width, r->size.height);
+	CP_Graphics_DrawRect((float)r->pos.x, (float)r->pos.y, (float)r->size.width, (float)r->size.height);
 }
 
 void menuFadeIn(void) {
@@ -64,9 +64,9 @@ void menuFadeIn(void) {
 	drawRect(&fadeRectR, &black, &black);
 
 	menuElapsedTime += CP_System_GetDt();
-	float pixels = (menuElapsedTime / TRANSITION_DURATION) * (WINDOW_SIZE.width / 2);
+	double pixels = (menuElapsedTime / TRANSITION_DURATION) * (WINDOW_SIZE.width / 2);
 
-	fadeRectL.pos.x = 0.f - pixels;
+	fadeRectL.pos.x = 0.0 - pixels;
 	fadeRectR.pos.x = WINDOW_SIZE.width / 2 + pixels;
 }
 
@@ -100,8 +100,8 @@ void initVars(void) {
 	startBtn.c = c;
 	startContainer.pos = _scPos;
 	startContainer.size = _scSize;
-	overlay.pos.x = 0.f;
-	overlay.pos.y = 0.f;
+	overlay.pos.x = 0.0;
+	overlay.pos.y = 0.0;
 	overlay.size.width = WINDOW_SIZE.width;
 	overlay.size.height = WINDOW_SIZE.height;
 	firstBtn.size = btnSize;
@@ -111,16 +111,16 @@ void initVars(void) {
 
 	/* fade stuff */
 	Size _fadeRectLSize = { WINDOW_SIZE.width / 2, WINDOW_SIZE.height };
-	Position _fadeRectLPos = { 0.f, 0.f };
+	Position _fadeRectLPos = { 0.0, 0.0 };
 	fadeRectL.size = _fadeRectLSize;
 	fadeRectL.pos = _fadeRectLPos;
 
 	Size _fadeRectRSize = { WINDOW_SIZE.width / 2, WINDOW_SIZE.height };
-	Position _fadeRectRPos = { WINDOW_SIZE.width / 2, 0.f };
+	Position _fadeRectRPos = { WINDOW_SIZE.width / 2, 0.0 };
 	fadeRectR.size = _fadeRectRSize;
 	fadeRectR.pos = _fadeRectRPos;
 
-	Position _oFadeRectPos = { 0.f, 0.f };
+	Position _oFadeRectPos = { 0.0, 0.0 };
 	oFadeRect.size = WINDOW_SIZE;
 	oFadeRect.pos = _oFadeRectPos;
 }
@@ -139,15 +139,15 @@ void menuInit(void) {
 void drawTriangleBtn(Triangle *t) {
 	CP_Settings_Fill(btnColor);
 	CP_Settings_Stroke(white);
-	CP_Graphics_DrawTriangle(t->a.x, t->a.y, t->b.x, t->b.y, t->c.x, t->c.y);
+	CP_Graphics_DrawTriangle((float)t->a.x, (float)t->a.y, (float)t->b.x, (float)t->b.y, (float)t->c.x, (float)t->c.y);
 }
 
-void drawText(char* text, float x, float y, float size, CP_Color* strokeColor) {
+void drawText(char* text, double x, double y, double size, CP_Color* strokeColor) {
 	//CP_Settings_StrokeWeight(1.0f);
-	CP_Settings_TextSize(size);
+	CP_Settings_TextSize((float)size);
 	CP_Settings_Stroke(*strokeColor);
 	CP_Settings_Fill(*strokeColor);
-	CP_Font_DrawText(text, x, y);
+	CP_Font_DrawText(text, (float)x, (float)y);
 }
 
 void renderLaunchPage(void) {
@@ -224,7 +224,7 @@ void renderMenuPage(void) {
 
 void menuUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(150, 150, 150, 255));
-	CP_Image_Draw(menuBg, WINDOW_SIZE.width/2, WINDOW_SIZE.height/2, WINDOW_SIZE.width, WINDOW_SIZE.height, oAlpha);
+	CP_Image_Draw(menuBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), oAlpha);
 
 	switch (menuState) {
 		case FADE_IN:
