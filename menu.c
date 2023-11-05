@@ -11,7 +11,7 @@
 CP_Font font;
 CP_Image menuBg;
 
-enum { FADE_IN, LAUNCH_PAGE, MENU_PAGE, FADE_TO_GAME, OPTIONS_PAGE };
+enum { FADE_IN, LAUNCH_PAGE, MENU_PAGE, FADE_TO_GAME, OPTIONS_PAGE, HELP_PAGE, CREDITS_PAGE };
 BYTE menuState = FADE_IN;
 
 BYTE oAlpha = 255;
@@ -242,6 +242,12 @@ void menuUpdate(void) {
 			renderMenuPage();
 			break;
 		case OPTIONS_PAGE:
+			renderOptions();
+			break;
+		case HELP_PAGE:
+			renderOptions();
+			break;
+		case CREDITS_PAGE:
 			renderOptions();
 			break;
 		default:
