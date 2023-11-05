@@ -11,6 +11,7 @@ typedef struct {
 } Keybinds;
 
 void drawRect(Rect* r, CP_Color* fillColor, CP_Color* strokeColor);
+void drawTriangle(Triangle* t, CP_Color* fillColor, CP_Color* strokeColor);
 double getDistance(double x1, double y1, double x2, double y2);
 double dotProduct(Vector v, Vector u);
 double magnitude(Vector v);

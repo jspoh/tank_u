@@ -139,12 +139,6 @@ void menuInit(void) {
 	initVars();
 }
 
-void drawTriangleBtn(Triangle *t) {
-	CP_Settings_Fill(btnColor);
-	CP_Settings_Stroke(white);
-	CP_Graphics_DrawTriangle((float)t->a.x, (float)t->a.y, (float)t->b.x, (float)t->b.y, (float)t->c.x, (float)t->c.y);
-}
-
 void drawText(char* text, double x, double y, double size, CP_Color* strokeColor) {
 	//CP_Settings_StrokeWeight(1.0f);
 	CP_Settings_TextSize((float)size);
@@ -154,7 +148,7 @@ void drawText(char* text, double x, double y, double size, CP_Color* strokeColor
 }
 
 void renderLaunchPage(void) {
-	drawTriangleBtn(&startBtn);
+	drawTriangle(&startBtn, &btnColor, &white);
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_BOTTOM);
 	drawText("Start", startContainer.pos.x + 50, startContainer.pos.y + 200, textSize, &black);
 
@@ -258,4 +252,5 @@ void menuUpdate(void) {
 
 void menuExit(void) {
 	CP_Image_Free(&menuBg);
+	destroyCredits();
 }
