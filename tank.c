@@ -43,6 +43,11 @@ void _moveTanks(void) {
 		Tank* t = &tanks[i];
 		double old = t->pos.direction;
 
+		/*tu79*/
+		if (t->speed == 0) {
+			t->currentDir = FRONT;
+		}
+
 		/*movement*/
 		if (CP_Input_KeyDown(keybindings[i].up) || CP_Input_KeyDown(keybindings[i].down)) {
 			t->speed += ACCELERATION * dt;  // add speed
