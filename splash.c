@@ -12,7 +12,6 @@ BYTE opacity = 0;
 double elapsedTime = 0;
 double elapsedShow = 0;
 
-enum { FADE_IN, SHOW_LOGO, FADE_OUT };
 BYTE splashState = FADE_IN;
 
 
@@ -63,17 +62,17 @@ void splashScreenFadeInOut() {
 	CP_Image_Draw(logo, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)CP_Image_GetWidth(logo), (float)CP_Image_GetHeight(logo), opacity);
 }
 
-void splash_screen_init(void) {
+void splashInit(void) {
 	logo = CP_Image_Load("Assets/DigiPen_BLACK.png");
 	CP_System_SetFrameRate(FRAMERATE);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 }
 
-void splash_screen_update(void) {
+void splashUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
 	splashScreenFadeInOut();
 }
 
-void splash_screen_exit(void) {
+void splashExit(void) {
 	CP_Image_Free(&logo);
 }

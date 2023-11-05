@@ -13,9 +13,6 @@
     <ClCompile Include="cannonball.c">
       <Filter>components\cannonball</Filter>
     </ClCompile>
-    <ClCompile Include="options.c">
-      <Filter>components\menu</Filter>
-    </ClCompile>
     <ClCompile Include="splash.c">
       <Filter>components\menu</Filter>
     </ClCompile>
@@ -31,6 +28,15 @@
     <ClCompile Include="tank_utils.c">
       <Filter>components\tank</Filter>
     </ClCompile>
+    <ClCompile Include="credits.c">
+      <Filter>components\menu\subpages\credits</Filter>
+    </ClCompile>
+    <ClCompile Include="help.c">
+      <Filter>components\menu\subpages\help</Filter>
+    </ClCompile>
+    <ClCompile Include="options.c">
+      <Filter>components\menu\subpages\options</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
@@ -43,9 +49,6 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="cannonball.h">
       <Filter>components\cannonball</Filter>
-    </ClInclude>
-    <ClInclude Include="options.h">
-      <Filter>components\menu</Filter>
     </ClInclude>
     <ClInclude Include="splash.h">
       <Filter>components\menu</Filter>
@@ -61,6 +64,15 @@
     </ClInclude>
     <ClInclude Include="tank_utils.h">
       <Filter>components\tank</Filter>
+    </ClInclude>
+    <ClInclude Include="credits.h">
+      <Filter>components\menu\subpages\credits</Filter>
+    </ClInclude>
+    <ClInclude Include="help.h">
+      <Filter>components\menu\subpages\help</Filter>
+    </ClInclude>
+    <ClInclude Include="options.h">
+      <Filter>components\menu\subpages\options</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +96,18 @@
     </Filter>
     <Filter Include="components\tank">
       <UniqueIdentifier>{fec5f9c2-b566-41cb-a439-8d38301f93e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\subpages">
+      <UniqueIdentifier>{41b0a79c-343a-471b-a344-8ecd123c4738}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\subpages\credits">
+      <UniqueIdentifier>{786767a3-99ae-492d-8327-f8bc5668da58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\subpages\help">
+      <UniqueIdentifier>{9a796d9c-3907-4704-be5b-be21bac5c101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\subpages\options">
+      <UniqueIdentifier>{f089c447-26c8-49b8-9b3c-017f53403099}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

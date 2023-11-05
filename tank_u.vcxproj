@@ -154,10 +154,13 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="backdrop.c" />
+    <ClCompile Include="back_btn.c" />
     <ClCompile Include="cannonball.c" />
     <ClCompile Include="collision.c" />
     <ClCompile Include="config.c" />
+    <ClCompile Include="credits.c" />
     <ClCompile Include="game.c" />
+    <ClCompile Include="help.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c" />
     <ClCompile Include="options.c" />
@@ -168,10 +171,13 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="backdrop.h" />
+    <ClInclude Include="back_btn.h" />
     <ClInclude Include="cannonball.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="credits.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="help.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="options.h" />
     <ClInclude Include="splash.h" />
