@@ -4,9 +4,10 @@
 #include "collision.h"
 #include "backdrop.h"
 #include "options.h"
+#include "help.h"
+#include "credits.h"
 #include "utils.h"
 #include <stdio.h>
-#include "utils.h"
 
 CP_Font font;
 CP_Image menuBg;
@@ -245,10 +246,10 @@ void menuUpdate(void) {
 			renderOptions();
 			break;
 		case HELP_PAGE:
-			renderOptions();
+			renderHelp();
 			break;
 		case CREDITS_PAGE:
-			renderOptions();
+			renderCredits();
 			break;
 		default:
 			break;
