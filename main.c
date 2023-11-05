@@ -2,6 +2,7 @@
 #include "game.h"
 #include "config.h"
 #include "splash.h"
+#include "credits.h"
 #include <stdio.h>
 
 
@@ -16,5 +17,6 @@ int main(void)
 	//CP_Engine_SetNextGameState(splashInit, splashUpdate, splashExit);  // for production
 	CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);  // for development
 	CP_Engine_Run();
+
 	return 0;
 }
