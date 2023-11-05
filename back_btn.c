@@ -41,7 +41,7 @@ bool renderBackButton(void) {
 	bool isHover = false;
 	if (mouseInRect(cb, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 		isHover = true;
-		if (CP_Input_MouseClicked(MOUSE_BUTTON_LEFT)) {
+		if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 			isClicked = true;
 		}
 	}
