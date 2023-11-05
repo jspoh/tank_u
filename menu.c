@@ -7,12 +7,12 @@
 #include "help.h"
 #include "credits.h"
 #include "utils.h"
+#include "menu.h"
 #include <stdio.h>
 
 CP_Font font;
 CP_Image menuBg;
 
-enum { FADE_IN, LAUNCH_PAGE, MENU_PAGE, FADE_TO_GAME, OPTIONS_PAGE, HELP_PAGE, CREDITS_PAGE };
 BYTE menuState = FADE_IN;
 
 BYTE oAlpha = 255;
@@ -217,6 +217,10 @@ void renderMenuPage(void) {
 	}
 }
 
+void destroySubpages(void) {
+	destroyCredits();
+}
+
 void menuUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(150, 150, 150, 255));
 	CP_Image_Draw(menuBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), oAlpha);
@@ -249,6 +253,7 @@ void menuUpdate(void) {
 }
 
 void menuExit(void) {
+	// why doesnt this work? wow suddenly it worked when i was about to open issue on github
+	destroySubpages();
 	CP_Image_Free(&menuBg);
-	destroyCredits();
 }

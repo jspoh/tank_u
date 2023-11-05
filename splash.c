@@ -12,7 +12,6 @@ BYTE opacity = 0;
 double elapsedTime = 0;
 double elapsedShow = 0;
 
-enum { FADE_IN, SHOW_LOGO, FADE_OUT };
 BYTE splashState = FADE_IN;
 
 
