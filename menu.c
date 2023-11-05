@@ -23,6 +23,8 @@ CP_Color btnColor;
 CP_Color invisColor;
 CP_Color black;
 CP_Color white;
+CP_Color whiteHighlighted;
+CP_Color red;
 CP_Color oColor;
 
 Position a = { 1500.0, 700.0 };
@@ -94,7 +96,9 @@ void initVars(void) {
 	invisColor = CP_Color_Create(0, 0, 0, 0);
 	black = CP_Color_Create(0, 0, 0, 255);
 	white = CP_Color_Create(255, 255, 255, 255);
+	whiteHighlighted = CP_Color_Create(200, 200, 200, 225);
 	oColor = CP_Color_Create(0, 0, 0, 200);
+	red = CP_Color_Create(255, 0, 0, 255);
 
 	/* structs */
 	startBtn.a = a;
@@ -139,18 +143,11 @@ void menuInit(void) {
 	initVars();
 }
 
-void drawText(char* text, double x, double y, double size, CP_Color* strokeColor) {
-	//CP_Settings_StrokeWeight(1.0f);
-	CP_Settings_TextSize((float)size);
-	CP_Settings_Stroke(*strokeColor);
-	CP_Settings_Fill(*strokeColor);
-	CP_Font_DrawText(text, (float)x, (float)y);
-}
-
 void renderLaunchPage(void) {
 	drawTriangle(&startBtn, &btnColor, &white);
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_BOTTOM);
-	drawText("Start", startContainer.pos.x + 50, startContainer.pos.y + 200, textSize, &black);
+	Position textPos = { startContainer.pos.x + 50, startContainer.pos.y + 200 };
+	drawText("Start", &textPos, textSize, &black);
 
 	if (mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 		btnColor = CP_Color_Create(200, 200, 200, 220);
@@ -205,7 +202,8 @@ void renderMenuPage(void) {
 
 		/* draw text on button*/
 		CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-		drawText(buttons[i], rp.x + rs.width / 2, rp.y + rs.height / 2, textSize, &black);
+		Position textPos = { rp.x + rs.width / 2, rp.y + rs.height / 2 };
+		drawText(buttons[i], &textPos, textSize, &black);
 
 		if (mouseInRect(r, CP_Input_GetMouseX(), CP_Input_GetMouseY()) && CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 			if (!strcmp(buttons[i], "Play")) {
