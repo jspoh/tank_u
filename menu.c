@@ -188,10 +188,10 @@ void renderMenuPage(void) {
 					menuState = OPTIONS_PAGE;
 				}
 				else if (!strcmp(buttons[i], "Help")) {
-
+					menuState = HELP_PAGE;
 				}
 				else if (!strcmp(buttons[i], "Credits")) {
-
+					menuState = CREDITS_PAGE;
 				}
 				else if (!strcmp(buttons[i], "Exit")) {
 					CP_Engine_Terminate();
