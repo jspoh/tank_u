@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="config.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c">
       <Filter>components\menu</Filter>
@@ -10,20 +9,14 @@
       <Filter>util\collision</Filter>
     </ClCompile>
     <ClCompile Include="game.c" />
-    <ClCompile Include="cannonball.c">
-      <Filter>components\cannonball</Filter>
-    </ClCompile>
-    <ClCompile Include="options.c">
-      <Filter>components\menu</Filter>
-    </ClCompile>
-    <ClCompile Include="splash.c">
-      <Filter>components\menu</Filter>
-    </ClCompile>
     <ClCompile Include="backdrop.c">
       <Filter>components\menu\backdrop</Filter>
     </ClCompile>
     <ClCompile Include="utils.c">
       <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="wall.c">
+      <Filter>components\wall</Filter>
     </ClCompile>
     <ClCompile Include="tank.c">
       <Filter>components\tank</Filter>
@@ -31,9 +24,26 @@
     <ClCompile Include="tank_utils.c">
       <Filter>components\tank</Filter>
     </ClCompile>
+    <ClCompile Include="credits.c">
+      <Filter>components\menu\subpages\credits</Filter>
+    </ClCompile>
+    <ClCompile Include="help.c">
+      <Filter>components\menu\subpages\help</Filter>
+    </ClCompile>
+    <ClCompile Include="options.c">
+      <Filter>components\menu\subpages\options</Filter>
+    </ClCompile>
+    <ClCompile Include="splash.c">
+      <Filter>components\menu\splash</Filter>
+    </ClCompile>
+    <ClCompile Include="back_btn.c">
+      <Filter>components\menu\back_button</Filter>
+    </ClCompile>
+    <ClCompile Include="config.c">
+      <Filter>config</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="config.h" />
     <ClInclude Include="menu.h">
       <Filter>components\menu</Filter>
     </ClInclude>
@@ -41,26 +51,38 @@
       <Filter>util\collision</Filter>
     </ClInclude>
     <ClInclude Include="game.h" />
-    <ClInclude Include="cannonball.h">
-      <Filter>components\cannonball</Filter>
-    </ClInclude>
-    <ClInclude Include="options.h">
-      <Filter>components\menu</Filter>
-    </ClInclude>
-    <ClInclude Include="splash.h">
-      <Filter>components\menu</Filter>
-    </ClInclude>
     <ClInclude Include="backdrop.h">
       <Filter>components\menu\backdrop</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="wall.h">
+      <Filter>components\wall</Filter>
+    </ClInclude>
     <ClInclude Include="tank.h">
       <Filter>components\tank</Filter>
     </ClInclude>
     <ClInclude Include="tank_utils.h">
       <Filter>components\tank</Filter>
+    </ClInclude>
+    <ClInclude Include="credits.h">
+      <Filter>components\menu\subpages\credits</Filter>
+    </ClInclude>
+    <ClInclude Include="help.h">
+      <Filter>components\menu\subpages\help</Filter>
+    </ClInclude>
+    <ClInclude Include="options.h">
+      <Filter>components\menu\subpages\options</Filter>
+    </ClInclude>
+    <ClInclude Include="splash.h">
+      <Filter>components\menu\splash</Filter>
+    </ClInclude>
+    <ClInclude Include="back_btn.h">
+      <Filter>components\menu\back_button</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -76,14 +98,35 @@
     <Filter Include="util\collision">
       <UniqueIdentifier>{d5c55da1-6dd6-4eaa-9b4d-c2d3a1e7fed3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="components\cannonball">
-      <UniqueIdentifier>{a8879b22-df87-4a97-aad4-fb3afcfa1219}</UniqueIdentifier>
-    </Filter>
     <Filter Include="components\menu\backdrop">
       <UniqueIdentifier>{e7ebf866-7dd5-463b-b520-451664b86e72}</UniqueIdentifier>
     </Filter>
+    <Filter Include="components\wall">
+      <UniqueIdentifier>{f76536ec-70fa-4a16-82c0-939a82758441}</UniqueIdentifier>
+    </Filter>
     <Filter Include="components\tank">
       <UniqueIdentifier>{fec5f9c2-b566-41cb-a439-8d38301f93e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\subpages">
+      <UniqueIdentifier>{41b0a79c-343a-471b-a344-8ecd123c4738}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\subpages\credits">
+      <UniqueIdentifier>{786767a3-99ae-492d-8327-f8bc5668da58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\subpages\help">
+      <UniqueIdentifier>{9a796d9c-3907-4704-be5b-be21bac5c101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\subpages\options">
+      <UniqueIdentifier>{f089c447-26c8-49b8-9b3c-017f53403099}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\splash">
+      <UniqueIdentifier>{8982ad8c-939f-47c0-86d0-1602228905ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\back_button">
+      <UniqueIdentifier>{8b343abd-f77e-43dd-8ad6-78b0828e3c05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{f69e5ec5-c7c4-42e0-a38c-e1d799660f1a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

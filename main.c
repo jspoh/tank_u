@@ -2,7 +2,9 @@
 #include "game.h"
 #include "config.h"
 #include "splash.h"
+#include "credits.h"
 #include <stdio.h>
+#include "game.h"
 
 
 
@@ -13,8 +15,9 @@ int main(void)
 		fprintf(stderr, "App config failed to initialize\n");
 		return 1;
 	}
-	//CP_Engine_SetNextGameState(splash_screen_init, splash_screen_update, splash_screen_exit);  // for production
+	//CP_Engine_SetNextGameState(splashInit, splashUpdate, splashExit);  // for production
 	CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);  // for development
 	CP_Engine_Run();
+
 	return 0;
 }

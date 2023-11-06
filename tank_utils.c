@@ -4,24 +4,6 @@
 
 
 /**
-* @brief			Generally, the vector OT will be passed in as an argument
-*
-*															cos(angle)	sin(angle)
-*					Using 2x2 CLOCKWISE rotation matrix:
-*															-sin(angle)	cos(angle)
-*
-* @param v			generally will be OT (origin to top where origin refers to center of rect)
-* @param degrees	clockwise CHANGE in degrees of rotation
-*/
-Vector _rotateVectorClockwise(Vector v, double degrees) {
-	Vector u = { 0 };
-	double radians = degreesToRadians(degrees);
-	u.x = -(cos(radians) * v.x + sin(radians) * v.y);
-	u.y = (-sin(radians)) * v.x + cos(radians) * v.y;
-	return u;
-}
-
-/**
 * @brief Position pos + Vector v
 *
 */
@@ -35,7 +17,7 @@ Position _translatePosition(Position pos, Vector v) {
 */
 Vector getDVector(Tank* t) {
 	const Vector OT = { 0,-1 };  // vector facing upwards
-	return _rotateVectorClockwise(OT, t->pos.direction);
+	return rotateVectorClockwise(OT, t->pos.direction);
 }
 
 /**

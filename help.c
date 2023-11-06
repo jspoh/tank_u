@@ -6,10 +6,10 @@
 extern int menuState;
 
 
-void renderOptions(void) {
+void renderHelp(void) {
 	renderBackdrop();
 
-	/*options screen stuff goes here*/
+	/*help screen stuff goes here*/
 
 	bool isBackClicked = renderBackButton();
 

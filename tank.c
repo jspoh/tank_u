@@ -44,10 +44,20 @@ void _moveTanks(void) {
 		Tank* t = &tanks[i];
 		double old = t->pos.direction;
 
+		/*tu79*/
+		if (t->speed == 0) {
+			t->currentDir = FRONT;
+		}
+
 		/*movement*/
 		if (CP_Input_KeyDown(keybindings[i].up) || CP_Input_KeyDown(keybindings[i].down)) {
 			t->speed += ACCELERATION * dt;  // add speed
-			t->speed = t->speed > MOVEMENT_SPEED ? MOVEMENT_SPEED : t->speed;  // limit speed to MOVEMENT_SPEED
+			if (t->currentDir == BACK) {  // limit speed to half of max speed if reversing
+				t->speed = t->speed > MOVEMENT_SPEED / 2 ? MOVEMENT_SPEED / 2 : t->speed;
+			}
+			else {  // limit movement speed to max speed if going forwards
+				t->speed = t->speed > MOVEMENT_SPEED ? MOVEMENT_SPEED : t->speed;  // limit speed to MOVEMENT_SPEED
+			}
 			const double distance = dt * t->speed;
 
 			if (CP_Input_KeyDown(keybindings[i].up)) {

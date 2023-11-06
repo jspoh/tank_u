@@ -3,6 +3,7 @@
 #include "menu.h"
 #include "tank.h"
 #include "utils.h"
+#include "wall.h"
 
 CP_Font font;
 
@@ -34,9 +35,9 @@ void gameInit(void) {
 	keybindings[0] = P1_KEYBINDS;
 	keybindings[1] = P2_KEYBINDS;
 
+	initWall();
 	initTank();
 }
-
 void gameUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 150, 0, 255));
 
@@ -44,6 +45,7 @@ void gameUpdate(void) {
 		CP_Engine_SetNextGameState(menuInit, menuUpdate, menuExit);
 	}
 
+	drawWall();
 	updateTank();
 
 }
