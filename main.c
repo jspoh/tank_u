@@ -4,6 +4,7 @@
 #include "splash.h"
 #include "credits.h"
 #include <stdio.h>
+#include "game.h"
 
 
 

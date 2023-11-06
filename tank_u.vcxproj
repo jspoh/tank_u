@@ -155,7 +155,6 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
   <ItemGroup>
     <ClCompile Include="backdrop.c" />
     <ClCompile Include="back_btn.c" />
-    <ClCompile Include="cannonball.c" />
     <ClCompile Include="collision.c" />
     <ClCompile Include="config.c" />
     <ClCompile Include="credits.c" />
@@ -168,11 +167,11 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     <ClCompile Include="tank.c" />
     <ClCompile Include="tank_utils.c" />
     <ClCompile Include="utils.c" />
+    <ClCompile Include="wall.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="backdrop.h" />
     <ClInclude Include="back_btn.h" />
-    <ClInclude Include="cannonball.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="credits.h" />
@@ -184,6 +183,7 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     <ClInclude Include="tank.h" />
     <ClInclude Include="tank_utils.h" />
     <ClInclude Include="utils.h" />
+    <ClInclude Include="wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
