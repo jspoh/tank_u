@@ -10,12 +10,6 @@
       <Filter>util\collision</Filter>
     </ClCompile>
     <ClCompile Include="game.c" />
-    <ClCompile Include="cannonball.c">
-      <Filter>components\cannonball</Filter>
-    </ClCompile>
-    <ClCompile Include="splash.c">
-      <Filter>components\menu</Filter>
-    </ClCompile>
     <ClCompile Include="backdrop.c">
       <Filter>components\menu\backdrop</Filter>
     </ClCompile>
@@ -40,6 +34,12 @@
     <ClCompile Include="options.c">
       <Filter>components\menu\subpages\options</Filter>
     </ClCompile>
+    <ClCompile Include="splash.c">
+      <Filter>components\menu\splash</Filter>
+    </ClCompile>
+    <ClCompile Include="back_btn.c">
+      <Filter>components\menu\back_button</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
@@ -50,12 +50,6 @@
       <Filter>util\collision</Filter>
     </ClInclude>
     <ClInclude Include="game.h" />
-    <ClInclude Include="cannonball.h">
-      <Filter>components\cannonball</Filter>
-    </ClInclude>
-    <ClInclude Include="splash.h">
-      <Filter>components\menu</Filter>
-    </ClInclude>
     <ClInclude Include="backdrop.h">
       <Filter>components\menu\backdrop</Filter>
     </ClInclude>
@@ -79,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="options.h">
       <Filter>components\menu\subpages\options</Filter>
+    </ClInclude>
+    <ClInclude Include="splash.h">
+      <Filter>components\menu\splash</Filter>
+    </ClInclude>
+    <ClInclude Include="back_btn.h">
+      <Filter>components\menu\back_button</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +114,12 @@
     </Filter>
     <Filter Include="components\menu\subpages\options">
       <UniqueIdentifier>{f089c447-26c8-49b8-9b3c-017f53403099}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\splash">
+      <UniqueIdentifier>{8982ad8c-939f-47c0-86d0-1602228905ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\back_button">
+      <UniqueIdentifier>{8b343abd-f77e-43dd-8ad6-78b0828e3c05}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
