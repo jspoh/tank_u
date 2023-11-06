@@ -1,7 +1,12 @@
 #include "cannonball.h"
+#include <stdio.h>
 
 #define CANNONBALL_SPEED 750
 #define CANNON_RADIUS 10
+#define FIRERATE 1  // shots per second
+
+double timeSinceFireP1 = 1.0;  // time since last shot
+double timeSinceFireP2 = 1.0;
 
 CannonBall activeCbs[MAX] = { 0 };  // all currently active cannonballs
 size_t numCbs = 0; // no. of active cannonball
@@ -27,13 +32,17 @@ void _onDestroyCannonball(size_t index) {
 void _moveCannonball(CannonBall* cb) {
 	const float dt = CP_System_GetDt();
 	Vector v = cb->d;
-	v = scalarMultiply(v, dt);
+	v = scalarMultiply(v, dt * CANNONBALL_SPEED);
 
 	cb->pos.x += v.x;
 	cb->pos.y += v.y;
 }
 
 void updateCannonball(void) {
+	const float dt = CP_System_GetDt();
+	timeSinceFireP1 += dt;
+	timeSinceFireP2 += dt;
+
 	for (int i = 0; i < numCbs; i++) {
 		CannonBall* cb = &activeCbs[i]; 
 
@@ -53,7 +62,30 @@ CannonBall _cannonballConstructor(Position pos, Vector d) {
 }
 
 // for merylene to use in tank. d is current tank diretion which is tank.pos.d
-void onFireCannonball(Position startPos, Vector d) {
+void onFireCannonball(Position startPos, Vector d, int player) {
+	// if time since last shot < FIRERATE, dont allow user to fire
+	switch (player) {
+		case 0:  // player 1
+			if (timeSinceFireP1 < FIRERATE) {
+				fprintf(stdout, "P1 not yet allowed to fire!\n");
+				return;
+			}
+			timeSinceFireP1 = 0.0;
+			break;
+
+		case 1:  // player 2
+			if (timeSinceFireP2 < FIRERATE) {
+				fprintf(stdout, "P2 not yet allowd to fire!\n");
+				return;
+			}
+			timeSinceFireP2 = 0.0;
+			break;
+
+		default:
+			fprintf(stderr, "Code should have never reached this point\n");
+			exit(2);
+	}
+
 	// create cannonball
 	CannonBall cb = _cannonballConstructor(startPos, d);
 

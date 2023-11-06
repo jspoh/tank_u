@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "math.h"
+#include "cannonball.h"
+
 //#include"collisionBasic.h" //to check for intersection
 
 #define MAX_HEALTH 100.f
@@ -197,7 +199,7 @@ void _actionTank(void) {
 	//}
 	//
 	for (int i = 0; i < NUM_PLAYERS; i++) {
-		if (keybindings[i].shoot)
+		if (CP_Input_KeyDown(keybindings[i].shoot))
 		{
 			//using the exact address to find the directional vector 
 			Vector unitVector = getDVector(&tanks[i]);
@@ -207,7 +209,7 @@ void _actionTank(void) {
 
 			Position turretTip=_getTurretPos(&tanks[i], size);
 			
-			onFireCannonball(unitVector, turretTip);
+			onFireCannonball(turretTip, unitVector, i);
 		}
 	}
 
