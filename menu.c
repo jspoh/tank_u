@@ -16,7 +16,7 @@ bool isPlaying = false;
 CP_Font font;
 CP_Image menuBg;
 
-BYTE menuState = FADE_IN;
+int menuState = FADE_IN;
 
 BYTE oAlpha = 255;
 
