@@ -45,6 +45,9 @@
     <ClCompile Include="cannonball.c">
       <Filter>components\cannonball</Filter>
     </ClCompile>
+    <ClCompile Include="tree.c">
+      <Filter>components\tree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="menu.h">
@@ -89,6 +92,9 @@
     </ClInclude>
     <ClInclude Include="cannonball.h">
       <Filter>components\cannonball</Filter>
+    </ClInclude>
+    <ClInclude Include="tree.h">
+      <Filter>components\tree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +142,9 @@
     </Filter>
     <Filter Include="components\cannonball">
       <UniqueIdentifier>{35d623de-1266-4c44-a40c-f3992c3d8083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\tree">
+      <UniqueIdentifier>{68d4405d-dae9-4b46-bc01-cefb1744384b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
