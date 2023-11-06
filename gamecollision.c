@@ -2,15 +2,16 @@
 // // For example, rectangle can represent tanks, walls, trees, dropboxe etc.
 // // circle can represent cannonball.
 #include "math.h"
+#include "config.h"
 
 
 // Function to check collision between two rectangles using boundary check;
-int checkRectangleCollision(Rectangle r1, Rectangle r2)
+int checkRectangleCollision(Rect r1, Rect r2)
 {
-    if (r1.x < r2.x + r2.width &&
-        r1.x + r1.width > r2.x &&
-        r1.y < r2.y + r2.height &&
-        r1.y + r1.height > r2.y)
+    if (r1.pos.x < r2.pos.x + r2.size.width &&
+        r1.pos.x + r1.size.width > r2.pos.x &&
+        r1.pos.y < r2.pos.y + r2.size.height &&
+        r1.pos.y + r1.size.height > r2.pos.y)
     {
         return 1; // Colliding
     }
@@ -24,10 +25,10 @@ int checkRectangleCollision(Rectangle r1, Rectangle r2)
 // // NOT THE BEST! BETTER TO USE PYTHAGOREN THEOREM TO CALC DIST BETWEEN CENTER OF CIRCLE AND CLOSEST POINT ON RECT.
 // int checkCircleRectCollision(Circle c, Rectangle r)
 // {
-//     if (c.x + c.radius > r.x &&
-//         c.x - c.radius < r.x + r.width &&
-//         c.y + c.radius > r.y &&
-//         c.y - c.radius < r.y + r.height)
+//     if (c.x + c.radius > r.pos.x &&
+//         c.x - c.radius < r.pos.x + r.size.width &&
+//         circleCenterY + c.radius > r.pos.y &&
+//         circleCenterY - c.radius < r.pos.y + r.height)
 //     {
 //         return 1; // Colliding
 //     }
@@ -38,15 +39,15 @@ int checkRectangleCollision(Rectangle r1, Rectangle r2)
 // }
 
  // Using pythagorean theorem to calculate dist between closest point on rect and circle center
-int checkCircleRectCollision(Circle c, Rectangle r)
+int checkCircleRectCollision(Rect r, double circleCenterX, double circleCenterY, double circleRadius)
 {
     // Finds the closest point on rect to the center of circle.
-    float closestX = fmax(r.x, fmin(c.x, r.x + r.width));
-    float closestY = fmax(r.y, fmin(c.y, r.y + r.height));
+    double closestX = fmax(r.pos.x, fmin(circleCenterX, r.pos.x + r.size.width));
+    double closestY = fmax(r.pos.y, fmin(circleCenterY, r.pos.y + r.size.height));
     // Calculates the diff between xy-coordinates of the circle center and closest point on rect
-    float deltaX = c.x - closestX;
-    float deltaY = c.y - closestY;
+    double deltaX = circleCenterX - closestX;
+    double deltaY = circleCenterY - closestY;
     // Determines if dist between closest point on rect and circle center is less than ths square of circle center.
     // If squared dist less than squared radius, it means circle center is within the circle, indicating a collision.
-    return (deltaX * deltaX + deltaY * deltaY) < (c.radius * c.radius);
+    return (deltaX * deltaX + deltaY * deltaY) < (circleRadius * circleRadius);
 }
