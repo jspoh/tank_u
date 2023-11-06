@@ -10,9 +10,6 @@
       <Filter>util\collision</Filter>
     </ClCompile>
     <ClCompile Include="game.c" />
-    <ClCompile Include="cannonball.c">
-      <Filter>components\cannonball</Filter>
-    </ClCompile>
     <ClCompile Include="options.c">
       <Filter>components\menu</Filter>
     </ClCompile>
@@ -25,6 +22,9 @@
     <ClCompile Include="utils.c">
       <Filter>util</Filter>
     </ClCompile>
+    <ClCompile Include="wall.c">
+      <Filter>components\wall</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
@@ -35,9 +35,6 @@
       <Filter>util\collision</Filter>
     </ClInclude>
     <ClInclude Include="game.h" />
-    <ClInclude Include="cannonball.h">
-      <Filter>components\cannonball</Filter>
-    </ClInclude>
     <ClInclude Include="options.h">
       <Filter>components\menu</Filter>
     </ClInclude>
@@ -49,6 +46,9 @@
     </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="wall.h">
+      <Filter>components\wall</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -64,11 +64,11 @@
     <Filter Include="util\collision">
       <UniqueIdentifier>{d5c55da1-6dd6-4eaa-9b4d-c2d3a1e7fed3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="components\cannonball">
-      <UniqueIdentifier>{a8879b22-df87-4a97-aad4-fb3afcfa1219}</UniqueIdentifier>
-    </Filter>
     <Filter Include="components\menu\backdrop">
       <UniqueIdentifier>{e7ebf866-7dd5-463b-b520-451664b86e72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\wall">
+      <UniqueIdentifier>{f76536ec-70fa-4a16-82c0-939a82758441}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
