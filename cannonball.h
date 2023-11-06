@@ -5,17 +5,16 @@
 
 #define CANNONBALL_SPEED 203498759.0
 
-// create struct for cannon ball
 typedef struct {
 	Position pos;
-	double diameter;
-	double velocity;
+	//double diameter;
+	//double velocity;
 	int damage;
-	bool bounced;
+	bool bounce;
 	Vector d;
 } CannonBall;
 
 void updateCannonball(void);
-void onFireCannonball(void);
+void onFireCannonball(Position startPos, Vector d);
 
 
