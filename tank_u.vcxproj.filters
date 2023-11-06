@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="config.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c">
       <Filter>components\menu</Filter>
@@ -40,9 +39,11 @@
     <ClCompile Include="back_btn.c">
       <Filter>components\menu\back_button</Filter>
     </ClCompile>
+    <ClCompile Include="config.c">
+      <Filter>config</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="config.h" />
     <ClInclude Include="menu.h">
       <Filter>components\menu</Filter>
     </ClInclude>
@@ -79,6 +80,9 @@
     </ClInclude>
     <ClInclude Include="back_btn.h">
       <Filter>components\menu\back_button</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +124,9 @@
     </Filter>
     <Filter Include="components\menu\back_button">
       <UniqueIdentifier>{8b343abd-f77e-43dd-8ad6-78b0828e3c05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{f69e5ec5-c7c4-42e0-a38c-e1d799660f1a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
