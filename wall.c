@@ -11,6 +11,20 @@
 #define HORIZONTALWALLWIDTH 300.f
 #define HORIZONTALWALLHEIGHT 50.f
 
+typedef Rect Wall;
+//Wall activeWalls[MAX] = { 0 };
+#define maxNumWalls 4
+Wall activeWalls[maxNumWalls] = { 0 };  // extern Wall activeWalls[];
+int numWalls = 0;
+
+void _resetWalls(void) {
+	for (int i = 0; i < maxNumWalls; i++) {
+		Wall wall = { 0 };
+		activeWalls[i] = wall;
+	}
+	numWalls = 0;
+}
+
 int randomNum = 0;
 void _wallTopLeft1(void)
 {
@@ -20,12 +34,10 @@ void _wallTopLeft1(void)
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
 	Position pos = { GAPLEFTRIGHT, GAPUPDOWN };
-	Rect wall = { size, pos };
-	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	// call drawRect function to draw the rectangle
-	drawRect(&wall, &fillCol, &strokeCol);
+	Wall wall = { size, pos };
+	activeWalls[numWalls++] = wall;
 }
+
 void _wallBottomLeft1(void)
 {
 	const float GAPUPDOWN = (float)((WINDOW_SIZE.height - (2 * VERTICALWALLHEIGHT)) / 3);
@@ -34,12 +46,10 @@ void _wallBottomLeft1(void)
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
 	Position pos = { GAPLEFTRIGHT, (WINDOW_SIZE.height - GAPUPDOWN) - VERTICALWALLHEIGHT };
-	Rect wall = { size, pos };
-	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	// call drawRect function to draw the rectangle
-	drawRect(&wall, &fillCol, &strokeCol);
+	Wall wall = { size, pos };
+	activeWalls[numWalls++] = wall;
 }
+
 void _wallTopRight1(void)
 {
 	const float GAPUPDOWN = (float)((WINDOW_SIZE.height - (2 * VERTICALWALLHEIGHT)) / 3);
@@ -48,12 +58,10 @@ void _wallTopRight1(void)
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
 	Position pos = { WINDOW_SIZE.width - GAPLEFTRIGHT - VERTICALWALLWIDTH, GAPUPDOWN };
-	Rect wall = { size, pos };
-	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	// call drawRect function to draw the rectangle
-	drawRect(&wall, &fillCol, &strokeCol);
+	Wall wall = { size, pos };
+	activeWalls[numWalls++] = wall;
 }
+
 void _wallBottomRight1(void)
 {
 	const float GAPUPDOWN = (float)((WINDOW_SIZE.height - (2 * VERTICALWALLHEIGHT)) / 3);
@@ -62,12 +70,10 @@ void _wallBottomRight1(void)
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
 	Position pos = { WINDOW_SIZE.width - GAPLEFTRIGHT - VERTICALWALLWIDTH, (WINDOW_SIZE.height - GAPUPDOWN) - VERTICALWALLHEIGHT };
-	Rect wall = { size, pos };
-	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	// call drawRect function to draw the rectangle
-	drawRect(&wall, &fillCol, &strokeCol);
+	Wall wall = { size, pos };
+	activeWalls[numWalls++] = wall;
 }
+
 void _preset1(void)
 {
 	_wallTopLeft1();
@@ -83,11 +89,8 @@ void _wallTop2(void)
 	Size size = { HORIZONTALWALLWIDTH, HORIZONTALWALLHEIGHT };
 	// position of the wall
 	Position pos = { WINDOW_SIZE.width / 2 - HORIZONTALWALLWIDTH, GAPUPDOWN };
-	Rect wall = { size, pos };
-	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	// call drawRect function to draw the rectangle
-	drawRect(&wall, &fillCol, &strokeCol);
+	Wall wall = { size, pos };
+	activeWalls[numWalls++] = wall;
 }
 
 void _wallBottom2(void)
@@ -97,11 +100,8 @@ void _wallBottom2(void)
 	Size size = { HORIZONTALWALLWIDTH, HORIZONTALWALLHEIGHT };
 	// position of the wall
 	Position pos = { WINDOW_SIZE.width / 2, WINDOW_SIZE.height - GAPUPDOWN - HORIZONTALWALLHEIGHT };
-	Rect wall = { size, pos };
-	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	// call drawRect function to draw the rectangle
-	drawRect(&wall, &fillCol, &strokeCol);
+	Wall wall = { size, pos };
+	activeWalls[numWalls++] = wall;
 }
 
 void _wallLeft2(void)
@@ -112,11 +112,8 @@ void _wallLeft2(void)
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
 	Position pos = { GAPLEFTRIGHT, WINDOW_SIZE.height - GAPUPDOWN - VERTICALWALLHEIGHT };
-	Rect wall = { size, pos };
-	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	// call drawRect function to draw the rectangle
-	drawRect(&wall, &fillCol, &strokeCol);
+	Wall wall = { size, pos };
+	activeWalls[numWalls++] = wall;
 
 }
 
@@ -128,11 +125,8 @@ void _wallRight2(void)
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
 	Position pos = { WINDOW_SIZE.width - GAPLEFTRIGHT - VERTICALWALLWIDTH, GAPUPDOWN };
-	Rect wall = { size, pos };
-	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	// call drawRect function to draw the rectangle
-	drawRect(&wall, &fillCol, &strokeCol);
+	Wall wall = { size, pos };
+	activeWalls[numWalls++] = wall;
 
 }
 
@@ -152,11 +146,8 @@ void _walltop3(void)
 	Size size = { HORIZONTALWALLWIDTH, HORIZONTALWALLHEIGHT };
 	// position of the wall
 	Position pos = { WINDOW_SIZE.width / 2 - HORIZONTALWALLWIDTH / 2 , GAPUPDOWN };
-	Rect wall = { size, pos };
-	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	// call drawRect function to draw the rectangle
-	drawRect(&wall, &fillCol, &strokeCol);
+	Wall wall = { size, pos };
+	activeWalls[numWalls++] = wall;
 }
 
 void _wallbottom3(void)
@@ -167,11 +158,8 @@ void _wallbottom3(void)
 	Size size = { HORIZONTALWALLWIDTH, HORIZONTALWALLHEIGHT };
 	// position of the wall
 	Position pos = { WINDOW_SIZE.width / 2 - HORIZONTALWALLWIDTH / 2, WINDOW_SIZE.height - GAPUPDOWN - HORIZONTALWALLHEIGHT };
-	Rect wall = { size, pos };
-	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	// call drawRect function to draw the rectangle
-	drawRect(&wall, &fillCol, &strokeCol);
+	Wall wall = { size, pos };
+	activeWalls[numWalls++] = wall;
 }
 
 void _wallleft3(void)
@@ -182,11 +170,8 @@ void _wallleft3(void)
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
 	Position pos = { GAPLEFTRIGHT, GAPUPDOWN };
-	Rect wall = { size, pos };
-	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	// call drawRect function to draw the rectangle
-	drawRect(&wall, &fillCol, &strokeCol);
+	Wall wall = { size, pos };
+	activeWalls[numWalls++] = wall;
 }
 
 void _wallright3(void)
@@ -197,11 +182,8 @@ void _wallright3(void)
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
 	Position pos = { WINDOW_SIZE.width - GAPLEFTRIGHT - VERTICALWALLWIDTH, GAPUPDOWN };
-	Rect wall = { size, pos };
-	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
-	// call drawRect function to draw the rectangle
-	drawRect(&wall, &fillCol, &strokeCol);
+	Wall wall = { size, pos };
+	activeWalls[numWalls++] = wall;
 }
 
 
@@ -215,28 +197,35 @@ void _preset3(void)
 
 void initWall(void)
 {
+	_resetWalls();
 	// do a random function that rotates between preset maps 1,2,3
 	int seed = (int)time(NULL);
 	srand(seed);
 
 	randomNum = rand() % 3 + 1;
+
+	switch (randomNum) {
+	case 1:
+		_preset1();
+		break;
+	case 2:
+		_preset2();
+		break;
+	case 3:
+		_preset3();
+		break;
+	}
 	
 }
 
 void drawWall(void)
 { 
 
-	if (randomNum == 1)
-	{
-		_preset1();
-	}
-	else if (randomNum == 2)
-	{
-		_preset2();
-	}
-	else 
-	{
-		_preset3();
+	for (int i = 0; i < numWalls; i++) {
+		Wall* wall = &activeWalls[i];
+		CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
+		CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
+		drawRect(wall, &fillCol, &strokeCol);
 	}
 }
 
