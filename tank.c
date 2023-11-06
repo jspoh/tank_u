@@ -18,7 +18,6 @@ Size tankSize = { 75.f, 100.f };
 extern Keybinds keybindings[];
 
 int willCollide(Tank* t1, Tank* t2, Position futurePositionOft1) {
-	//r1.x < r2.x + r2.width
 	Position r1;
 	Position r2;
 
