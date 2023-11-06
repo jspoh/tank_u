@@ -1,4 +1,4 @@
 #pragma once
-void initWall(void);
 
+void initWall(void);
 void drawWall(void);

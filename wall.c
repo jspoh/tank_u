@@ -14,8 +14,8 @@
 int randomNum = 0;
 void _wallTopLeft1(void)
 {
-	const float GAPUPDOWN = ((WINDOW_SIZE.height - (2 * VERTICALWALLHEIGHT)) / 3);
-	const float GAPLEFTRIGHT = (HORIZONTALWALLWIDTH + (HORIZONTALWALLWIDTH / 2));
+	const float GAPUPDOWN = (float)((WINDOW_SIZE.height - (2 * VERTICALWALLHEIGHT)) / 3);
+	const float GAPLEFTRIGHT = (float)(HORIZONTALWALLWIDTH + (HORIZONTALWALLWIDTH / 2));
 	// size of the wall
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
@@ -28,8 +28,8 @@ void _wallTopLeft1(void)
 }
 void _wallBottomLeft1(void)
 {
-	const float GAPUPDOWN = ((WINDOW_SIZE.height - (2 * VERTICALWALLHEIGHT)) / 3);
-	const float GAPLEFTRIGHT = (HORIZONTALWALLWIDTH + (HORIZONTALWALLWIDTH / 2));
+	const float GAPUPDOWN = (float)((WINDOW_SIZE.height - (2 * VERTICALWALLHEIGHT)) / 3);
+	const float GAPLEFTRIGHT = (float)(HORIZONTALWALLWIDTH + (HORIZONTALWALLWIDTH / 2));
 	// size of the wall
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
@@ -42,8 +42,8 @@ void _wallBottomLeft1(void)
 }
 void _wallTopRight1(void)
 {
-	const float GAPUPDOWN = ((WINDOW_SIZE.height - (2 * VERTICALWALLHEIGHT)) / 3);
-	const float GAPLEFTRIGHT = (HORIZONTALWALLWIDTH + (HORIZONTALWALLWIDTH / 2));
+	const float GAPUPDOWN = (float)((WINDOW_SIZE.height - (2 * VERTICALWALLHEIGHT)) / 3);
+	const float GAPLEFTRIGHT = (float)(HORIZONTALWALLWIDTH + (HORIZONTALWALLWIDTH / 2));
 	// size of the wall
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
@@ -56,8 +56,8 @@ void _wallTopRight1(void)
 }
 void _wallBottomRight1(void)
 {
-	const float GAPUPDOWN = ((WINDOW_SIZE.height - (2 * VERTICALWALLHEIGHT)) / 3);
-	const float GAPLEFTRIGHT = (HORIZONTALWALLWIDTH + (HORIZONTALWALLWIDTH / 2));
+	const float GAPUPDOWN = (float)((WINDOW_SIZE.height - (2 * VERTICALWALLHEIGHT)) / 3);
+	const float GAPLEFTRIGHT = (float)(HORIZONTALWALLWIDTH + (HORIZONTALWALLWIDTH / 2));
 	// size of the wall
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
@@ -78,7 +78,7 @@ void _preset1(void)
 
 void _wallTop2(void)
 {
-	const float GAPUPDOWN = (VERTICALWALLHEIGHT / 2);
+	const float GAPUPDOWN = (float)(VERTICALWALLHEIGHT / 2);
 	// size of the wall
 	Size size = { HORIZONTALWALLWIDTH, HORIZONTALWALLHEIGHT };
 	// position of the wall
@@ -92,7 +92,7 @@ void _wallTop2(void)
 
 void _wallBottom2(void)
 {
-	const float GAPUPDOWN = (VERTICALWALLHEIGHT / 2);
+	const float GAPUPDOWN = (float)(VERTICALWALLHEIGHT / 2);
 	// size of the wall
 	Size size = { HORIZONTALWALLWIDTH, HORIZONTALWALLHEIGHT };
 	// position of the wall
@@ -106,8 +106,8 @@ void _wallBottom2(void)
 
 void _wallLeft2(void)
 {
-	const float GAPUPDOWN = (VERTICALWALLHEIGHT / 2);
-	const float GAPLEFTRIGHT = (HORIZONTALWALLWIDTH + HORIZONTALWALLWIDTH / 2);
+	const float GAPUPDOWN = (float)(VERTICALWALLHEIGHT / 2);
+	const float GAPLEFTRIGHT = (float)(HORIZONTALWALLWIDTH + HORIZONTALWALLWIDTH / 2);
 	// size of the wall
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
@@ -122,8 +122,8 @@ void _wallLeft2(void)
 
 void _wallRight2(void)
 {
-	const float GAPUPDOWN = (VERTICALWALLHEIGHT / 2);
-	const float GAPLEFTRIGHT = (HORIZONTALWALLWIDTH + HORIZONTALWALLWIDTH / 2);
+	const float GAPUPDOWN = (float)(VERTICALWALLHEIGHT / 2);
+	const float GAPLEFTRIGHT = (float)(HORIZONTALWALLWIDTH + HORIZONTALWALLWIDTH / 2);
 	// size of the wall
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
@@ -146,8 +146,8 @@ void _preset2(void)
 
 void _walltop3(void)
 {
-	const float GAPUPDOWN = (VERTICALWALLHEIGHT / 2 + HORIZONTALWALLHEIGHT);
-	const float GAPLEFTRIGHT = (2 * HORIZONTALWALLWIDTH);
+	const float GAPUPDOWN = (float)(VERTICALWALLHEIGHT / 2 + HORIZONTALWALLHEIGHT);
+	const float GAPLEFTRIGHT = (float)(2 * HORIZONTALWALLWIDTH);
 	// size of the wall
 	Size size = { HORIZONTALWALLWIDTH, HORIZONTALWALLHEIGHT };
 	// position of the wall
@@ -161,8 +161,8 @@ void _walltop3(void)
 
 void _wallbottom3(void)
 {
-	const float GAPUPDOWN = (VERTICALWALLHEIGHT / 2 + HORIZONTALWALLHEIGHT);
-	const float GAPLEFTRIGHT = (2 * HORIZONTALWALLWIDTH);
+	const float GAPUPDOWN = (float)(VERTICALWALLHEIGHT / 2 + HORIZONTALWALLHEIGHT);
+	const float GAPLEFTRIGHT = (float)(2 * HORIZONTALWALLWIDTH);
 	// size of the wall
 	Size size = { HORIZONTALWALLWIDTH, HORIZONTALWALLHEIGHT };
 	// position of the wall
@@ -176,8 +176,8 @@ void _wallbottom3(void)
 
 void _wallleft3(void)
 {
-	const float GAPLEFTRIGHT = ((WINDOW_SIZE.width - (2 * VERTICALWALLWIDTH)) / 3);
-	const float GAPUPDOWN = ((WINDOW_SIZE.height - VERTICALWALLHEIGHT) / 2);
+	const float GAPLEFTRIGHT = (float)((WINDOW_SIZE.width - (2 * VERTICALWALLWIDTH)) / 3);
+	const float GAPUPDOWN = (float)((WINDOW_SIZE.height - VERTICALWALLHEIGHT) / 2);
 	// size of the wall
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
@@ -191,8 +191,8 @@ void _wallleft3(void)
 
 void _wallright3(void)
 {
-	const float GAPLEFTRIGHT = ((WINDOW_SIZE.width - (2 * VERTICALWALLWIDTH)) / 3);
-	const float GAPUPDOWN = ((WINDOW_SIZE.height - VERTICALWALLHEIGHT) / 2);
+	const float GAPLEFTRIGHT = (float)((WINDOW_SIZE.width - (2 * VERTICALWALLWIDTH)) / 3);
+	const float GAPUPDOWN = (float)((WINDOW_SIZE.height - VERTICALWALLHEIGHT) / 2);
 	// size of the wall
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
