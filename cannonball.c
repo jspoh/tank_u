@@ -9,24 +9,45 @@ double timeSinceFireP1 = 1.0;  // time since last shot
 double timeSinceFireP2 = 1.0;
 
 CannonBall activeCbs[MAX] = { 0 };  // all currently active cannonballs
-size_t numCbs = 0; // no. of active cannonball
+int numCbs = 0; // no. of active cannonball
 
-
-void _onWallCollision(CannonBall* cb) {
-	// if collide with top/bottom wall, invert y
-	//if()
-	//cb->d.x = - cb->d.x;
-	//cb->d.y = - cb->d.y;
-
-	// if collide with left.right wall, invert x
-	// use cb->pos.d
+// !TODO: to test code after collision with wall is done
+void _checkWallCollision(CannonBall* cb, int index) {
+	//if (collide with top wall or bottom wall) {
+	//	if (cb->bounced) {
+	//		_destroyCannonball(index);
+	//		return;
+	//	}
+	//	cb->d.y = -cb->d.y;
+	//	cb->bounced = true;
+	//}
+	//else if (collide with left or right wall) {
+	//	if (cb->bounced) {
+	//		_destroyCannonball(index);
+	//		return;
+	//	}
+	//	cb->d.x = -cb->d.x;
+	//	cb->bounced = true;
+	//}
 }
 
-void _onDestroyCannonball(size_t index) {
-	// remove cannonball from array activeCbs(remember to move everything to the front. eg. if [1,2,3,4,5], and
-	// you remove 2, it should be [1,3,4,5,0] not [1,0,3,4,5]
-	// afterwards, decrement numCbs variable
-	// if possible, draw exploding animation with circles (create new function for this)
+bool _removeCannonball(int index) {
+	if (index >= numCbs) {
+		fprintf(stderr, "Index out of range\n");
+		exit(3);
+	}
+
+	for (int i = index; i < numCbs; i++) {
+		activeCbs[i] = activeCbs[i + 1];
+	}
+	numCbs--;
+
+	return true;
+}
+
+void _destroyCannonball(int index) {
+	_removeCannonball(index);
+	// !TODO: if possible, draw exploding animation with circles (create new function for this in utils/animations/explosion)
 }
 
 void _moveCannonball(CannonBall* cb) {
@@ -47,11 +68,9 @@ void updateCannonball(void) {
 		CannonBall* cb = &activeCbs[i]; 
 
 		_moveCannonball(cb);
-		CP_Graphics_DrawCircle(cb->pos.x, cb->pos.y, CANNON_RADIUS);
+		_checkWallCollision(cb, i);
+		CP_Graphics_DrawCircle((float)cb->pos.x, (float)cb->pos.y, CANNON_RADIUS);
 	}
-	// iterate through activeCbs and move cannonball (and draw ofc) must draw from turret end. need math goodluck
-	// check if collide w wall from wenxin collision w wall. if yes, call _onWallCollision
-	// check if collide with tank thrrough wenxin collision code
 }
 
 CannonBall _cannonballConstructor(Position pos, Vector d) {
@@ -61,7 +80,6 @@ CannonBall _cannonballConstructor(Position pos, Vector d) {
 	return cb;
 }
 
-// for merylene to use in tank. d is current tank diretion which is tank.pos.d
 void onFireCannonball(Position startPos, Vector d, int player) {
 	// if time since last shot < FIRERATE, dont allow user to fire
 	switch (player) {
@@ -88,8 +106,6 @@ void onFireCannonball(Position startPos, Vector d, int player) {
 
 	// create cannonball
 	CannonBall cb = _cannonballConstructor(startPos, d);
-
-	// push cannonball onto `activeCbs` with `numCbs` (rmb to increment numCbs)
 	activeCbs[numCbs++] = cb;
 }
 
