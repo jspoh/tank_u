@@ -199,12 +199,20 @@ void _actionTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		if (keybindings[i].shoot)
 		{
-			//shoot cannon ball 
+			//using the exact address to find the directional vector 
+			Vector unitVector = getDVector(&tanks[i]);
+			Size size = { 0 };
+			size.height = (tanks[i].size.height * 0.6f) * 0.6f;
+			size.width = (tanks[i].size.width * 0.6f) * 0.3f;
+
+			Position turretTip=_getTurretPos(&tanks[i], size);
 			
+			onFireCannonball(unitVector, turretTip);
 		}
 	}
 
 }
+
 
 
 void initTank(void) {
