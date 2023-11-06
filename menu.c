@@ -10,10 +10,13 @@
 #include "menu.h"
 #include <stdio.h>
 
+CP_Sound titleSong;
+bool isPlaying = false;
+
 CP_Font font;
 CP_Image menuBg;
 
-BYTE menuState = FADE_IN;
+int menuState = FADE_IN;
 
 BYTE oAlpha = 255;
 
@@ -89,6 +92,8 @@ void _menuFadeToGame(void) {
 }
 
 void _initVars(void) {
+	titleSong = CP_Sound_Load("Assets/audio/title.wav");
+
 	menuBg = CP_Image_Load("Assets/menu_bg.png");
 
 	/* colors */
@@ -222,6 +227,10 @@ void _destroySubpages(void) {
 }
 
 void menuUpdate(void) {
+	if (!isPlaying) {
+		isPlaying = true;
+		CP_Sound_PlayMusic(titleSong);
+	}
 	CP_Graphics_ClearBackground(CP_Color_Create(150, 150, 150, 255));
 	CP_Image_Draw(menuBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), oAlpha);
 
@@ -256,4 +265,5 @@ void menuExit(void) {
 	// why doesnt this work? wow suddenly it worked when i was about to open issue on github
 	_destroySubpages();
 	CP_Image_Free(&menuBg);
+	CP_Sound_Free(&titleSong);
 }
