@@ -4,74 +4,80 @@
 #include "collision.h"
 #include "backdrop.h"
 #include "options.h"
+#include "help.h"
+#include "credits.h"
 #include "utils.h"
+#include "menu.h"
 #include <stdio.h>
 
 CP_Font font;
 CP_Image menuBg;
 
-enum { FADE_IN, LAUNCH_PAGE, MENU_PAGE, FADE_TO_GAME, OPTIONS_PAGE };
 BYTE menuState = FADE_IN;
 
 BYTE oAlpha = 255;
 
-float textSize = 50.f;
+double textSize = 50.0;
 
 CP_Color btnColor;
 CP_Color invisColor;
 CP_Color black;
 CP_Color white;
+CP_Color whiteHighlighted;
+CP_Color red;
 CP_Color oColor;
 
-Position a = { 1500.f, 700.f };
-Position b = { 1400.f, 650.f };
-Position c = { 1400.f, 750.f };
+Position a = { 1500.0, 700.0 };
+Position b = { 1400.0, 650.0 };
+Position c = { 1400.0, 750.0 };
 Triangle startBtn;
 
-Position _scPos = { 1350.f,600.f };
-Size _scSize = { 200.f, 250.f };
+Position _scPos = { 1350.0,600.0 };
+Size _scSize = { 200.0, 250.0 };
 Rect startContainer;
 
 Rect overlay;
 
 char buttons[][8] = { "Play", "Options", "Help", "Credits", "Exit" };
 Position _firstBtnPos;
-Size btnSize = { 200.f,75.f };
-float spaceBetweenBtns = 50.f;
+Size btnSize = { 200.0,75.0 };
+double spaceBetweenBtns = 50.0;
 Rect firstBtn;
 
-Rect fadeRectL;
-Rect fadeRectR;
-Rect oFadeRect;
+Rect __fadeRectL;
+Rect __fadeRectR;
+Rect _oFadeRect;
 #define TRANSITION_DURATION 1
-float menuElapsedTime = 0;
+double menuElapsedTime = 0;
 #define GAME_TRANSITION_DURATION 0.5
 BYTE fadeOpacity = 0;
 
-void drawRect2(Rect* r, CP_Color fillColor, CP_Color strokeColor) {
+void _drawRect2(Rect* r, CP_Color fillColor, CP_Color strokeColor) {
 	CP_Settings_Fill(fillColor);
 	CP_Settings_Stroke(strokeColor);
-	CP_Graphics_DrawRect(r->pos.x, r->pos.y, r->size.width, r->size.height);
+	CP_Graphics_DrawRect((float)r->pos.x, (float)r->pos.y, (float)r->size.width, (float)r->size.height);
 }
 
-void menuFadeIn(void) {
-	if (fadeRectL.pos.x <= 0 && fadeRectR.pos.x >= WINDOW_SIZE.width) {
+void _menuFadeIn(void) {
+	if (__fadeRectL.pos.x <= 0 && __fadeRectR.pos.x >= WINDOW_SIZE.width) {
 		menuElapsedTime = 0;
 		menuState = LAUNCH_PAGE;
 	}
 
-	drawRect(&fadeRectL, &black, &black);
-	drawRect(&fadeRectR, &black, &black);
+	drawRect(&__fadeRectL, &black, &black);
+	drawRect(&__fadeRectR, &black, &black);
 
 	menuElapsedTime += CP_System_GetDt();
-	float pixels = (menuElapsedTime / TRANSITION_DURATION) * (WINDOW_SIZE.width / 2);
+	double pixels = (menuElapsedTime / TRANSITION_DURATION) * (WINDOW_SIZE.width / 2);
 
-	fadeRectL.pos.x = 0.f - pixels;
-	fadeRectR.pos.x = WINDOW_SIZE.width / 2 + pixels;
+	__fadeRectL.pos.x = 0.0 - pixels;
+	__fadeRectR.pos.x = WINDOW_SIZE.width / 2 + pixels;
 }
 
-void menuFadeToGame(void) {
+void _menuFadeToGame(void) {
 	if (fadeOpacity == 255) {
+		fadeOpacity = 0;
+		menuElapsedTime = 0;
 		CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
 	}
 
@@ -79,10 +85,10 @@ void menuFadeToGame(void) {
 	//fadeOpacity = (BYTE)(255 * menuElapsedTime / GAME_TRANSITION_DURATION);
 	fadeOpacity = (BYTE)min(255, (255 * menuElapsedTime / GAME_TRANSITION_DURATION));
 	CP_Color tCol = CP_Color_Create(0, 0, 0, fadeOpacity);
-	drawRect2(&oFadeRect, tCol, tCol);
+	_drawRect2(&_oFadeRect, tCol, tCol);
 }
 
-void initVars(void) {
+void _initVars(void) {
 	menuBg = CP_Image_Load("Assets/menu_bg.png");
 
 	/* colors */
@@ -90,7 +96,9 @@ void initVars(void) {
 	invisColor = CP_Color_Create(0, 0, 0, 0);
 	black = CP_Color_Create(0, 0, 0, 255);
 	white = CP_Color_Create(255, 255, 255, 255);
+	whiteHighlighted = CP_Color_Create(200, 200, 200, 225);
 	oColor = CP_Color_Create(0, 0, 0, 200);
+	red = CP_Color_Create(255, 0, 0, 255);
 
 	/* structs */
 	startBtn.a = a;
@@ -98,8 +106,8 @@ void initVars(void) {
 	startBtn.c = c;
 	startContainer.pos = _scPos;
 	startContainer.size = _scSize;
-	overlay.pos.x = 0.f;
-	overlay.pos.y = 0.f;
+	overlay.pos.x = 0.0;
+	overlay.pos.y = 0.0;
 	overlay.size.width = WINDOW_SIZE.width;
 	overlay.size.height = WINDOW_SIZE.height;
 	firstBtn.size = btnSize;
@@ -108,19 +116,19 @@ void initVars(void) {
 	firstBtn.pos = _firstBtnPos;
 
 	/* fade stuff */
-	Size _fadeRectLSize = { WINDOW_SIZE.width / 2, WINDOW_SIZE.height };
-	Position _fadeRectLPos = { 0.f, 0.f };
-	fadeRectL.size = _fadeRectLSize;
-	fadeRectL.pos = _fadeRectLPos;
+	Size ___fadeRectLSize = { WINDOW_SIZE.width / 2, WINDOW_SIZE.height };
+	Position ___fadeRectLPos = { 0.0, 0.0 };
+	__fadeRectL.size = ___fadeRectLSize;
+	__fadeRectL.pos = ___fadeRectLPos;
 
-	Size _fadeRectRSize = { WINDOW_SIZE.width / 2, WINDOW_SIZE.height };
-	Position _fadeRectRPos = { WINDOW_SIZE.width / 2, 0.f };
-	fadeRectR.size = _fadeRectRSize;
-	fadeRectR.pos = _fadeRectRPos;
+	Size ___fadeRectRSize = { WINDOW_SIZE.width / 2, WINDOW_SIZE.height };
+	Position ___fadeRectRPos = { WINDOW_SIZE.width / 2, 0.0 };
+	__fadeRectR.size = ___fadeRectRSize;
+	__fadeRectR.pos = ___fadeRectRPos;
 
-	Position _oFadeRectPos = { 0.f, 0.f };
-	oFadeRect.size = WINDOW_SIZE;
-	oFadeRect.pos = _oFadeRectPos;
+	Position __oFadeRectPos = { 0.0, 0.0 };
+	_oFadeRect.size = WINDOW_SIZE;
+	_oFadeRect.pos = __oFadeRectPos;
 }
 
 void menuInit(void) {
@@ -130,28 +138,16 @@ void menuInit(void) {
 	CP_Font_Set(font);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
+	CP_Settings_RectMode(CP_POSITION_CORNER);
 	
-	initVars();
+	_initVars();
 }
 
-void drawTriangleBtn(Triangle *t) {
-	CP_Settings_Fill(btnColor);
-	CP_Settings_Stroke(white);
-	CP_Graphics_DrawTriangle(t->a.x, t->a.y, t->b.x, t->b.y, t->c.x, t->c.y);
-}
-
-void drawText(char* text, float x, float y, float size, CP_Color* strokeColor) {
-	//CP_Settings_StrokeWeight(1.0f);
-	CP_Settings_TextSize(size);
-	CP_Settings_Stroke(*strokeColor);
-	CP_Settings_Fill(*strokeColor);
-	CP_Font_DrawText(text, x, y);
-}
-
-void renderLaunchPage(void) {
-	drawTriangleBtn(&startBtn);
+void _renderLaunchPage(void) {
+	drawTriangle(&startBtn, &btnColor, &white);
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_BOTTOM);
-	drawText("Start", startContainer.pos.x + 50, startContainer.pos.y + 200, textSize, &black);
+	Position textPos = { startContainer.pos.x + 50, startContainer.pos.y + 200 };
+	drawText("Start", &textPos, textSize, &black);
 
 	if (mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 		btnColor = CP_Color_Create(200, 200, 200, 220);
@@ -166,7 +162,7 @@ void renderLaunchPage(void) {
 	}
 }
 
-void renderMenuPage(void) {
+void _renderMenuPage(void) {
 	renderBackdrop();
 
 	for (int i = 0; i < sizeof(buttons) / sizeof(buttons[0]); i++) {
@@ -183,10 +179,10 @@ void renderMenuPage(void) {
 					menuState = OPTIONS_PAGE;
 				}
 				else if (!strcmp(buttons[i], "Help")) {
-
+					menuState = HELP_PAGE;
 				}
 				else if (!strcmp(buttons[i], "Credits")) {
-
+					menuState = CREDITS_PAGE;
 				}
 				else if (!strcmp(buttons[i], "Exit")) {
 					CP_Engine_Terminate();
@@ -206,7 +202,8 @@ void renderMenuPage(void) {
 
 		/* draw text on button*/
 		CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-		drawText(buttons[i], rp.x + rs.width / 2, rp.y + rs.height / 2, textSize, &black);
+		Position textPos = { rp.x + rs.width / 2, rp.y + rs.height / 2 };
+		drawText(buttons[i], &textPos, textSize, &black);
 
 		if (mouseInRect(r, CP_Input_GetMouseX(), CP_Input_GetMouseY()) && CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 			if (!strcmp(buttons[i], "Play")) {
@@ -216,29 +213,39 @@ void renderMenuPage(void) {
 	}
 
 	if (menuState == FADE_TO_GAME) {
-		menuFadeToGame();
+		_menuFadeToGame();
 	}
+}
+
+void _destroySubpages(void) {
+	destroyCredits();
 }
 
 void menuUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(150, 150, 150, 255));
-	CP_Image_Draw(menuBg, WINDOW_SIZE.width/2, WINDOW_SIZE.height/2, WINDOW_SIZE.width, WINDOW_SIZE.height, oAlpha);
+	CP_Image_Draw(menuBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), oAlpha);
 
 	switch (menuState) {
 		case FADE_IN:
-			menuFadeIn();
+			_menuFadeIn();
 			break;
 		case LAUNCH_PAGE:
-			renderLaunchPage();
+			_renderLaunchPage();
 			break;
 		case MENU_PAGE:
-			renderMenuPage();
+			_renderMenuPage();
 			break;
 		case FADE_TO_GAME:
-			renderMenuPage();
+			_renderMenuPage();
 			break;
 		case OPTIONS_PAGE:
 			renderOptions();
+			break;
+		case HELP_PAGE:
+			renderHelp();
+			break;
+		case CREDITS_PAGE:
+			renderCredits();
 			break;
 		default:
 			break;
@@ -246,5 +253,7 @@ void menuUpdate(void) {
 }
 
 void menuExit(void) {
+	// why doesnt this work? wow suddenly it worked when i was about to open issue on github
+	_destroySubpages();
 	CP_Image_Free(&menuBg);
 }

@@ -15,7 +15,7 @@ typedef uint8_t bool;
 
 
 typedef struct {
-	float width, height, diameter;
+	double width, height, diameter;
 } Size;
 
 typedef struct {
@@ -23,13 +23,15 @@ typedef struct {
 } Color;
 
 typedef struct {
-	float x, y;
+	double x, y;
 } Vector;
 
 typedef struct Position {
-	float x;
-	float y;
-	float direction;
+	double x;
+	double y;
+	double direction;  // angle
+	double dDir;  // change in angle from previous frame
+	Vector d;  // current directional vector
 } Position;
 
 typedef struct {
