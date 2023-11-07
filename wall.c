@@ -11,9 +11,6 @@
 #define HORIZONTALWALLWIDTH 300.f
 #define HORIZONTALWALLHEIGHT 50.f
 
-typedef Rect Wall;
-//Wall activeWalls[MAX] = { 0 };
-#define maxNumWalls 4
 Wall activeWalls[maxNumWalls] = { 0 };  // extern Wall activeWalls[];
 int numWalls = 0;
 
