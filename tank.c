@@ -206,7 +206,7 @@ void _actionTank(void) {
 	//		{
 	//			if (tanks[i].activePermPowers[i] == 0) 
 	//			{
-	//				tanks[i].activePermPowers[i] = dropbox;
+	//				tanks[i].activePermPowers[i] += dropbox;
 	//			}
 
 	//		}
@@ -227,17 +227,7 @@ void _actionTank(void) {
 			Position turretTip= _getTurretCenter(&tanks[i], size);
 
 			onFireCannonball(turretTip, unitVector, i);
-			// anws, you only need 1 printline for this. no need to check what the value of `i` is
-			//if (i == 0) {
-			//	printf("tank 1 :x:%lf y:%lf\n ", unitVector.x, unitVector.y);
-			//	printf("tank 1 turret pos x: %lf y: %lf\n", turretTip.x, turretTip.y);
-
-			//}
-			//else if (i == 1)
-			//{
-			//	printf("tank 2 :x:%lf y:%lf\n ", unitVector.x, unitVector.y);
-			//	printf("tank 2 turret pos x: %lf y: %lf\n", turretTip.x, turretTip.y);
-			//}
+			
 		}
 	}
 
