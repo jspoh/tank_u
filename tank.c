@@ -180,6 +180,21 @@ void _damageTank(Tank* tank, double damage) {
 	tank->health -= damage;
 }
 
+
+Position _getTurretCenter(Tank* t, Size turretSize) {
+	double scalar = sqrt(pow(t->size.width / 2.0, 2.0) + pow(t->size.height / 2.0, 2.0)); //the distance between the point
+
+	Position O = { 0 };
+	O.x = t->pos.x + scalar * t->pos.d.x;
+	O.y = t->pos.y + scalar * t->pos.d.y;
+
+
+	//Vector n = { t->pos.d.y, -t->pos.d.x };
+	//O.x += scalar + n.x;
+	//O.y += scalar + n.y;
+
+	return O;
+}
 /*!
 * @brief logic to handle shooting, collecting, using powerups
 */
@@ -203,17 +218,33 @@ void _actionTank(void) {
 		{
 			//using the exact address to find the directional vector 
 			Vector unitVector = getDVector(&tanks[i]);
+
 			Size size = { 0 };
 			size.height = (tanks[i].size.height * 0.6f) * 0.6f;
+			//printf("height: %lf", size.height);
 			size.width = (tanks[i].size.width * 0.6f) * 0.3f;
+			//printf("width: %lf", size.width);
+			Position turretTip= _getTurretCenter(&tanks[i], size);
 
-			Position turretTip=_getTurretPos(&tanks[i], size);
-			
 			onFireCannonball(turretTip, unitVector, i);
+			// anws, you only need 1 printline for this. no need to check what the value of `i` is
+			//if (i == 0) {
+			//	printf("tank 1 :x:%lf y:%lf\n ", unitVector.x, unitVector.y);
+			//	printf("tank 1 turret pos x: %lf y: %lf\n", turretTip.x, turretTip.y);
+
+			//}
+			//else if (i == 1)
+			//{
+			//	printf("tank 2 :x:%lf y:%lf\n ", unitVector.x, unitVector.y);
+			//	printf("tank 2 turret pos x: %lf y: %lf\n", turretTip.x, turretTip.y);
+			//}
 		}
 	}
 
 }
+
+
+
 
 
 
