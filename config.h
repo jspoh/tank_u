@@ -44,6 +44,11 @@ typedef struct {
 	Position pos;
 } Rect;
 
+typedef struct {
+	Position pos;
+	double radius;
+} Circle;
+
 extern Size WINDOW_SIZE;
 
 /***

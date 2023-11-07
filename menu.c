@@ -31,6 +31,7 @@ CP_Color red;
 CP_Color oColor;
 CP_Color grey1 = { 200, 200, 200, 255 };
 CP_Color grey2 = { 150, 150, 150, 255 };
+CP_Color yellow = { 245, 245, 66, 255 };
 
 Position a = { 1500.0, 700.0 };
 Position b = { 1400.0, 650.0 };
