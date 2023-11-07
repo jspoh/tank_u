@@ -11,7 +11,7 @@
 #include <stdio.h>
 
 CP_Sound titleSong;
-bool isPlaying = false;
+bool isPlayingMusic = false;
 
 CP_Font font;
 CP_Image menuBg;
@@ -56,6 +56,11 @@ Rect _oFadeRect;
 double menuElapsedTime = 0;
 #define GAME_TRANSITION_DURATION 0.5
 BYTE fadeOpacity = 0;
+
+/*audio between 0 and 1*/
+double musicVolume = 1.0;
+/*audio between 0 and 1*/
+double sfxVolume = 1.0;
 
 void _drawRect2(Rect* r, CP_Color fillColor, CP_Color strokeColor) {
 	CP_Settings_Fill(fillColor);
@@ -229,9 +234,9 @@ void _destroySubpages(void) {
 }
 
 void menuUpdate(void) {
-	if (!isPlaying) {
-		isPlaying = true;
-		CP_Sound_PlayMusic(titleSong);
+	if (!isPlayingMusic) {
+		isPlayingMusic = true;
+		CP_Sound_PlayAdvanced(titleSong, (float)musicVolume, 1.f, true, CP_SOUND_GROUP_0);
 	}
 	CP_Graphics_ClearBackground(CP_Color_Create(150, 150, 150, 255));
 	CP_Image_Draw(menuBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), oAlpha);
@@ -268,4 +273,5 @@ void menuExit(void) {
 	_destroySubpages();
 	CP_Image_Free(&menuBg);
 	CP_Sound_Free(&titleSong);
+	isPlayingMusic = false;
 }
