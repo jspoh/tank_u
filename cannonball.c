@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #define CANNONBALL_SPEED 750
-#define CANNON_RADIUS 10
+#define CANNONBALL_RADIUS 10
 #define FIRERATE 1  // shots per second
 
 double timeSinceFireP1 = 1.0;  // time since last shot
@@ -69,7 +69,7 @@ void updateCannonball(void) {
 
 		_moveCannonball(cb);
 		_checkWallCollision(cb, i);
-		CP_Graphics_DrawCircle((float)cb->pos.x, (float)cb->pos.y, CANNON_RADIUS);
+		CP_Graphics_DrawCircle((float)cb->pos.x, (float)cb->pos.y, (float)cb->radius);
 	}
 }
 
@@ -77,6 +77,7 @@ CannonBall _cannonballConstructor(Position pos, Vector d) {
 	CannonBall cb = { 0 };
 	cb.pos = pos;
 	cb.d = d;
+	cb.radius = CANNONBALL_RADIUS;
 	return cb;
 }
 
@@ -85,7 +86,7 @@ void onFireCannonball(Position startPos, Vector d, int player) {
 	switch (player) {
 		case 0:  // player 1
 			if (timeSinceFireP1 < FIRERATE) {
-				fprintf(stdout, "P1 not yet allowed to fire!\n");
+				//fprintf(stdout, "P1 not yet allowed to fire!\n");
 				return;
 			}
 			timeSinceFireP1 = 0.0;
@@ -93,7 +94,7 @@ void onFireCannonball(Position startPos, Vector d, int player) {
 
 		case 1:  // player 2
 			if (timeSinceFireP2 < FIRERATE) {
-				fprintf(stdout, "P2 not yet allowd to fire!\n");
+				//fprintf(stdout, "P2 not yet allowd to fire!\n");
 				return;
 			}
 			timeSinceFireP2 = 0.0;

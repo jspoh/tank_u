@@ -5,7 +5,7 @@
 
 typedef struct {
 	Position pos;
-	//double diameter;
+	double radius;
 	//double velocity;
 	int damage;
 	bool bounced;
