@@ -227,16 +227,17 @@ void _actionTank(void) {
 			Position turretTip= _getTurretCenter(&tanks[i], size);
 
 			onFireCannonball(turretTip, unitVector, i);
-			if (i == 0) {
-				printf("tank 1 :x:%lf y:%lf\n ", unitVector.x, unitVector.y);
-				printf("tank 1 turret pos x: %lf y: %lf\n", turretTip.x, turretTip.y);
+			// anws, you only need 1 printline for this. no need to check what the value of `i` is
+			//if (i == 0) {
+			//	printf("tank 1 :x:%lf y:%lf\n ", unitVector.x, unitVector.y);
+			//	printf("tank 1 turret pos x: %lf y: %lf\n", turretTip.x, turretTip.y);
 
-			}
-			else if (i == 1)
-			{
-				printf("tank 2 :x:%lf y:%lf\n ", unitVector.x, unitVector.y);
-				printf("tank 2 turret pos x: %lf y: %lf\n", turretTip.x, turretTip.y);
-			}
+			//}
+			//else if (i == 1)
+			//{
+			//	printf("tank 2 :x:%lf y:%lf\n ", unitVector.x, unitVector.y);
+			//	printf("tank 2 turret pos x: %lf y: %lf\n", turretTip.x, turretTip.y);
+			//}
 		}
 	}
 
