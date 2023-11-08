@@ -230,6 +230,16 @@ void _actionTank(void) {
 			
 		}
 	}
+	//for (int i = 0; i < NUM_PLAYERS; i++)
+	//{
+	//	if (CP_Input_KeyDown(keybindings[i].usePower)) {
+	//		for (int j = 0; j < POWERUPS_COUNT; j++)
+	//		{
+	//			takes in the tank that have the power up
+	//			activatePowerUp(Tank* tanks[i], j);
+	//		}
+	//	}
+	//}
 
 }
 
