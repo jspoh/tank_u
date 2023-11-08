@@ -48,6 +48,7 @@
     <ClCompile Include="gamecollision.c">
       <Filter>util\game_collision</Filter>
     </ClCompile>
+    <ClCompile Include="healthbar.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="menu.h">
@@ -96,6 +97,7 @@
     <ClInclude Include="gamecollision.h">
       <Filter>util\game_collision</Filter>
     </ClInclude>
+    <ClInclude Include="healthbar.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="components">
