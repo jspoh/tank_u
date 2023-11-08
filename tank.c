@@ -37,7 +37,6 @@ void _setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
 	tank->color.a = a;
 }
 
-
 void _moveTanks(void) {
 	const double dt = CP_System_GetDt();
 	const double dDegrees = dt * TURN_SPEED;  // dDegrees as in change in degrees like dx, dy (differentiate)
@@ -138,7 +137,6 @@ void _moveTanks(void) {
 		t->pos.d = getDVector(t);
 	}
 }
-
 
 Tank _tankConstructor(Position pos, Color color) {
 	Tank tank = { 0 };

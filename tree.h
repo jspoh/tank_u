@@ -1,9 +1,13 @@
 #pragma once
-// init
 
-// random draw in game
+#include "config.h"
+#include "utils.h"
 
-// free image
+typedef struct {
+	Size size;
+	Position pos;
+	int treeImg;
+} Tree;
 
 void initTree(void);
 void renderTree(void);

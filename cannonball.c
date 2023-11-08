@@ -3,7 +3,7 @@
 
 #define CANNONBALL_SPEED 750
 #define CANNONBALL_RADIUS 10
-#define FIRERATE 1  // shots per second
+#define FIRERATE 1  // seconds per shot
 
 double timeSinceFireP1 = 1.0;  // time since last shot
 double timeSinceFireP2 = 1.0;
@@ -53,7 +53,7 @@ void _destroyCannonball(int index) {
 void _moveCannonball(CannonBall* cb) {
 	const float dt = CP_System_GetDt();
 	Vector v = cb->d;
-	v = scalarMultiply(v, dt * CANNONBALL_SPEED);
+	v = scalarMultiply(v, dt * CANNONBALL_SPEED); // scalar multiplication 
 
 	cb->pos.x += v.x;
 	cb->pos.y += v.y;
