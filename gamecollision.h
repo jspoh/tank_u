@@ -1,4 +1,3 @@
-#include "gamecollision.c"
+#include "tank.h"
 
-int checkRectangleCollision(Rectangle r1, Rectangle r2);
-int checkCircleRectCollision(Circle c, Rectangle r);
+int checkTankCollision(Tank t1, Tank t2);
