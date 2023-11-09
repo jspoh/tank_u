@@ -281,6 +281,11 @@ void updateTank(void) {
 		if (hasCollidedWall) {
 			puts("col wall");
 		}
+
+		bool hasCollidedCb = colTankCb(&tanks[i], &v);
+		if (hasCollidedCb) {
+			puts("BOOM");
+		}
 	}
 	_debugTank();
 }
