@@ -329,7 +329,7 @@ void colCbWall(void) {
             break;  // array size should be updated properly upon creating/destroying
         }
         Vector wallVector = { 0, -1 };
-        Position rectCenter = _getRectCenter(&wall, &wallVector);
+        //Position rectCenter = _getRectCenter(&wall, &wallVector);
         //CP_Graphics_DrawCircle((float)rectCenter.x, (float)rectCenter.y, 20);  // debug
 
         // iterate through cannonballs
@@ -340,7 +340,6 @@ void colCbWall(void) {
             }
 
             Circle c = {cb->radius, cb->pos};
-            Vector wallVector = { 0, -1 };  // walls all face up only
             // bool cbWallCollided = _circleRectSAT(&wall, &c, &wallVector, false);
             int cbWallCollided = _circleRectAABB(&wall, &c, false);
 
