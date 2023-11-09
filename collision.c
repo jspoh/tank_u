@@ -330,7 +330,7 @@ void colCbWall(void) {
         }
         Vector wallVector = { 0, -1 };
         Position rectCenter = _getRectCenter(&wall, &wallVector);
-        //CP_Graphics_DrawCircle((float)rectCenter.x, (float)rectCenter.y, 20);
+        //CP_Graphics_DrawCircle((float)rectCenter.x, (float)rectCenter.y, 20);  // debug
 
         // iterate through cannonballs
         for (int j=0; j<numCbs; j++) {
