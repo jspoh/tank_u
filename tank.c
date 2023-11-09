@@ -180,21 +180,25 @@ void _damageTank(Tank* tank, double damage) {
 	tank->health -= damage;
 }
 
-
-Position _getTurretCenter(Tank* t, Size turretSize) {
-	double scalar = sqrt(pow(t->size.width / 2.0, 2.0) + pow(t->size.height / 2.0, 2.0)); //the distance between the point
-
-	Position O = { 0 };
-	O.x = t->pos.x + scalar * t->pos.d.x;
-	O.y = t->pos.y + scalar * t->pos.d.y;
-
-	return O;
-}
-/*!
-* @brief logic to handle shooting, collecting, using powerups
-*/
-void _actionTank(void) {
+void _tankCollectPowerUp(void) {
 	//logic for collecting powerups draft will change once the actual code for the area of rect is there
+//for (int i = 0; i < NUM_PLAYERS; i++) {
+//	if (checkRectangleCollision(tanks[i], dropbox)) {
+//		for (int j = 0; j < POWERUPS_COUNT; j++) 
+//		{
+//			if (tanks[i].activePermPowers[i] == 0) 
+//			{
+//				tanks[i].activePermPowers[i] += dropbox;
+//			}
+
+//		}
+//	}
+//}
+//
+}
+
+void _tankCollectPowerUp(void) {
+//logic for collecting powerups draft will change once the actual code for the area of rect is there
 	//for (int i = 0; i < NUM_PLAYERS; i++) {
 	//	if (checkRectangleCollision(tanks[i], dropbox)) {
 	//		for (int j = 0; j < POWERUPS_COUNT; j++) 
@@ -208,6 +212,27 @@ void _actionTank(void) {
 	//	}
 	//}
 	//
+}
+
+Position _getTurretCenter(Tank* t, Size turretSize) {
+	double scalar = sqrt(pow(t->size.width / 2.0, 2.0) + pow(t->size.height / 2.0, 2.0)); //the distance between the point
+
+	Position O = { 0 };
+	O.x = t->pos.x + scalar * t->pos.d.x;
+	O.y = t->pos.y + scalar * t->pos.d.y;
+
+	return O;
+}
+
+typedef enum {
+	NORMAL,
+	BIG_BULLET,
+	SHOTGUN,
+	RAPID_FIRE
+}SHOOT;
+
+
+void _tankShoot(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		if (CP_Input_KeyDown(keybindings[i].shoot))
 		{
@@ -219,22 +244,39 @@ void _actionTank(void) {
 			//printf("height: %lf", size.height);
 			size.width = (tanks[i].size.width * 0.6f) * 0.3f;
 			//printf("width: %lf", size.width);
-			Position turretTip= _getTurretCenter(&tanks[i], size);
+			Position turretTip = _getTurretCenter(&tanks[i], size);
 
 			onFireCannonball(turretTip, unitVector, i);
-			
+
 		}
 	}
+}
+
+void _tankUsePowerUp(void) {
 	//for (int i = 0; i < NUM_PLAYERS; i++)
-	//{
-	//	if (CP_Input_KeyDown(keybindings[i].usePower)) {
-	//		for (int j = 0; j < POWERUPS_COUNT; j++)
-	//		{
-	//			takes in the tank that have the power up
-	//			activatePowerUp(Tank* tanks[i], j);
-	//		}
-	//	}
-	//}
+//{
+//	if (CP_Input_KeyDown(keybindings[i].usePower)) {
+//		for (int j = 0; j < POWERUPS_COUNT; j++)
+//		{
+//			//takes in the tank that have the power up
+//			if (tanks[i].activePermPowers[j] != 0) {
+//				activatePowerUp(Tank* tanks[i], tanks[i].activePermPowers[j]);
+//			}
+//		}
+//	}
+//}
+}
+
+
+
+/*!
+* @brief logic to handle shooting, collecting, using powerups
+*/
+void _actionTank(void) {
+	_tankCollectPowerUp();
+	_tankUsePowerUp();
+	_tankShoot();
+
 
 }
 
