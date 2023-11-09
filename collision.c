@@ -241,10 +241,27 @@ int _circleRectAABB(Rect* r, Circle* c, bool usingCenter) {
 
     if (c->pos.x + c->radius >= corners[0].x && c->pos.x - c->radius <= corners[1].x) {  // x axis
         if (c->pos.y + c->radius >= corners[0].y && c->pos.y - c->radius <= corners[2].y) {  // y axis
-            puts("collided");
+            if (c->pos.y <= corners[0].y) {
+                return UP;
+            }
+            else if (c->pos.y >= corners[2].y) {
+                return DOWN;
+            }
+            else if (c->pos.x <= corners[0].x) {
+                return LEFT;
+            }
+            else if (c->pos.x >= corners[1].x) {
+                return RIGHT;
+            }
+            else {
+                fprintf(stderr, "Something went wrong with _circleRectAABB collision\n");
+                // exit(4);
+            }
         }
     }
+    return NONE;
 }
+
 
 /**
  * @brief
@@ -323,7 +340,8 @@ void colCbWall(void) {
 
             Circle c = {cb->radius, cb->pos};
             Vector wallVector = { 0, -1 };  // walls all face up only
-            bool cbWallCollided = _circleRectSAT(&wall, &c, &wallVector, false);
+            // bool cbWallCollided = _circleRectSAT(&wall, &c, &wallVector, false);
+            int cbWallCollided = _circleRectAABB(&wall, &c, false);
 
             if (cbWallCollided) {
 
@@ -333,32 +351,19 @@ void colCbWall(void) {
                 }
                 else {
                     cb->bounced++;
-
-                    Position circleTop = { c.pos.x, c.pos.y - c.radius };
-                    Position circleBottom = { c.pos.x, c.pos.y + c.radius };
-                    Position circleLeft = { c.pos.x - c.radius, c.pos.y};
-                    Position circleRight = { c.pos.x + c.radius, c.pos.y };
-
-                    double distanceTop = getDistance(rectCenter.x, rectCenter.y, circleTop.x, circleTop.y);
-                    double distanceBottom = getDistance(rectCenter.x, rectCenter.y, circleBottom.x, circleBottom.y);
-                    double distanceLeft = getDistance(rectCenter.x, rectCenter.y, circleLeft.x, circleLeft.y);
-                    double distanceRight = getDistance(rectCenter.x, rectCenter.y, circleRight.x, circleRight.y);
-
-                    if (distanceTop < distanceBottom && distanceTop < distanceLeft && distanceTop < distanceRight) {
-                        puts("bottom wall");
-                        cb->pos.d.y = -cb->pos.d.y;
-                    }
-                    else if (distanceBottom < distanceTop && distanceBottom < distanceLeft && distanceBottom < distanceRight) {
-                        puts("top wall");
-                        cb->pos.d.y = -cb->pos.d.y;
-                    }
-                    else if (distanceLeft < distanceBottom && distanceLeft < distanceTop && distanceLeft < distanceRight) {
-                        puts("right wall");
-                        cb->pos.d.x = -cb->pos.d.x;
-                    }
-                    else if (distanceRight < distanceBottom && distanceRight < distanceLeft && distanceRight < distanceTop) {
-                        puts("left wall");
-                        cb->pos.d.x = -cb->pos.d.x;
+                    
+                    switch (cbWallCollided) {
+                        case UP:
+                        case DOWN:
+                            cb->d.y = -cb->d.y;
+                            break;
+                        case LEFT:
+                        case RIGHT:
+                            cb->d.x = -cb->d.x;
+                            break;
+                        default:
+                            fprintf(stderr, "You shouldn't be here\n");
+                            exit(5);
                     }
                 }
             }
