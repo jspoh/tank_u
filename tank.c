@@ -249,12 +249,12 @@ void _actionTank(void) {
 /*debugging use only (collision dev)*/
 void _debugTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
-		CP_Graphics_DrawCircle(tanks[i].pos.x, tanks[i].pos.y, 5);
+		CP_Graphics_DrawCircle((float)tanks[i].pos.x, (float)tanks[i].pos.y, 5);
 		Position corners[4] = { 0 };
 		Rect r = { tanks[i].size, tanks[i].pos };
 		_getRectCorners(&r, tanks[i].pos.d, corners);
 		for (int j = 0; j < 4; j++) {
-			CP_Graphics_DrawCircle(corners[j].x, corners[j].y, 5);
+			CP_Graphics_DrawCircle((float)corners[j].x, (float)corners[j].y, 5);
 		}
 	}
 }
