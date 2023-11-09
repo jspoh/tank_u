@@ -1,6 +1,8 @@
 #include "config.h"
 #include "collision.h"
 #include "math.h"
+#include "utils.h"
+#include <stdio.h>
 
 
 bool mouseInRect(Rect r, double mouseX, double mouseY) {
@@ -14,6 +16,25 @@ Vector _T(Vector v, double m[2][2], Vector r) {
     return result;
 }
 
+// gets vertices(corner points of a rect)
+void _getVertices(Tank* t, Position* vertices) {
+    // distance from center of tank to corner of tank
+    //double distance = pythagorean(t->size.width / 2, t->size.height / 2);
+    Vector n = { -t->pos.d.y, t->pos.d.x };
+    Vector change = scalarMultiply(n, t->size.width / 2);
+    Position midLeft = { t->pos.x - change.x, t->pos.y - change.y };
+    change = scalarMultiply(t->pos.d, t->size.height / 2);
+    Position topLeft = { t->pos.x - change.x, t->pos.y - change.y };
+    printf("%f %f | %f %f\n", t->pos.x, t->pos.y, topLeft.x, topLeft.y);
+}
+
+// separation axis theorem
+bool checkTankCollision(Tank* t1, Tank* t2) {
+    Position t1Vertices[4] = { 0 };
+    _getVertices(t1, &t1Vertices);
+}
+
+/*
 // Function to check collision between two tanks using linear transformation.
 bool checkTankCollision(Tank t1, Tank t2)
 {
@@ -78,3 +99,4 @@ bool checkTankCollision(Tank t1, Tank t2)
     return true; // Colliding
 }
 
+*/
