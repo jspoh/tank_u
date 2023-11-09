@@ -201,9 +201,7 @@ void _tankCollectPowerUp(int i) {
 //
 }
 
-void _tankUsePowerUp(void) {
-	//for (int i = 0; i < NUM_PLAYERS; i++)
-//{
+void _tankUsePowerUp(int i) {
 //	if (CP_Input_KeyDown(keybindings[i].usePower)) {
 //		for (int j = 0; j < POWERUPS_COUNT; j++)
 //		{
@@ -213,7 +211,7 @@ void _tankUsePowerUp(void) {
 //			}
 //		}
 //	}
-//}
+
 }
 
 Position _getTurretCenter(Tank* t, Size turretSize) {
@@ -254,7 +252,7 @@ void _tankShoot(int i) {
 void _actionTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		_tankCollectPowerUp(i);
-		_tankUsePowerUp();
+		_tankUsePowerUp(i);
 		_tankShoot(i);
 	}
 
