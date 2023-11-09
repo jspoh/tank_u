@@ -166,7 +166,8 @@ Tank _tankConstructor(Position pos, Color color) {
 }
 
 Tank _createTank(double posX, double posY, double direction, BYTE r, BYTE g, BYTE b, BYTE a) {
-	Position pos = { posX, posY, direction };
+	Vector d = { direction == 90 ? 1 : -1, 0 };
+	Position pos = { posX, posY, direction, 0, d };
 	Color col = { r,g,b,a };
 	return _tankConstructor(pos, col);
 }
@@ -258,7 +259,8 @@ void updateTank(void) {
 	_moveTanks();
 	_actionTank();
 	_renderTank();
-	bool hasCollided = checkTankCollision(tanks[0], tanks[1]);
+	Vector v = {0};
+	bool hasCollided = checkTankCollision(&tanks[0], &tanks[1], &v);
 	if (hasCollided) {
 		puts("col");
 	}
