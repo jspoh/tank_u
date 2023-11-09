@@ -35,3 +35,4 @@ double degreesToRadians(double degrees);
 Vector scalarMultiply(Vector v, double scalar);
 Vector rotateVectorClockwise(Vector v, double degrees);
 Vector rotateVectorCounterClockwise(Vector v, double degrees);
+double pythagorean(double width, double height);

@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "math.h"
 #include "cannonball.h"
+#include "collision.h"
 
 //#include"collisionBasic.h" //to check for intersection
 
@@ -165,7 +166,8 @@ Tank _tankConstructor(Position pos, Color color) {
 }
 
 Tank _createTank(double posX, double posY, double direction, BYTE r, BYTE g, BYTE b, BYTE a) {
-	Position pos = { posX, posY, direction };
+	Vector d = { direction == 90 ? 1 : -1, 0 };
+	Position pos = { posX, posY, direction, 0, d };
 	Color col = { r,g,b,a };
 	return _tankConstructor(pos, col);
 }
@@ -244,7 +246,18 @@ void _actionTank(void) {
 }
 
 
-
+/*debugging use only (collision dev)*/
+void _debugTank(void) {
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		CP_Graphics_DrawCircle((float)tanks[i].pos.x, (float)tanks[i].pos.y, 5);
+		Position corners[4] = { 0 };
+		Rect r = { tanks[i].size, tanks[i].pos };
+		_getRectCorners(&r, tanks[i].pos.d, corners);
+		for (int j = 0; j < 4; j++) {
+			CP_Graphics_DrawCircle((float)corners[j].x, (float)corners[j].y, 5);
+		}
+	}
+}
 
 
 
@@ -257,6 +270,12 @@ void updateTank(void) {
 	_moveTanks();
 	_actionTank();
 	_renderTank();
+	Vector v = {0};
+	bool hasCollided = areTanksColliding(&tanks[0], &tanks[1], &v);
+	if (hasCollided) {
+		puts("col");
+	}
+	_debugTank();
 }
 
 void destroyTank(void) {
