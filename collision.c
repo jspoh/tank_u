@@ -69,6 +69,54 @@ double _max4(double a, double b, double c, double d) {
     return m;
 }
 
+bool _trapezoidSAT(Position* r1Corners, Position* r2Corners, Vector* collisionVector) {
+    const int UNIQUE_EDGES = 4;
+    Vector allEdges[] = {
+        { r1Corners[2].x - r1Corners[0].x, r1Corners[2].y - r1Corners[0].y },  // r1 bottom left to top left (b -> t)
+        { r1Corners[1].x - r1Corners[0].x, r1Corners[1].y - r1Corners[0].y },  // r1 top left to top right (l -> r)
+        { r2Corners[2].x - r2Corners[0].x, r2Corners[2].y - r2Corners[0].y },  // r2 bottom left to top left (b -> t)
+        { r2Corners[1].x - r2Corners[0].x, r2Corners[1].y - r2Corners[0].y }  // r2 top left to top right (l -> r)
+    };
+
+        // iterate through edges
+    for (int i = 0; i < UNIQUE_EDGES; i++) {
+        Vector axis = allEdges[i];
+
+        double r1DotMin = 0;
+        double r1DotMax = 0;
+        double r2DotMin = 0;
+        double r2DotMax = 0;
+
+        // iterate through vertices
+        for (int j = 0; j < 4; j++) {
+            Vector r1C = { r1Corners[j].x, r1Corners[j].y };
+            Vector r2C = { r2Corners[j].x, r2Corners[j].y };
+
+            if (j == 0) {
+                r1DotMin = dotProduct(axis, r1C);
+                r1DotMax = r1DotMin;
+                r2DotMin = dotProduct(axis, r2C);
+                r2DotMax = r2DotMin;
+                continue;
+            }
+
+            double r1Dot = dotProduct(axis, r1C);
+            double r2Dot = dotProduct(axis, r2C);
+
+            r1DotMin = r1Dot < r1DotMin ? r1Dot : r1DotMin;
+            r1DotMax = r1Dot > r1DotMax ? r1Dot : r1DotMax;
+            r2DotMin = r2Dot < r2DotMin ? r2Dot : r2DotMin;
+            r2DotMax = r2Dot > r2DotMax ? r2Dot : r2DotMax;
+        }
+        if (r1DotMin > r2DotMax || r2DotMin > r1DotMax) {  // one of the projections does not overlap
+            return false;
+        }
+    }
+
+    return true;  // all projections overlap
+
+}
+
 /**
 * @brief    checks if two tanks are colliding using separation of axis theorem
 *           As we are using rectangles, instead of using 4 edges/shape, we only need to use 2 as the other 2 are parallel
@@ -79,69 +127,6 @@ bool checkTankCollision(Tank* t1, Tank* t2, Vector* d) {
     Position t2Corners[4] = { 0 };
     _getTankCorners(t2, t2Corners);
 
-    const int UNIQUE_EDGES = 4;
-    Vector allEdges[] = {
-        t1->pos.d,  // bottom to top
-        { t1Corners[1].x - t1Corners[0].x, t1Corners[1].y - t1Corners[0].y },  // t1 top left to top right (l -> r)
-        t2->pos.d,  // bottom to top
-        { t2Corners[1].x - t2Corners[0].x, t2Corners[1].y - t2Corners[0].y }  // t2 top left to top right (l -> r)
-    };
-
-    // iterate through edges
-    for (int i = 0; i < UNIQUE_EDGES; i++) {
-        Vector axis = allEdges[i];
-
-        double t1DotMin = 0;
-        double t1DotMax = 0;
-        double t2DotMin = 0;
-        double t2DotMax = 0;
-
-        // iterate through vertices
-        for (int j = 0; j < 4; j++) {
-            Vector t1C = { t1Corners[j].x, t1Corners[j].y };
-            Vector t2C = { t2Corners[j].x, t2Corners[j].y };
-
-            if (j == 0) {
-                t1DotMin = dotProduct(axis, t1C);
-                t1DotMax = t1DotMin;
-                t2DotMin = dotProduct(axis, t2C);
-                t2DotMax = t2DotMin;
-                continue;
-            }
-
-            double t1Dot = dotProduct(axis, t1C);
-            double t2Dot = dotProduct(axis, t2C);
-
-            t1DotMin = t1Dot < t1DotMin ? t1Dot : t1DotMin;
-            t1DotMax = t1Dot > t1DotMax ? t1Dot : t1DotMax;
-            t2DotMin = t2Dot < t2DotMin ? t2Dot : t2DotMin;
-            t2DotMax = t2Dot > t2DotMax ? t2Dot : t2DotMax;
-        }
-        if (t1DotMin > t2DotMax || t2DotMin > t1DotMax) {  // one of the projections does not overlap
-            return false;
-        }
-    }
-
-    return true;  // all projections overlap
-
-    /* // working, but not proper SAT. will return false positives if corner is near an edge
-    double t1MinX = _min4(t1Corners[0].x, t1Corners[1].x, t1Corners[2].x, t1Corners[3].x);
-    double t1MaxX = _max4(t1Corners[0].x, t1Corners[1].x, t1Corners[2].x, t1Corners[3].x);
-    double t1MinY = _min4(t1Corners[0].y, t1Corners[1].y, t1Corners[2].y, t1Corners[3].y);
-    double t1MaxY = _max4(t1Corners[0].y, t1Corners[1].y, t1Corners[2].y, t1Corners[3].y);
-
-    double t2MinX = _min4(t2Corners[0].x, t2Corners[1].x, t2Corners[2].x, t2Corners[3].x);
-    double t2MaxX = _max4(t2Corners[0].x, t2Corners[1].x, t2Corners[2].x, t2Corners[3].x);
-    double t2MinY = _min4(t2Corners[0].y, t2Corners[1].y, t2Corners[2].y, t2Corners[3].y);
-    double t2MaxY = _max4(t2Corners[0].y, t2Corners[1].y, t2Corners[2].y, t2Corners[3].y);
-
-    if (t2MinX >= t1MinX && t2MinX <= t1MaxX || t2MaxX >= t1MinX && t2MaxX <= t1MaxX) {  // x axis overlaps
-        if (t2MinY >= t1MinY && t2MinY <= t1MaxY || t2MaxY >= t1MinY && t2MaxY <= t1MaxY) {  // y axis overlaps
-            return true;
-        }
-    }
-    return false;
-    */
-
+    return _trapezoidSAT(t1Corners, t2Corners, d);
 }
 
