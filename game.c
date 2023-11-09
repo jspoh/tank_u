@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "wall.h"
 #include "cannonball.h"
+#include "collision.h"
 
 CP_Font font;
 
@@ -49,6 +50,7 @@ void gameUpdate(void) {
 	drawWall();
 	updateTank();
 	updateCannonball();
+	colCbWall();
 }
 
 void gameExit(void) {

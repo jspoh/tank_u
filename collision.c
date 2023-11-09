@@ -227,6 +227,26 @@ bool _circleRectSAT(Rect* r, Circle* c, Vector* d, bool usingCenter) {
 }
 
 /**
+ * @brief uses AABB(axis aligned bounding box) to direction easily
+ * 
+ * @param r 
+ * @param c 
+ * @param usingCenter 
+ * @return int enum direction (declared in utils.h)
+ */
+int _circleRectAABB(Rect* r, Circle* c, bool usingCenter) {
+    Position corners[4] = { 0 };
+    Vector d = { 0, -1 };  // no change to d vector allowed since using AABB
+    _getRectCorners(r, &d, corners, usingCenter);  // 0: topleft, 1: topright, 2: bottomleft, 3: bottomright
+
+    if (c->pos.x + c->radius >= corners[0].x && c->pos.x - c->radius <= corners[1].x) {  // x axis
+        if (c->pos.y + c->radius >= corners[0].y && c->pos.y - c->radius <= corners[2].y) {  // y axis
+            puts("collided");
+        }
+    }
+}
+
+/**
  * @brief
  *
  * @param t
@@ -256,6 +276,27 @@ bool colTankCb(Tank* t, Vector* collisionVector) {
 }
 
 /**
+ * @brief Get the Rect Center object assuming rect is drawn with top left positioning
+ * 
+ * @param r 
+ * @param d 
+ * @return Position 
+ */
+Position _getRectCenter(Rect* r, Vector* d) {
+    Vector n = { -d->y, d->x };
+
+    double scalar = r->size.width / 2;
+    Vector changeH = scalarMultiply(n, scalar);
+    Position topMiddle = { r->pos.x + changeH.x, r->pos.y + changeH.y };
+    
+    scalar = r->size.height / 2;
+    Vector changeW = scalarMultiply(*d, scalar); 
+    Position O = { topMiddle.x + changeW.x, topMiddle.y - changeW.y };
+
+    return O;
+}
+
+/**
  * @brief uses extern activeCbs and activeWalls
  *        array sizes for activeWalls and activeCbs should be done properly when adding/removingg
  *        could also use extern num cbs or num walls
@@ -269,6 +310,9 @@ void colCbWall(void) {
         if (wall.size.width == 0) {
             break;  // array size should be updated properly upon creating/destroying
         }
+        Vector wallVector = { 0, -1 };
+        Position rectCenter = _getRectCenter(&wall, &wallVector);
+        CP_Graphics_DrawCircle(rectCenter.x, rectCenter.y, 20);
 
         // iterate through cannonballs
         for (int j=0; j<numCbs; j++) {
@@ -282,13 +326,40 @@ void colCbWall(void) {
             bool cbWallCollided = _circleRectSAT(&wall, &c, &wallVector, false);
 
             if (cbWallCollided) {
+
                 if (cb->bounced) {  // already bounced once
                     // destroy cannonball
                     destroyCannonball(j);
                 }
                 else {
                     cb->bounced++;
-                    // invert vector
+
+                    Position circleTop = { c.pos.x, c.pos.y - c.radius };
+                    Position circleBottom = { c.pos.x, c.pos.y + c.radius };
+                    Position circleLeft = { c.pos.x - c.radius, c.pos.y};
+                    Position circleRight = { c.pos.x + c.radius, c.pos.y };
+
+                    double distanceTop = getDistance(rectCenter.x, rectCenter.y, circleTop.x, circleTop.y);
+                    double distanceBottom = getDistance(rectCenter.x, rectCenter.y, circleBottom.x, circleBottom.y);
+                    double distanceLeft = getDistance(rectCenter.x, rectCenter.y, circleLeft.x, circleLeft.y);
+                    double distanceRight = getDistance(rectCenter.x, rectCenter.y, circleRight.x, circleRight.y);
+
+                    if (distanceTop < distanceBottom && distanceTop < distanceLeft && distanceTop < distanceRight) {
+                        puts("bottom wall");
+                        cb->pos.d.y = -cb->pos.d.y;
+                    }
+                    else if (distanceBottom < distanceTop && distanceBottom < distanceLeft && distanceBottom < distanceRight) {
+                        puts("top wall");
+                        cb->pos.d.y = -cb->pos.d.y;
+                    }
+                    else if (distanceLeft < distanceBottom && distanceLeft < distanceTop && distanceLeft < distanceRight) {
+                        puts("right wall");
+                        cb->pos.d.x = -cb->pos.d.x;
+                    }
+                    else if (distanceRight < distanceBottom && distanceRight < distanceLeft && distanceRight < distanceTop) {
+                        puts("left wall");
+                        cb->pos.d.x = -cb->pos.d.x;
+                    }
                 }
             }
         }
