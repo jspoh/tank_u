@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "math.h"
 #include "cannonball.h"
-#include "gamecollision.h"
+#include "collision.h"
 
 //#include"collisionBasic.h" //to check for intersection
 
@@ -258,9 +258,9 @@ void updateTank(void) {
 	_moveTanks();
 	_actionTank();
 	_renderTank();
-	bool isCollided = checkTankCollision(tanks[0], tanks[1]);
-	if (isCollided) {
-		puts("poopoo");
+	bool hasCollided = checkTankCollision(tanks[0], tanks[1]);
+	if (hasCollided) {
+		puts("col");
 	}
 }
 
