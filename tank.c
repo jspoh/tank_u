@@ -188,11 +188,6 @@ Position _getTurretCenter(Tank* t, Size turretSize) {
 	O.x = t->pos.x + scalar * t->pos.d.x;
 	O.y = t->pos.y + scalar * t->pos.d.y;
 
-
-	//Vector n = { t->pos.d.y, -t->pos.d.x };
-	//O.x += scalar + n.x;
-	//O.y += scalar + n.y;
-
 	return O;
 }
 /*!
