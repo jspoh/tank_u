@@ -3,6 +3,7 @@
 #include "collision.h"
 #include "math.h"
 #include "utils.h"
+#include "wall.h"
 #include <stdio.h>
 
 bool mouseInRect(Rect r, double mouseX, double mouseY) {
@@ -16,7 +17,7 @@ bool mouseInRect(Rect r, double mouseX, double mouseY) {
  * @param d current directional vector of the rectangle. eg. (0, -1) for up 
  * @param corners array of at least size 4. Will be filled with the corners of the rectangle
 */
-void _getRectCorners(Rect* r, Vector d, Position* corners) {
+void _getRectCorners(Rect* r, Vector d, Position* corners, bool usingCenter) {
     Vector n = { -d.y, d.x };
 
     // move right half of width
@@ -24,9 +25,19 @@ void _getRectCorners(Rect* r, Vector d, Position* corners) {
     // move up half of height
     Vector changeH = scalarMultiply(d, r->size.height / 2.0);
 
+    Position topLeft = { 0 };
+
+
     /*top left*/
-    Position midLeft = { r->pos.x - changeW.x, r->pos.y - changeW.y };
-    Position topLeft = { midLeft.x + changeH.x, midLeft.y + changeH.y };
+    if (usingCenter) {
+        Position midLeft = { r->pos.x - changeW.x, r->pos.y - changeW.y };
+        topLeft.x = midLeft.x + changeH.x;
+        topLeft.y = midLeft.y + changeH.y;
+    }
+    else {
+        topLeft.x = r->pos.x;
+        topLeft.y = r->pos.y;
+    }
     //printf("%f %f | %f %f\n", r->pos.x, r->pos.y, topLeft.x, topLeft.y);
 
     /*top right*/
@@ -108,12 +119,43 @@ bool _rectSAT(Position* r1Corners, Position* r2Corners, Vector* collisionVector)
 bool areTanksColliding(Tank* t1, Tank* t2, Vector* d) {
     Rect r1 = { t1->size, t1->pos };
     Position t1Corners[4] = { 0 };
-    _getRectCorners(&r1, t1->pos.d, t1Corners);
+    _getRectCorners(&r1, t1->pos.d, t1Corners, true);
 
     Rect r2 = { t2->size, t2->pos };
     Position t2Corners[4] = { 0 };
-    _getRectCorners(&r2, t2->pos.d, t2Corners);
+    _getRectCorners(&r2, t2->pos.d, t2Corners, true);
 
     return _rectSAT(t1Corners, t2Corners, d);
 }
 
+extern Wall activeWalls[MAX_WALLS];
+/**
+ * @brief uses extern activeWalls from wall.c
+ * 
+ * @param t 
+ * @param collisionVector 
+ * @return true 
+ * @return false 
+ */
+bool colTankWall(Tank* t, Vector* collisionVector) {
+    Rect r = { t->size, t->pos };
+    Position tCorners[4] = { 0 };
+    _getRectCorners(&r, t->pos.d, tCorners, true);
+    //printf("Tank %f %f %f %f\n", t->pos.x, t->pos.y, t->size.width, t->size.height);
+
+    for (int i = 0; i < MAX_WALLS; i++) {
+        // printf("Wall %d: %f %f %f %f\n", i+1, activeWalls[i].pos.x, activeWalls[i].pos.y, activeWalls[i].size.width, activeWalls[i].size.height);
+        if (activeWalls[i].size.width == 0) {
+            continue;
+        }
+
+        Position wCorners[4] = { 0 };
+        Vector wVector = { 0, -1 };
+        _getRectCorners(&activeWalls[i], wVector, wCorners, false);
+
+        if (_rectSAT(tCorners, wCorners, collisionVector)) {
+            return true;
+        }
+    }
+    return false;
+}

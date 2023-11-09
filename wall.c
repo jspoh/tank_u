@@ -11,11 +11,11 @@
 #define HORIZONTALWALLWIDTH 300.f
 #define HORIZONTALWALLHEIGHT 50.f
 
-Wall activeWalls[maxNumWalls] = { 0 };  // extern Wall activeWalls[];
+Wall activeWalls[MAX_WALLS] = { 0 };  // extern Wall activeWalls[];
 int numWalls = 0;
 
 void _resetWalls(void) {
-	for (int i = 0; i < maxNumWalls; i++) {
+	for (int i = 0; i < MAX_WALLS; i++) {
 		Wall wall = { 0 };
 		activeWalls[i] = wall;
 	}

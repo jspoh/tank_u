@@ -2,7 +2,7 @@
 
 
 typedef Rect Wall;
-#define maxNumWalls 4
+#define MAX_WALLS 4
 
 
 void initWall(void);
