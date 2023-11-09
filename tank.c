@@ -197,22 +197,6 @@ void _tankCollectPowerUp(void) {
 //
 }
 
-void _tankCollectPowerUp(void) {
-//logic for collecting powerups draft will change once the actual code for the area of rect is there
-	//for (int i = 0; i < NUM_PLAYERS; i++) {
-	//	if (checkRectangleCollision(tanks[i], dropbox)) {
-	//		for (int j = 0; j < POWERUPS_COUNT; j++) 
-	//		{
-	//			if (tanks[i].activePermPowers[i] == 0) 
-	//			{
-	//				tanks[i].activePermPowers[i] += dropbox;
-	//			}
-
-	//		}
-	//	}
-	//}
-	//
-}
 
 Position _getTurretCenter(Tank* t, Size turretSize) {
 	double scalar = sqrt(pow(t->size.width / 2.0, 2.0) + pow(t->size.height / 2.0, 2.0)); //the distance between the point
