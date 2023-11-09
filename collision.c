@@ -286,6 +286,7 @@ bool colTankCb(Tank* t, Vector* collisionVector) {
         Circle c = { activeCbs[i].radius, activeCbs[i].pos };
         if (_circleRectSAT(&r, &c, &t->pos.d, true)) {
             *collisionVector = activeCbs[i].pos.d;
+            destroyCannonball(i);
             return true;
         }
     }

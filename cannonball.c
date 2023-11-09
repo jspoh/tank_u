@@ -11,25 +11,6 @@ double timeSinceFireP2 = 1.0;
 CannonBall activeCbs[MAX] = { 0 };  // all currently active cannonballs
 int numCbs = 0; // no. of active cannonball
 
-// !TODO: to test code after collision with wall is done
-void _checkWallCollision(CannonBall* cb, int index) {
-	//if (collide with top wall or bottom wall) {
-	//	if (cb->bounced) {
-	//		_destroyCannonball(index);
-	//		return;
-	//	}
-	//	cb->d.y = -cb->d.y;
-	//	cb->bounced = true;
-	//}
-	//else if (collide with left or right wall) {
-	//	if (cb->bounced) {
-	//		_destroyCannonball(index);
-	//		return;
-	//	}
-	//	cb->d.x = -cb->d.x;
-	//	cb->bounced = true;
-	//}
-}
 
 bool _removeCannonball(int index) {
 	if (index >= numCbs) {
@@ -68,7 +49,6 @@ void updateCannonball(void) {
 		CannonBall* cb = &activeCbs[i]; 
 
 		_moveCannonball(cb);
-		_checkWallCollision(cb, i);
 		CP_Graphics_DrawCircle((float)cb->pos.x, (float)cb->pos.y, (float)cb->radius);
 	}
 }
