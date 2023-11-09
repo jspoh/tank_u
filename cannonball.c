@@ -18,11 +18,16 @@ bool _removeCannonball(int index) {
 		exit(3);
 	}
 
-	for (int i = index; i < numCbs; i++) {
-		activeCbs[i] = activeCbs[i + 1];
-	}
-	numCbs--;
+	// less efficient way but preserves array order
+	// for (int i = index; i < numCbs; i++) {
+	// 	activeCbs[i] = activeCbs[i + 1];
+	// }
+	// numCbs--;
 
+	// more efficient way but does not preserve order (but order isnt important in this context lol)
+	activeCbs[index] = activeCbs[numCbs--];
+
+	// printf("%d\n", numCbs);
 	return true;
 }
 
