@@ -7,6 +7,13 @@
 #include "cannonball.h"
 #include <stdio.h>
 
+
+extern Wall activeWalls[MAX_WALLS];
+extern int numWalls;
+extern CannonBall activeCbs[MAX];
+extern int numCbs;
+
+
 bool mouseInRect(Rect r, double mouseX, double mouseY) {
     return (mouseX >= r.pos.x && mouseX <= r.pos.x + r.size.width && mouseY >= r.pos.y && mouseY <= r.pos.y + r.size.height);
 }
@@ -130,7 +137,6 @@ bool areTanksColliding(Tank* t1, Tank* t2, Vector* d) {
     return _rectSAT(t1Corners, t2Corners, d);
 }
 
-extern Wall activeWalls[MAX_WALLS];
 /**
  * @brief uses extern activeWalls from wall.c
  *
@@ -145,7 +151,8 @@ bool colTankWall(Tank* t, Vector* collisionVector) {
     _getRectCorners(&r, &t->pos.d, tCorners, true);
     //printf("Tank %f %f %f %f\n", t->pos.x, t->pos.y, t->size.width, t->size.height);
 
-    for (int i = 0; i < MAX_WALLS; i++) {
+    // iterate through active walls
+    for (int i = 0; i < numWalls; i++) {
         // printf("Wall %d: %f %f %f %f\n", i+1, activeWalls[i].pos.x, activeWalls[i].pos.y, activeWalls[i].size.width, activeWalls[i].size.height);
         if (activeWalls[i].size.width == 0) {
             continue;
@@ -161,7 +168,6 @@ bool colTankWall(Tank* t, Vector* collisionVector) {
     }
     return false;
 }
-
 
 /**
  * @brief uses separation axis theorem to find out if a rectangle and a circle is colliding
@@ -220,8 +226,43 @@ bool _circleRectSAT(Rect* r, Circle* c, Vector* d, bool usingCenter) {
     return true;  // all projections overlap
 }
 
+/**
+ * @brief uses AABB(axis aligned bounding box) to direction easily
+ * 
+ * @param r 
+ * @param c 
+ * @param usingCenter 
+ * @return int enum direction (declared in utils.h)
+ */
+int _circleRectAABB(Rect* r, Circle* c, bool usingCenter) {
+    Position corners[4] = { 0 };
+    Vector d = { 0, -1 };  // no change to d vector allowed since using AABB
+    _getRectCorners(r, &d, corners, usingCenter);  // 0: topleft, 1: topright, 2: bottomleft, 3: bottomright
 
-extern CannonBall activeCbs[MAX];
+    if (c->pos.x + c->radius >= corners[0].x && c->pos.x - c->radius <= corners[1].x) {  // x axis
+        if (c->pos.y + c->radius >= corners[0].y && c->pos.y - c->radius <= corners[2].y) {  // y axis
+            if (c->pos.y <= corners[0].y) {
+                return UP;
+            }
+            else if (c->pos.y >= corners[2].y) {
+                return DOWN;
+            }
+            else if (c->pos.x <= corners[0].x) {
+                return LEFT;
+            }
+            else if (c->pos.x >= corners[1].x) {
+                return RIGHT;
+            }
+            else {
+                fprintf(stderr, "Something went wrong with _circleRectAABB collision\n");
+                // exit(4);
+            }
+        }
+    }
+    return NONE;
+}
+
+
 /**
  * @brief
  *
@@ -236,7 +277,8 @@ bool colTankCb(Tank* t, Vector* collisionVector) {
     _getRectCorners(&r, &t->pos.d, tCorners, true);
     //printf("Tank %f %f %f %f\n", t->pos.x, t->pos.y, t->size.width, t->size.height);
 
-    for (int i = 0; i < MAX; i++) {
+    // iterate through active cannonballs
+    for (int i = 0; i < numCbs; i++) {
         if (activeCbs[i].radius == 0) {
             continue;
         }
@@ -244,8 +286,91 @@ bool colTankCb(Tank* t, Vector* collisionVector) {
         Circle c = { activeCbs[i].radius, activeCbs[i].pos };
         if (_circleRectSAT(&r, &c, &t->pos.d, true)) {
             *collisionVector = activeCbs[i].pos.d;
+            destroyCannonball(i);
             return true;
         }
     }
     return false;
 }
+
+/**
+ * @brief Get the Rect Center object assuming rect is drawn with top left positioning
+ * 
+ * @param r 
+ * @param d 
+ * @return Position 
+ */
+Position _getRectCenter(Rect* r, Vector* d) {
+    Vector n = { -d->y, d->x };
+
+    double scalar = r->size.width / 2;
+    Vector changeH = scalarMultiply(n, scalar);
+    Position topMiddle = { r->pos.x + changeH.x, r->pos.y + changeH.y };
+    
+    scalar = r->size.height / 2;
+    Vector changeW = scalarMultiply(*d, scalar); 
+    Position O = { topMiddle.x + changeW.x, topMiddle.y - changeW.y };
+
+    return O;
+}
+
+/**
+ * @brief uses extern activeCbs and activeWalls
+ *        array sizes for activeWalls and activeCbs should be done properly when adding/removingg
+ *        could also use extern num cbs or num walls
+ * 
+ * @return void
+ */
+void colCbWall(void) {
+    // iterate through active walls 
+    for (int i=0; i<numWalls; i++) {
+        Wall wall = activeWalls[i];
+        if (wall.size.width == 0) {
+            break;  // array size should be updated properly upon creating/destroying
+        }
+        Vector wallVector = { 0, -1 };
+        //Position rectCenter = _getRectCenter(&wall, &wallVector);
+        //CP_Graphics_DrawCircle((float)rectCenter.x, (float)rectCenter.y, 20);  // debug
+
+        // iterate through cannonballs
+        for (int j=0; j<numCbs; j++) {
+            CannonBall* cb = &activeCbs[j];
+            if (cb->radius == 0) {
+                break;  // array size should be updated properly upon creating/destroying
+            }
+
+            Circle c = {cb->radius, cb->pos};
+            // bool cbWallCollided = _circleRectSAT(&wall, &c, &wallVector, false);
+            int cbWallCollided = _circleRectAABB(&wall, &c, false);
+
+            if (cbWallCollided) {
+
+                if (cb->bounced) {  // already bounced once
+                    // destroy cannonball
+                    destroyCannonball(j);
+                }
+                else {
+                    cb->bounced++;
+                    
+                    switch (cbWallCollided) {
+                        case UP:
+                        case DOWN:
+                            cb->d.y = -cb->d.y;
+                            break;
+                        case LEFT:
+                        case RIGHT:
+                            cb->d.x = -cb->d.x;
+                            break;
+                        default:
+                            fprintf(stderr, "You shouldn't be here\n");
+                            exit(5);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// !TODO: cannonball-border fn to prevent memory leak
+// !TODO: tank border fn
