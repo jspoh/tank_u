@@ -14,5 +14,5 @@ typedef struct {
 
 void updateCannonball(void);
 void onFireCannonball(Position startPos, Vector d, int player);
-
+void destroyCannonball(int index);
 

@@ -7,6 +7,13 @@
 #include "cannonball.h"
 #include <stdio.h>
 
+
+extern Wall activeWalls[MAX_WALLS];
+extern int numWalls;
+extern CannonBall activeCbs[MAX];
+extern int numCbs;
+
+
 bool mouseInRect(Rect r, double mouseX, double mouseY) {
     return (mouseX >= r.pos.x && mouseX <= r.pos.x + r.size.width && mouseY >= r.pos.y && mouseY <= r.pos.y + r.size.height);
 }
@@ -130,7 +137,6 @@ bool areTanksColliding(Tank* t1, Tank* t2, Vector* d) {
     return _rectSAT(t1Corners, t2Corners, d);
 }
 
-extern Wall activeWalls[MAX_WALLS];
 /**
  * @brief uses extern activeWalls from wall.c
  *
@@ -145,7 +151,8 @@ bool colTankWall(Tank* t, Vector* collisionVector) {
     _getRectCorners(&r, &t->pos.d, tCorners, true);
     //printf("Tank %f %f %f %f\n", t->pos.x, t->pos.y, t->size.width, t->size.height);
 
-    for (int i = 0; i < MAX_WALLS; i++) {
+    // iterate through active walls
+    for (int i = 0; i < numWalls; i++) {
         // printf("Wall %d: %f %f %f %f\n", i+1, activeWalls[i].pos.x, activeWalls[i].pos.y, activeWalls[i].size.width, activeWalls[i].size.height);
         if (activeWalls[i].size.width == 0) {
             continue;
@@ -161,7 +168,6 @@ bool colTankWall(Tank* t, Vector* collisionVector) {
     }
     return false;
 }
-
 
 /**
  * @brief uses separation axis theorem to find out if a rectangle and a circle is colliding
@@ -220,8 +226,6 @@ bool _circleRectSAT(Rect* r, Circle* c, Vector* d, bool usingCenter) {
     return true;  // all projections overlap
 }
 
-
-extern CannonBall activeCbs[MAX];
 /**
  * @brief
  *
@@ -236,7 +240,8 @@ bool colTankCb(Tank* t, Vector* collisionVector) {
     _getRectCorners(&r, &t->pos.d, tCorners, true);
     //printf("Tank %f %f %f %f\n", t->pos.x, t->pos.y, t->size.width, t->size.height);
 
-    for (int i = 0; i < MAX; i++) {
+    // iterate through active cannonballs
+    for (int i = 0; i < numCbs; i++) {
         if (activeCbs[i].radius == 0) {
             continue;
         }
@@ -248,4 +253,44 @@ bool colTankCb(Tank* t, Vector* collisionVector) {
         }
     }
     return false;
+}
+
+/**
+ * @brief uses extern activeCbs and activeWalls
+ *        array sizes for activeWalls and activeCbs should be done properly when adding/removingg
+ *        could also use extern num cbs or num walls
+ * 
+ * @return void
+ */
+void colCbWall(void) {
+    // iterate through active walls 
+    for (int i=0; i<numWalls; i++) {
+        Wall wall = activeWalls[i];
+        if (wall.size.width == 0) {
+            break;  // array size should be updated properly upon creating/destroying
+        }
+
+        // iterate through cannonballs
+        for (int j=0; j<numCbs; j++) {
+            CannonBall* cb = &activeCbs[j];
+            if (cb->radius == 0) {
+                break;  // array size should be updated properly upon creating/destroying
+            }
+
+            Circle c = {cb->radius, cb->pos};
+            Vector wallVector = { 0, -1 };  // walls all face up only
+            bool cbWallCollided = _circleRectSAT(&wall, &c, &wallVector, false);
+
+            if (cbWallCollided) {
+                if (cb->bounced) {  // already bounced once
+                    // destroy cannonball
+                    destroyCannonball(j);
+                }
+                else {
+                    cb->bounced++;
+                    // invert vector
+                }
+            }
+        }
+    }
 }

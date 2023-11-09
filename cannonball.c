@@ -45,7 +45,7 @@ bool _removeCannonball(int index) {
 	return true;
 }
 
-void _destroyCannonball(int index) {
+void destroyCannonball(int index) {
 	_removeCannonball(index);
 	// !TODO: if possible, draw exploding animation with circles (create new function for this in utils/animations/explosion)
 }
