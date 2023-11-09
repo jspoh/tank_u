@@ -96,7 +96,7 @@ bool checkTankCollision(Tank* t1, Tank* t2, Vector* d) {
     double t2MaxY = _max4(t2Corners[0].y, t2Corners[1].y, t2Corners[2].y, t2Corners[3].y);
 
     if (t2MinX >= t1MinX && t2MinX <= t1MaxX || t2MaxX >= t1MinX && t2MaxX <= t1MaxX) {  // x axis overlaps
-        if (t2MinY >= t1MinY && t2MinY <= t1MaxY || t2MaxY >= t1MaxY && t2MaxY <= t1MaxY) {  // y axis overlaps
+        if (t2MinY >= t1MinY && t2MinY <= t1MaxY || t2MaxY >= t1MinY && t2MaxY <= t1MaxY) {  // y axis overlaps
             return true;
         }
     }
