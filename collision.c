@@ -9,30 +9,37 @@ bool mouseInRect(Rect r, double mouseX, double mouseY) {
     return (mouseX >= r.pos.x && mouseX <= r.pos.x + r.size.width && mouseY >= r.pos.y && mouseY <= r.pos.y + r.size.height);
 }
 
-void _getTankCorners(Tank* t, Position* corners) {
-    Vector n = { -t->pos.d.y, t->pos.d.x };
+/**
+ * @brief assuming rect r holds the center of the rectangle, get the corner positions of the rectangle
+ * 
+ * @param r 
+ * @param d current directional vector of the rectangle. eg. (0, -1) for up 
+ * @param corners array of at least size 4. Will be filled with the corners of the rectangle
+*/
+void _getRectCorners(Rect* r, Vector d, Position* corners) {
+    Vector n = { -d.y, d.x };
 
     // move right half of width
-    Vector changeW = scalarMultiply(n, t->size.width / 2.0);
+    Vector changeW = scalarMultiply(n , r->size.width / 2.0);
     // move up half of height
-    Vector changeH = scalarMultiply(t->pos.d, t->size.height / 2.0);
+    Vector changeH = scalarMultiply(d, r->size.height / 2.0);
 
     /*top left*/
-    Position midLeft = { t->pos.x - changeW.x, t->pos.y - changeW.y };
+    Position midLeft = { r->pos.x - changeW.x, r->pos.y - changeW.y };
     Position topLeft = { midLeft.x + changeH.x, midLeft.y + changeH.y };
-    //printf("%f %f | %f %f\n", t->pos.x, t->pos.y, topLeft.x, topLeft.y);
+    //printf("%f %f | %f %f\n", r->pos.x, r->pos.y, topLeft.x, topLeft.y);
 
     /*top right*/
     Position topRight = { topLeft.x + changeW.x * 2, topLeft.y + changeW.y * 2 };
-    //printf("%f %f | %f %f\n", t->pos.x, t->pos.y, topRight.x, topRight.y);
+    //printf("%f %f | %f %f\n", r->pos.x, r->pos.y, topRight.x, topRight.y);
 
     /*bottom left*/
     Position bottomLeft = { topLeft.x - changeH.x * 2, topLeft.y - changeH.y * 2 };
-    //printf("%f %f | %f %f\n", t->pos.x, t->pos.y, bottomLeft.x, bottomLeft.y);
+    //printf("%f %f | %f %f\n", r->pos.x, r->pos.y, bottomLeft.x, bottomLeft.y);
 
     /*bottom right*/
     Position bottomRight = { topRight.x - changeH.x * 2, topRight.y - changeH.y * 2 };
-    //printf("%f %f | %f %f\n", t->pos.x, t->pos.y, bottomRight.x, bottomRight.y);
+    //printf("%f %f | %f %f\n", r->pos.x, r->pos.y, bottomRight.x, bottomRight.y);
 
     corners[0] = topLeft;
     corners[1] = topRight;
@@ -40,36 +47,17 @@ void _getTankCorners(Tank* t, Position* corners) {
     corners[3] = bottomRight;
 }
 
-
-double _min4(double a, double b, double c, double d) {
-    double m = a;
-    if (b < m) {
-        m = b;
-    }
-    if (c < m) {
-        m = c;
-    }
-    if (d < m) {
-        m = d;
-    }
-    return m;
-};
-
-double _max4(double a, double b, double c, double d) {
-    double m = a;
-    if (b > m) {
-        m = b;
-    }
-    if (c > m) {
-        m = c;
-    }
-    if (d > m) {
-        m = d;
-    }
-    return m;
-}
-
-bool _trapezoidSAT(Position* r1Corners, Position* r2Corners, Vector* collisionVector) {
+/**
+ * @brief checks if two rectangles are colliding using separation of axis theorem
+ *        As we are using rectangles, instead of using 4 edges/shape, we only need to use 2 as the other 2 are parallel
+ * 
+ * @param r1 
+ * @param r2 
+ * @param collisionVector if there is a collision, this will be filled with the collision vector
+ * @return true if there is a collision
+ * @return false if there is no collision
+ */
+bool _rectSAT(Position* r1Corners, Position* r2Corners, Vector* collisionVector) {
     const int UNIQUE_EDGES = 4;
     Vector allEdges[] = {
         { r1Corners[2].x - r1Corners[0].x, r1Corners[2].y - r1Corners[0].y },  // r1 bottom left to top left (b -> t)
@@ -117,16 +105,15 @@ bool _trapezoidSAT(Position* r1Corners, Position* r2Corners, Vector* collisionVe
 
 }
 
-/**
-* @brief    checks if two tanks are colliding using separation of axis theorem
-*           As we are using rectangles, instead of using 4 edges/shape, we only need to use 2 as the other 2 are parallel
-*/
-bool checkTankCollision(Tank* t1, Tank* t2, Vector* d) {
+bool areTanksColliding(Tank* t1, Tank* t2, Vector* d) {
+    Rect r1 = { t1->size, t1->pos };
     Position t1Corners[4] = { 0 };
-    _getTankCorners(t1, t1Corners);
-    Position t2Corners[4] = { 0 };
-    _getTankCorners(t2, t2Corners);
+    _getRectCorners(&r1, t1->pos.d, t1Corners);
 
-    return _trapezoidSAT(t1Corners, t2Corners, d);
+    Rect r2 = { t2->size, t2->pos };
+    Position t2Corners[4] = { 0 };
+    _getRectCorners(&r2, t2->pos.d, t2Corners);
+
+    return _rectSAT(t1Corners, t2Corners, d);
 }
 

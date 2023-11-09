@@ -251,7 +251,8 @@ void _debugTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		CP_Graphics_DrawCircle(tanks[i].pos.x, tanks[i].pos.y, 5);
 		Position corners[4] = { 0 };
-		_getTankCorners(&tanks[i], corners);
+		Rect r = { tanks[i].size, tanks[i].pos };
+		_getRectCorners(&r, tanks[i].pos.d, corners);
 		for (int j = 0; j < 4; j++) {
 			CP_Graphics_DrawCircle(corners[j].x, corners[j].y, 5);
 		}
@@ -270,7 +271,7 @@ void updateTank(void) {
 	_actionTank();
 	_renderTank();
 	Vector v = {0};
-	bool hasCollided = checkTankCollision(&tanks[0], &tanks[1], &v);
+	bool hasCollided = areTanksColliding(&tanks[0], &tanks[1], &v);
 	if (hasCollided) {
 		puts("col");
 	}

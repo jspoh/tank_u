@@ -3,5 +3,5 @@
 #include "tank.h"
 
 bool mouseInRect(Rect r, double mouseX, double mouseY);
-bool checkTankCollision(Tank* t1, Tank* t2, Vector* v);
-void _getTankCorners(Tank* t, Position* corners);
+bool areTanksColliding(Tank* t1, Tank* t2, Vector* v);
+void _getRectCorners(Rect* r, Vector d, Position* corners);  // for debugging
