@@ -184,7 +184,7 @@ void _damageTank(Tank* tank, double damage) {
 	tank->health -= damage;
 }
 
-void _tankCollectPowerUp(void) {
+void _tankCollectPowerUp(int i) {
 	//logic for collecting powerups draft will change once the actual code for the area of rect is there
 //for (int i = 0; i < NUM_PLAYERS; i++) {
 //	if (checkRectangleCollision(tanks[i], powerup)) {
@@ -253,7 +253,7 @@ void _tankShoot(int i) {
 */
 void _actionTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
-		_tankCollectPowerUp();
+		_tankCollectPowerUp(i);
 		_tankUsePowerUp();
 		_tankShoot(i);
 	}
