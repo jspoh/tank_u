@@ -247,16 +247,16 @@ int _circleRectAABB(Rect* r, Circle* c, bool usingCenter) {
     // corners can also be used to find the shadow of a projection
 
     // handle if circle hits middle of rect (no outwards projection from circle's rect)
-    if (cCorners[2].x >= rCorners[0].x && cCorners[3].x <= rCorners[1].x && cCorners[2].y >= rCorners[0].y && cCorners[0].y <= rCorners[0].y) {
+    if ((cCorners[2].x >= rCorners[0].x && cCorners[2].x <= rCorners[1].x || cCorners[3].x >= rCorners[0].x && cCorners[2].x <= rCorners[1].x) && cCorners[2].y >= rCorners[0].y && cCorners[0].y <= rCorners[0].y) {
         return UP;
     }
-    else if (cCorners[0].x >= rCorners[2].x && cCorners[1].x <= rCorners[3].x && cCorners[0].y <= rCorners[2].y && cCorners[2].y >= rCorners[2].y) {
+    else if ((cCorners[0].x >= rCorners[2].x && cCorners[0].x <= rCorners[3].x || cCorners[1].x >= rCorners[2].x && cCorners[1].x <= rCorners[3].x) && cCorners[0].y <= rCorners[2].y && cCorners[2].y >= rCorners[2].y) {
         return DOWN;
     }
-    else if (cCorners[1].x >= rCorners[0].x && cCorners[0].x <= rCorners[0].x && cCorners[0].y >= rCorners[0].y && cCorners[2].y <= rCorners[2].y) {
+    else if (cCorners[1].x >= rCorners[0].x && cCorners[0].x <= rCorners[0].x && (cCorners[1].y >= rCorners[0].y && cCorners[1].y <= rCorners[2].y || cCorners[3].y >= rCorners[0].y && cCorners[3].y <= rCorners[2].y)) {
         return LEFT;
     }
-    else if (cCorners[0].x >= rCorners[1].x && cCorners[1].x <= rCorners[1].x && cCorners[0].y >= rCorners[0].y && cCorners[2].y <= rCorners[2].y) {
+    else if (cCorners[0].x <= rCorners[1].x && cCorners[1].x >= rCorners[1].x && (cCorners[0].y >= rCorners[1].y && cCorners[0].y <= rCorners[3].y || cCorners[2].y >= rCorners[1].y && cCorners[2].y <= rCorners[3].y)) {
         return RIGHT;
     }
 
@@ -266,7 +266,7 @@ int _circleRectAABB(Rect* r, Circle* c, bool usingCenter) {
     if (c->pos.x + c->radius >= rCorners[0].x && c->pos.x - c->radius <= rCorners[1].x) {  // x axis
         if (c->pos.y + c->radius >= rCorners[0].y && c->pos.y - c->radius <= rCorners[2].y) {  // y axis
             fprintf(stderr, "Unhandled circle rect collision in _circleRectAABB\n");
-            exit(4);
+            // exit(4);
         }
     }
     return NONE;
