@@ -26,7 +26,8 @@ Size tankSize = { 75.f, 100.f };
 
 //meant to use for implementing the powerups
 enum {
-	NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
+	NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE
+};
 
 extern Keybinds keybindings[];
 
@@ -67,7 +68,15 @@ void _moveTanks(void) {
 			else {  // limit movement speed to max speed if going forwards
 				t->speed = t->speed > MOVEMENT_SPEED ? MOVEMENT_SPEED : t->speed;  // limit speed to MOVEMENT_SPEED
 			}
-			const double distance = dt * t->speed;
+
+			// if collided, set speed to 0
+			bool isNewCollision = t->hasCollided != history.data[history.rear][i].hasCollided;
+			if (isNewCollision) {
+				puts("mabichaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");
+				t->speed = 0;
+			}
+
+			const double distance = dt * abs(t->speed);
 
 			if (CP_Input_KeyDown(keybindings[i].up)) {
 				if (t->currentDir == BACK && t->speed > 0) {  // braking
@@ -95,7 +104,7 @@ void _moveTanks(void) {
 			}
 		}
 		else {
-			t->speed -= DECELERATION * dt; 
+			t->speed -= DECELERATION * dt;
 			t->speed = t->speed < 0 ? 0 : t->speed;  // limit speed to MOVEMENT_SPEED
 			const double distance = dt * t->speed;
 
@@ -134,7 +143,7 @@ void _moveTanks(void) {
 					t->pos.direction -= dDegrees / 2;
 					t->pos.dDir = -(dDegrees / 2);
 				}
-			} 
+			}
 			else {
 				t->pos.direction += dDegrees;
 				t->pos.dDir = dDegrees;
@@ -153,13 +162,13 @@ Tank _tankConstructor(Position pos, Color color) {
 	tank.color = color;
 	tank.health = MAX_HEALTH;
 	tank.size = tankSize;
-			   
+
 	/* add tank to tanks array */
 	bool valid = false;
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		if (tanks[i].pos.x == 0.f) {
 			tanks[i] = tank;
-			valid = true; 
+			valid = true;
 			break;
 		}
 	}
@@ -206,15 +215,15 @@ void _tankCollectPowerUp(int i) {
 }
 
 void _tankUsePowerUp(int i) {
-//	if (CP_Input_KeyDown(keybindings[i].usePower)) {
-//		for (int j = 0; j < POWERUPS_COUNT; j++)
-//		{
-//			//takes in the tank that have the power up
-//			if (tanks[i].activePermPowers[j] != 0) {
-//				activatePowerUp(Tank* tanks[i], tanks[i].activePermPowers[j]);
-//			}
-//		}
-//	}
+	//	if (CP_Input_KeyDown(keybindings[i].usePower)) {
+	//		for (int j = 0; j < POWERUPS_COUNT; j++)
+	//		{
+	//			//takes in the tank that have the power up
+	//			if (tanks[i].activePermPowers[j] != 0) {
+	//				activatePowerUp(Tank* tanks[i], tanks[i].activePermPowers[j]);
+	//			}
+	//		}
+	//	}
 
 }
 
@@ -246,7 +255,7 @@ void _tankShoot(int i) {
 		onFireCannonball(turretTip, unitVector, i);
 
 	}
-	
+
 }
 
 
@@ -276,22 +285,31 @@ void _debugTank(void) {
 	}
 }
 
+// Tank _findNoColTank(int player) {
+// 	for (int i = history.rear; i < history.front; i = (--i)%MAX_HISTORY) {
+// 		printf("%d\n", history.data[i][player].hasCollided);
+// 		if (!history.data[i][player].hasCollided) {
+// 			return history.data[i][player];
+// 		}
+// 	}
+// 	return history.data[history.rear][player];
+// }
 
-
-void initTank(void) {
-	_createTank(WINDOW_SIZE.width/6, WINDOW_SIZE.height/2, 90.f, 0, 255, 0, 255);
-	_createTank(WINDOW_SIZE.width/6*5, WINDOW_SIZE.height/2, 270.f, 255, 0, 0, 255);
-	initQueue(&history);
+Tank _findNoColTank(int player) {
+	int i = history.rear;
+	do {
+		i = (i - 1 + MAX_HISTORY) % MAX_HISTORY; // Move backwards in the queue
+		// printf("%d\n", history.data[i][player].hasCollided);
+		if (!history.data[i][player].hasCollided) {
+			puts("found");
+			return history.data[i][player];
+		}
+	} while (i != history.front);
+	return history.data[history.front][player];
 }
 
-void updateTank(void) {
-	// capture history
-	enqueue(&history, tanks[0], tanks[1]);
-
-	_moveTanks();
-	_actionTank();
-	_renderTank();
-	Vector v = {0};
+void _collisionsTank(void) {
+	Vector v = { 0 };
 	bool hasCollidedTank = areTanksColliding(&tanks[0], &tanks[1], &v);
 	if (hasCollidedTank) {
 		puts("col tank");
@@ -307,8 +325,41 @@ void updateTank(void) {
 		if (hasCollidedCb) {
 			puts("BOOM");
 		}
+
+		if (hasCollidedWall || hasCollidedTank) {
+			puts("have ok\n");
+			tanks[i].hasCollided = true;
+		}
+		else {
+			tanks[i].hasCollided = false;
+		}
 	}
+}
+
+void initTank(void) {
+	_createTank(WINDOW_SIZE.width / 6, WINDOW_SIZE.height / 2, 90.f, 0, 255, 0, 255);
+	_createTank(WINDOW_SIZE.width / 6 * 5, WINDOW_SIZE.height / 2, 270.f, 255, 0, 0, 255);
+	initQueue(&history);
+}
+
+void updateTank(void) {
+
+	_moveTanks();
+	_actionTank();
+	_collisionsTank();
+	_renderTank();
+
+	// capture history
+	enqueue(&history, tanks[0], tanks[1]);
+
 	_debugTank();
+
+
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		if (tanks[i].hasCollided) {
+			tanks[i] = _findNoColTank(i);
+		}
+	}
 }
 
 void destroyTank(void) {
