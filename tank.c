@@ -91,7 +91,7 @@ void _moveTanks(void) {
 			// dDegrees = 0;	
 		}
 
-			const double distance = dt * abs(t->speed);
+			const double distance = dt * abs((int)t->speed);  // i have absolutely no idea why i cannot use other methods to ensure this isnt negative
 
 			if (CP_Input_KeyDown(keybindings[i].up)) {
 				if (t->currentDir == BACK && t->speed > 0) {  // braking
