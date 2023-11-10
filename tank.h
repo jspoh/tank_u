@@ -4,6 +4,8 @@
 #include "config.h"
 
 #define POWERUPS_COUNT 3
+#define NUM_PLAYERS 2
+#define MAX_HISTORY 256
 
 enum { FRONT, BACK };
 

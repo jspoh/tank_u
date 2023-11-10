@@ -8,18 +8,17 @@
 #include "math.h"
 #include "cannonball.h"
 #include "collision.h"
+#include "queue.h"
 
 //#include"collisionBasic.h" //to check for intersection
 
 #define MAX_HEALTH 100.f
-#define NUM_PLAYERS 2
 #define MOVEMENT_SPEED 500
 #define ACCELERATION 200
 #define DECELERATION (ACCELERATION * 3)
 #define TURN_SPEED 100
-#define MAX_HISTORY 
 
-Tank history[MAX_HISTORY][NUM_PLAYERS] = { 0 };
+Queue history;
 
 enum { PLAYER_1, PLAYER_2 };
 Tank tanks[NUM_PLAYERS] = { 0 };
@@ -282,9 +281,13 @@ void _debugTank(void) {
 void initTank(void) {
 	_createTank(WINDOW_SIZE.width/6, WINDOW_SIZE.height/2, 90.f, 0, 255, 0, 255);
 	_createTank(WINDOW_SIZE.width/6*5, WINDOW_SIZE.height/2, 270.f, 255, 0, 0, 255);
+	initQueue(&history);
 }
 
 void updateTank(void) {
+	// capture history
+	enqueue(&history, tanks[0], tanks[1]);
+
 	_moveTanks();
 	_actionTank();
 	_renderTank();
