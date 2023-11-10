@@ -2,7 +2,6 @@
 #include "config.h"
 #include "menu.h"
 
-#define FRAMERATE 60
 #define TOTAL_DURATION 2
 #define SHOW_DURATION 1.f
 #define FADE_DURATION ((TOTAL_DURATION - SHOW_DURATION) / 2)
