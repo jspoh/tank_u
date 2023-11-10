@@ -8,15 +8,17 @@
 #include "math.h"
 #include "cannonball.h"
 #include "collision.h"
+#include "queue.h"
 
-//#include"collisionBasic.h" //to check for intersection
 
 #define MAX_HEALTH 100.f
-#define NUM_PLAYERS 2
 #define MOVEMENT_SPEED 500
 #define ACCELERATION 200
 #define DECELERATION (ACCELERATION * 3)
 #define TURN_SPEED 100
+#define REPAIR_TIME 1  // seconds
+
+Queue history;
 
 enum { PLAYER_1, PLAYER_2 };
 Tank tanks[NUM_PLAYERS] = { 0 };
@@ -24,7 +26,8 @@ Size tankSize = { 75.f, 100.f };
 
 //meant to use for implementing the powerups
 enum {
-	NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
+	NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE
+};
 
 extern Keybinds keybindings[];
 
@@ -33,6 +36,15 @@ void _drawTank(Tank* tank) {
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
 	drawTankAdvanced(tank, &fillCol, &strokeCol);
 
+	if (tank->repairTimer > 0) {
+		printf("%lf\n", tank->repairTimer);
+		// make tank flash
+		if ((int)(tank->repairTimer * 10) % 2 == 0) {
+			CP_Color fillCol = CP_Color_Create(255, 255, 255, 255);
+			CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
+			drawTankAdvanced(tank, &fillCol, &strokeCol);
+		}
+	}
 }
 
 void _setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
@@ -45,16 +57,18 @@ void _setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
 
 void _moveTanks(void) {
 	const double dt = CP_System_GetDt();
-	const double dDegrees = dt * TURN_SPEED;  // dDegrees as in change in degrees like dx, dy (differentiate)
+	double dDegrees = dt * TURN_SPEED;  // dDegrees as in change in degrees like dx, dy (differentiate)
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Tank* t = &tanks[i];
+
 		double old = t->pos.direction;
 
 		/*tu79*/
 		if (t->speed == 0) {
 			t->currentDir = FRONT;
 		}
+
 
 		/*movement*/
 		if (CP_Input_KeyDown(keybindings[i].up) || CP_Input_KeyDown(keybindings[i].down)) {
@@ -65,7 +79,19 @@ void _moveTanks(void) {
 			else {  // limit movement speed to max speed if going forwards
 				t->speed = t->speed > MOVEMENT_SPEED ? MOVEMENT_SPEED : t->speed;  // limit speed to MOVEMENT_SPEED
 			}
-			const double distance = dt * t->speed;
+
+			// if collided, set speed to 0
+			bool isNewCollision = t->hasCollided != history.data[history.rear][i].hasCollided;
+			if (isNewCollision) {
+				t->speed = 0;
+			}
+
+		if (t->repairTimer > 0) {
+			t->speed = 0;
+			// dDegrees = 0;	
+		}
+
+			const double distance = dt * abs((int)t->speed);  // i have absolutely no idea why i cannot use other methods to ensure this isnt negative
 
 			if (CP_Input_KeyDown(keybindings[i].up)) {
 				if (t->currentDir == BACK && t->speed > 0) {  // braking
@@ -93,7 +119,7 @@ void _moveTanks(void) {
 			}
 		}
 		else {
-			t->speed -= DECELERATION * dt; 
+			t->speed -= DECELERATION * dt;
 			t->speed = t->speed < 0 ? 0 : t->speed;  // limit speed to MOVEMENT_SPEED
 			const double distance = dt * t->speed;
 
@@ -123,7 +149,7 @@ void _moveTanks(void) {
 				}
 			}
 		}
-		if (CP_Input_KeyDown(keybindings[i].right)) {
+		else if (CP_Input_KeyDown(keybindings[i].right)) {
 			if (t->currentDir == BACK) {  // if reversing, invert directions
 				if (t->pos.direction == 0) {
 					t->pos.direction = (double)(360 - ceil(dDegrees));
@@ -132,7 +158,7 @@ void _moveTanks(void) {
 					t->pos.direction -= dDegrees / 2;
 					t->pos.dDir = -(dDegrees / 2);
 				}
-			} 
+			}
 			else {
 				t->pos.direction += dDegrees;
 				t->pos.dDir = dDegrees;
@@ -151,13 +177,13 @@ Tank _tankConstructor(Position pos, Color color) {
 	tank.color = color;
 	tank.health = MAX_HEALTH;
 	tank.size = tankSize;
-			   
+
 	/* add tank to tanks array */
 	bool valid = false;
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		if (tanks[i].pos.x == 0.f) {
 			tanks[i] = tank;
-			valid = true; 
+			valid = true;
 			break;
 		}
 	}
@@ -204,15 +230,15 @@ void _tankCollectPowerUp(int i) {
 }
 
 void _tankUsePowerUp(int i) {
-//	if (CP_Input_KeyDown(keybindings[i].usePower)) {
-//		for (int j = 0; j < POWERUPS_COUNT; j++)
-//		{
-//			//takes in the tank that have the power up
-//			if (tanks[i].activePermPowers[j] != 0) {
-//				activatePowerUp(Tank* tanks[i], tanks[i].activePermPowers[j]);
-//			}
-//		}
-//	}
+	//	if (CP_Input_KeyDown(keybindings[i].usePower)) {
+	//		for (int j = 0; j < POWERUPS_COUNT; j++)
+	//		{
+	//			//takes in the tank that have the power up
+	//			if (tanks[i].activePermPowers[j] != 0) {
+	//				activatePowerUp(Tank* tanks[i], tanks[i].activePermPowers[j]);
+	//			}
+	//		}
+	//	}
 
 }
 
@@ -225,9 +251,6 @@ Position _getTurretCenter(Tank* t, Size turretSize) {
 
 	return O;
 }
-
-
-
 
 void _tankShoot(int i) {
 	if (CP_Input_KeyDown(keybindings[i].shoot))
@@ -244,7 +267,7 @@ void _tankShoot(int i) {
 		onFireCannonball(turretTip, unitVector, i);
 
 	}
-	
+
 }
 
 
@@ -274,24 +297,32 @@ void _debugTank(void) {
 	}
 }
 
-
-
-void initTank(void) {
-	_createTank(WINDOW_SIZE.width/6, WINDOW_SIZE.height/2, 90.f, 0, 255, 0, 255);
-	_createTank(WINDOW_SIZE.width/6*5, WINDOW_SIZE.height/2, 270.f, 255, 0, 0, 255);
+Tank _findNoColTank(int player) {
+	int i = history.rear;
+	do {
+		i = (i - 1 + MAX_HISTORY) % MAX_HISTORY; // move backwards in the queue
+		// printf("%d\n", history.data[i][player].hasCollided);
+		if (!history.data[i][player].hasCollided) {
+			// puts("found");
+			return history.data[i][player];
+		}
+	} while (i != history.front);
+	puts("cant find\n");	
+	return history.data[history.front][player];
 }
 
-void updateTank(void) {
-	_moveTanks();
-	_actionTank();
-	_renderTank();
-	Vector v = {0};
+void _collisionsTank(void) {
+	const double dt = CP_System_GetDt();
+
+	Vector v = { 0 };
 	bool hasCollidedTank = areTanksColliding(&tanks[0], &tanks[1], &v);
 	if (hasCollidedTank) {
 		puts("col tank");
 	}
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
+		tanks[i].repairTimer = tanks->repairTimer <= 0 ? 0 : tanks[i].repairTimer - dt;
+
 		bool hasCollidedWall = colTankWall(&tanks[i], &v);
 		if (hasCollidedWall) {
 			puts("col wall");
@@ -301,8 +332,43 @@ void updateTank(void) {
 		if (hasCollidedCb) {
 			puts("BOOM");
 		}
+
+		if (hasCollidedWall || hasCollidedTank) {
+			// puts("have ok\n");
+			tanks[i].hasCollided = true;
+		}
+		else {
+			tanks[i].hasCollided = false;
+		}
 	}
+}
+
+void initTank(void) {
+	_createTank(WINDOW_SIZE.width / 6, WINDOW_SIZE.height / 2, 90.f, 0, 255, 0, 255);
+	_createTank(WINDOW_SIZE.width / 6 * 5, WINDOW_SIZE.height / 2, 270.f, 255, 0, 0, 255);
+	initQueue(&history);
+}
+
+void updateTank(void) {
+
+	_moveTanks();
+	_actionTank();
+	_collisionsTank();
+	_renderTank();
+
+	// capture history
+	enqueue(&history, tanks[0], tanks[1]);
+
 	_debugTank();
+
+
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		if (tanks[i].hasCollided) {
+			tanks[i] = _findNoColTank(i);
+			// tanks[i].speed = 0;
+			tanks[i].repairTimer = REPAIR_TIME;		
+		}
+	}
 }
 
 void destroyTank(void) {
