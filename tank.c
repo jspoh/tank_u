@@ -16,6 +16,7 @@
 #define ACCELERATION 200
 #define DECELERATION (ACCELERATION * 3)
 #define TURN_SPEED 100
+#define REPAIR_TIME 2  // seconds
 
 Queue history;
 
@@ -132,7 +133,7 @@ void _moveTanks(void) {
 				}
 			}
 		}
-		if (CP_Input_KeyDown(keybindings[i].right)) {
+		else if (CP_Input_KeyDown(keybindings[i].right)) {
 			if (t->currentDir == BACK) {  // if reversing, invert directions
 				if (t->pos.direction == 0) {
 					t->pos.direction = (double)(360 - ceil(dDegrees));
@@ -328,9 +329,11 @@ void _collisionsTank(void) {
 		if (hasCollidedWall || hasCollidedTank) {
 			// puts("have ok\n");
 			tanks[i].hasCollided = true;
+			tanks[i].isRepairing = true;
 		}
 		else {
 			tanks[i].hasCollided = false;
+			tanks[i].isRepairing = false;
 		}
 	}
 }

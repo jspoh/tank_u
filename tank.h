@@ -21,6 +21,7 @@ typedef struct _tank {
 	int activePowerUps[POWERUPS_COUNT]; 
 	int activePermPowers[POWERUPS_COUNT];
 	int hasCollided;
+	double isRepairing;
 } Tank;
 
 
