@@ -37,7 +37,7 @@ void _drawTank(Tank* tank) {
 	drawTankAdvanced(tank, &fillCol, &strokeCol);
 
 	if (tank->repairTimer > 0) {
-		printf("%lf\n", tank->repairTimer);
+		//printf("%lf\n", tank->repairTimer);
 		// make tank flash
 		if ((int)(tank->repairTimer * 10) % 2 == 0) {
 			CP_Color fillCol = CP_Color_Create(255, 255, 255, 255);
