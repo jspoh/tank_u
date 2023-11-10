@@ -10,7 +10,6 @@
 #include "collision.h"
 #include "queue.h"
 
-//#include"collisionBasic.h" //to check for intersection
 
 #define MAX_HEALTH 100.f
 #define MOVEMENT_SPEED 500
@@ -72,7 +71,6 @@ void _moveTanks(void) {
 			// if collided, set speed to 0
 			bool isNewCollision = t->hasCollided != history.data[history.rear][i].hasCollided;
 			if (isNewCollision) {
-				puts("mabichaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");
 				t->speed = 0;
 			}
 
@@ -298,13 +296,14 @@ void _debugTank(void) {
 Tank _findNoColTank(int player) {
 	int i = history.rear;
 	do {
-		i = (i - 1 + MAX_HISTORY) % MAX_HISTORY; // Move backwards in the queue
+		i = (i - 1 + MAX_HISTORY) % MAX_HISTORY; // move backwards in the queue
 		// printf("%d\n", history.data[i][player].hasCollided);
 		if (!history.data[i][player].hasCollided) {
-			puts("found");
+			// puts("found");
 			return history.data[i][player];
 		}
 	} while (i != history.front);
+	puts("cant find\n");	
 	return history.data[history.front][player];
 }
 
@@ -327,7 +326,7 @@ void _collisionsTank(void) {
 		}
 
 		if (hasCollidedWall || hasCollidedTank) {
-			puts("have ok\n");
+			// puts("have ok\n");
 			tanks[i].hasCollided = true;
 		}
 		else {
@@ -358,6 +357,7 @@ void updateTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		if (tanks[i].hasCollided) {
 			tanks[i] = _findNoColTank(i);
+			// tanks[i].speed = 0;
 		}
 	}
 }
