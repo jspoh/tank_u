@@ -16,7 +16,7 @@ typedef struct _tank {
 	double speed;
 	BYTE currentDir;
 	double elapsedPowerTime;
-	int activePowerUps[POWERUPS_COUNT]; 
+	int activePowerUps;
 	int activePermPowers[POWERUPS_COUNT];
 } Tank;
 
