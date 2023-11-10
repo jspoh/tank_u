@@ -333,6 +333,9 @@ Position _getRectCenter(Rect* r, Vector* d) {
  */
 void colCbWall(void) {
     // iterate through active walls 
+    // int toDestroy[MAX] = { 0 };
+    // int tdi = 0;
+
     for (int i=0; i<numWalls; i++) {
         Wall wall = activeWalls[i];
         if (wall.size.width == 0) {
@@ -352,11 +355,13 @@ void colCbWall(void) {
             Circle c = {cb->radius, cb->pos};
             // bool cbWallCollided = _circleRectSAT(&wall, &c, &wallVector, false);
             int cbWallCollided = _circleRectAABB(&wall, &c, false);
+            // printf("%d\n", cbWallCollided);  // !TODO !CRITICAL bugfix required. after a few shots where cannonballs are despawned, collisions start to glitch out. same for tank
 
             if (cbWallCollided) {
 
                 if (cb->bounced) {  // already bounced once
                     // destroy cannonball
+                    // toDestroy[tdi++] = j;
                     destroyCannonball(j);
                 }
                 else {
@@ -379,6 +384,13 @@ void colCbWall(void) {
             }
         }
     }
+
+    // puts("start");
+    // for (int i = 0; i<tdi; i++) {
+    //     // printf("%i: %d\n", i, toDestroy[i]);
+    //     destroyCannonball(toDestroy[i]);
+    // }
+    // puts("end");
 }
 
 
