@@ -229,7 +229,7 @@ Position _getTurretCenter(Tank* t, Size turretSize) {
 
 
 
-void _tankShoot(int i) {
+void _tankShoot(int i, int activePowerUp) {
 	if (CP_Input_KeyDown(keybindings[i].shoot))
 	{
 		//using the exact address to find the directional vector 
@@ -241,7 +241,23 @@ void _tankShoot(int i) {
 
 		Position turretTip = _getTurretCenter(&tanks[i], size);
 
-		onFireCannonball(turretTip, unitVector, i);
+		switch (activePowerUp) {
+		case NORMAL:
+			onFireCannonball(turretTip, unitVector, i);
+			break;
+		//case BIG_BULLET:
+		//	onFireBigBullet(turretTip, unitVector, i);
+		//	break;
+		//case SHOTGUN:
+		//	onFireShotGunBullets(turretTip, unitVector, i);
+		//	break;
+		//case RAPID_FIRE:
+		//	onRapidFireCannonballs(turretTip, unitVector, i);
+		//	break;
+		default:
+			onFireCannonball(turretTip, unitVector, i); // switched default to normal cannonball shooting just incase
+			break;
+		}
 
 	}
 	
@@ -255,7 +271,7 @@ void _actionTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		_tankCollectPowerUp(i);
 		_tankUsePowerUp(i);
-		_tankShoot(i);
+		_tankShoot(i,tanks[i].activePowerUps);
 	}
 
 }
