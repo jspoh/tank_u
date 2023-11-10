@@ -18,6 +18,7 @@
 #define DECELERATION (ACCELERATION * 3)
 #define TURN_SPEED 100
 #define REPAIR_TIME 1  // seconds
+#define POWERUP_DURATION 10
 
 Queue history;
 
@@ -230,13 +231,28 @@ void _tankCollectPowerUp(int i) {
 //
 }
 
-void _tankUsePowerUp(int i) {
-	if (CP_Input_KeyDown(keybindings[i].usePower)) {
-		for (int j = 0; j < POWERUPS_COUNT; j++)
-		{
-			//takes in the tank that have the power up
-			if (tanks[i].activePermPowers[j] != 0) {
-				tanks[i].activePowerUps = tanks[i].activePermPowers[j];
+
+void _tankUsePowerUp(void) {
+	static clock_t powerUpStartTime = 0;
+	for (int i = 0; i < NUM_PLAYERS; i++) 
+	{
+		if (CP_Input_KeyDown(keybindings[i].usePower)) {
+			for (int j = 0; j < POWERUPS_COUNT; j++)
+			{
+				//takes in the tank that have the power up
+				if (tanks[i].activePermPowers[j] != 0) {
+					tanks[i].activePowerUps = tanks[i].activePermPowers[j];
+					powerUpStartTime = clock();
+				}
+			}
+		}
+		if (tanks[i].activePowerUps != 0) {
+			clock_t currentTime = clock();
+			double elapsedTime = (double)(currentTime - powerUpStartTime) / CLOCKS_PER_SEC;
+
+			if (elapsedTime >= POWERUP_DURATION) {
+				// Power-up duration has elapsed, reset activePowerUps to 0
+				tanks[i].activePowerUps = 0;
 			}
 		}
 	}
@@ -297,9 +313,9 @@ void _tankShoot(int i, int activePowerUp) {
 void _actionTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		_tankCollectPowerUp(i);
-		_tankUsePowerUp(i);
 		_tankShoot(i,tanks[i].activePowerUps);
 	}
+	_tankUsePowerUp();
 
 }
 
