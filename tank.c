@@ -22,6 +22,10 @@ enum { PLAYER_1, PLAYER_2 };
 Tank tanks[NUM_PLAYERS] = { 0 };
 Size tankSize = { 75.f, 100.f };
 
+//meant to use for implementing the powerups
+enum {
+	NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
+
 extern Keybinds keybindings[];
 
 void _drawTank(Tank* tank) {
@@ -182,6 +186,35 @@ void _damageTank(Tank* tank, double damage) {
 	tank->health -= damage;
 }
 
+void _tankCollectPowerUp(int i) {
+	//logic for collecting powerups draft will change once the actual code for the area of rect is there
+//for (int i = 0; i < NUM_PLAYERS; i++) {
+//	if (checkRectangleCollision(tanks[i], powerup)) {
+//		for (int j = 0; j < POWERUPS_COUNT; j++) 
+//		{
+//			if (tanks[i].activePermPowers[i] == 0) 
+//			{
+//				tanks[i].activePermPowers[i] += powerup;
+//			}
+
+//		}
+//	}
+//}
+//
+}
+
+void _tankUsePowerUp(int i) {
+//	if (CP_Input_KeyDown(keybindings[i].usePower)) {
+//		for (int j = 0; j < POWERUPS_COUNT; j++)
+//		{
+//			//takes in the tank that have the power up
+//			if (tanks[i].activePermPowers[j] != 0) {
+//				activatePowerUp(Tank* tanks[i], tanks[i].activePermPowers[j]);
+//			}
+//		}
+//	}
+
+}
 
 Position _getTurretCenter(Tank* t, Size turretSize) {
 	double scalar = sqrt(pow(t->size.width / 2.0, 2.0) + pow(t->size.height / 2.0, 2.0)); //the distance between the point
@@ -190,57 +223,39 @@ Position _getTurretCenter(Tank* t, Size turretSize) {
 	O.x = t->pos.x + scalar * t->pos.d.x;
 	O.y = t->pos.y + scalar * t->pos.d.y;
 
-
-	//Vector n = { t->pos.d.y, -t->pos.d.x };
-	//O.x += scalar + n.x;
-	//O.y += scalar + n.y;
-
 	return O;
 }
+
+
+
+
+void _tankShoot(int i) {
+	if (CP_Input_KeyDown(keybindings[i].shoot))
+	{
+		//using the exact address to find the directional vector 
+		Vector unitVector = getDVector(&tanks[i]);
+
+		Size size = { 0 };
+		size.height = (tanks[i].size.height * 0.6f) * 0.6f;
+		size.width = (tanks[i].size.width * 0.6f) * 0.3f;
+
+		Position turretTip = _getTurretCenter(&tanks[i], size);
+
+		onFireCannonball(turretTip, unitVector, i);
+
+	}
+	
+}
+
+
 /*!
 * @brief logic to handle shooting, collecting, using powerups
 */
 void _actionTank(void) {
-	//logic for collecting powerups draft will change once the actual code for the area of rect is there
-	//for (int i = 0; i < NUM_PLAYERS; i++) {
-	//	if (checkRectangleCollision(tanks[i], dropbox)) {
-	//		for (int j = 0; j < POWERUPS_COUNT; j++) 
-	//		{
-	//			if (tanks[i].activePermPowers[i] == 0) 
-	//			{
-	//				tanks[i].activePermPowers[i] = dropbox;
-	//			}
-
-	//		}
-	//	}
-	//}
-	//
 	for (int i = 0; i < NUM_PLAYERS; i++) {
-		if (CP_Input_KeyDown(keybindings[i].shoot))
-		{
-			//using the exact address to find the directional vector 
-			Vector unitVector = getDVector(&tanks[i]);
-
-			Size size = { 0 };
-			size.height = (tanks[i].size.height * 0.6f) * 0.6f;
-			//printf("height: %lf", size.height);
-			size.width = (tanks[i].size.width * 0.6f) * 0.3f;
-			//printf("width: %lf", size.width);
-			Position turretTip= _getTurretCenter(&tanks[i], size);
-
-			onFireCannonball(turretTip, unitVector, i);
-			// anws, you only need 1 printline for this. no need to check what the value of `i` is
-			//if (i == 0) {
-			//	printf("tank 1 :x:%lf y:%lf\n ", unitVector.x, unitVector.y);
-			//	printf("tank 1 turret pos x: %lf y: %lf\n", turretTip.x, turretTip.y);
-
-			//}
-			//else if (i == 1)
-			//{
-			//	printf("tank 2 :x:%lf y:%lf\n ", unitVector.x, unitVector.y);
-			//	printf("tank 2 turret pos x: %lf y: %lf\n", turretTip.x, turretTip.y);
-			//}
-		}
+		_tankCollectPowerUp(i);
+		_tankUsePowerUp(i);
+		_tankShoot(i);
 	}
 
 }
