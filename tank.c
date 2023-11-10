@@ -16,7 +16,7 @@
 #define ACCELERATION 200
 #define DECELERATION (ACCELERATION * 3)
 #define TURN_SPEED 100
-#define REPAIR_TIME 2  // seconds
+#define REPAIR_TIME 1  // seconds
 
 Queue history;
 
@@ -36,6 +36,15 @@ void _drawTank(Tank* tank) {
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
 	drawTankAdvanced(tank, &fillCol, &strokeCol);
 
+	if (tank->repairTimer > 0) {
+		printf("%lf\n", tank->repairTimer);
+		// make tank flash
+		if ((int)(tank->repairTimer * 10) % 2 == 0) {
+			CP_Color fillCol = CP_Color_Create(255, 255, 255, 255);
+			CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
+			drawTankAdvanced(tank, &fillCol, &strokeCol);
+		}
+	}
 }
 
 void _setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
@@ -48,16 +57,18 @@ void _setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
 
 void _moveTanks(void) {
 	const double dt = CP_System_GetDt();
-	const double dDegrees = dt * TURN_SPEED;  // dDegrees as in change in degrees like dx, dy (differentiate)
+	double dDegrees = dt * TURN_SPEED;  // dDegrees as in change in degrees like dx, dy (differentiate)
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Tank* t = &tanks[i];
+
 		double old = t->pos.direction;
 
 		/*tu79*/
 		if (t->speed == 0) {
 			t->currentDir = FRONT;
 		}
+
 
 		/*movement*/
 		if (CP_Input_KeyDown(keybindings[i].up) || CP_Input_KeyDown(keybindings[i].down)) {
@@ -74,6 +85,11 @@ void _moveTanks(void) {
 			if (isNewCollision) {
 				t->speed = 0;
 			}
+
+		if (t->repairTimer > 0) {
+			t->speed = 0;
+			// dDegrees = 0;	
+		}
 
 			const double distance = dt * abs(t->speed);
 
@@ -236,9 +252,6 @@ Position _getTurretCenter(Tank* t, Size turretSize) {
 	return O;
 }
 
-
-
-
 void _tankShoot(int i) {
 	if (CP_Input_KeyDown(keybindings[i].shoot))
 	{
@@ -284,16 +297,6 @@ void _debugTank(void) {
 	}
 }
 
-// Tank _findNoColTank(int player) {
-// 	for (int i = history.rear; i < history.front; i = (--i)%MAX_HISTORY) {
-// 		printf("%d\n", history.data[i][player].hasCollided);
-// 		if (!history.data[i][player].hasCollided) {
-// 			return history.data[i][player];
-// 		}
-// 	}
-// 	return history.data[history.rear][player];
-// }
-
 Tank _findNoColTank(int player) {
 	int i = history.rear;
 	do {
@@ -309,6 +312,8 @@ Tank _findNoColTank(int player) {
 }
 
 void _collisionsTank(void) {
+	const double dt = CP_System_GetDt();
+
 	Vector v = { 0 };
 	bool hasCollidedTank = areTanksColliding(&tanks[0], &tanks[1], &v);
 	if (hasCollidedTank) {
@@ -316,6 +321,8 @@ void _collisionsTank(void) {
 	}
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
+		tanks[i].repairTimer = tanks->repairTimer <= 0 ? 0 : tanks[i].repairTimer - dt;
+
 		bool hasCollidedWall = colTankWall(&tanks[i], &v);
 		if (hasCollidedWall) {
 			puts("col wall");
@@ -329,11 +336,9 @@ void _collisionsTank(void) {
 		if (hasCollidedWall || hasCollidedTank) {
 			// puts("have ok\n");
 			tanks[i].hasCollided = true;
-			tanks[i].isRepairing = true;
 		}
 		else {
 			tanks[i].hasCollided = false;
-			tanks[i].isRepairing = false;
 		}
 	}
 }
@@ -361,6 +366,7 @@ void updateTank(void) {
 		if (tanks[i].hasCollided) {
 			tanks[i] = _findNoColTank(i);
 			// tanks[i].speed = 0;
+			tanks[i].repairTimer = REPAIR_TIME;		
 		}
 	}
 }
