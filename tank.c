@@ -17,6 +17,9 @@
 #define ACCELERATION 200
 #define DECELERATION (ACCELERATION * 3)
 #define TURN_SPEED 100
+#define MAX_HISTORY 
+
+Tank history[MAX_HISTORY][NUM_PLAYERS] = { 0 };
 
 enum { PLAYER_1, PLAYER_2 };
 Tank tanks[NUM_PLAYERS] = { 0 };

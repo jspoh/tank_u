@@ -18,6 +18,7 @@ typedef struct _tank {
 	double elapsedPowerTime;
 	int activePowerUps[POWERUPS_COUNT]; 
 	int activePermPowers[POWERUPS_COUNT];
+	int hasCollided;
 } Tank;
 
 
