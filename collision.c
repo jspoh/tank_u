@@ -228,35 +228,45 @@ bool _circleRectSAT(Rect* r, Circle* c, Vector* d, bool usingCenter) {
 
 /**
  * @brief uses AABB(axis aligned bounding box) to direction easily
+ *        sets circle to a rect
  * 
- * @param r 
+ * @param r rect is used as base, meaning directions returned will be relative to this
  * @param c 
- * @param usingCenter 
+ * @param usingCenter if rect is rendered from center position or top left position
  * @return int enum direction (declared in utils.h)
  */
 int _circleRectAABB(Rect* r, Circle* c, bool usingCenter) {
-    Position corners[4] = { 0 };
+    Position rCorners[4] = { 0 };
     Vector d = { 0, -1 };  // no change to d vector allowed since using AABB
-    _getRectCorners(r, &d, corners, usingCenter);  // 0: topleft, 1: topright, 2: bottomleft, 3: bottomright
+    _getRectCorners(r, &d, rCorners, usingCenter);  // 0: topleft, 1: topright, 2: bottomleft, 3: bottomright
 
-    if (c->pos.x + c->radius >= corners[0].x && c->pos.x - c->radius <= corners[1].x) {  // x axis
-        if (c->pos.y + c->radius >= corners[0].y && c->pos.y - c->radius <= corners[2].y) {  // y axis
-            if (c->pos.y <= corners[0].y) {
-                return UP;
-            }
-            else if (c->pos.y >= corners[2].y) {
-                return DOWN;
-            }
-            else if (c->pos.x <= corners[0].x) {
-                return LEFT;
-            }
-            else if (c->pos.x >= corners[1].x) {
-                return RIGHT;
-            }
-            else {
-                fprintf(stderr, "Something went wrong with _circleRectAABB collision\n");
-                // exit(4);
-            }
+    Position cCorners[4] = { 0 };
+    Rect rc = { {c->radius*2, c->radius*2}, c->pos };
+    _getRectCorners(&rc, &d, cCorners, true);  // circle always uses center to render
+
+    // corners can also be used to find the shadow of a projection
+
+    // handle if circle hits middle of rect (no outwards projection from circle's rect)
+    if ((cCorners[2].x >= rCorners[0].x && cCorners[2].x <= rCorners[1].x || cCorners[3].x >= rCorners[0].x && cCorners[2].x <= rCorners[1].x) && cCorners[2].y >= rCorners[0].y && cCorners[0].y <= rCorners[0].y) {
+        return UP;
+    }
+    else if ((cCorners[0].x >= rCorners[2].x && cCorners[0].x <= rCorners[3].x || cCorners[1].x >= rCorners[2].x && cCorners[1].x <= rCorners[3].x) && cCorners[0].y <= rCorners[2].y && cCorners[2].y >= rCorners[2].y) {
+        return DOWN;
+    }
+    else if (cCorners[1].x >= rCorners[0].x && cCorners[0].x <= rCorners[0].x && (cCorners[1].y >= rCorners[0].y && cCorners[1].y <= rCorners[2].y || cCorners[3].y >= rCorners[0].y && cCorners[3].y <= rCorners[2].y)) {
+        return LEFT;
+    }
+    else if (cCorners[0].x <= rCorners[1].x && cCorners[1].x >= rCorners[1].x && (cCorners[0].y >= rCorners[1].y && cCorners[0].y <= rCorners[3].y || cCorners[2].y >= rCorners[1].y && cCorners[2].y <= rCorners[3].y)) {
+        return RIGHT;
+    }
+
+    // handle projection from circle's rect
+
+    // check for unhandled collisions
+    if (c->pos.x + c->radius >= rCorners[0].x && c->pos.x - c->radius <= rCorners[1].x) {  // x axis
+        if (c->pos.y + c->radius >= rCorners[0].y && c->pos.y - c->radius <= rCorners[2].y) {  // y axis
+            fprintf(stderr, "Unhandled circle rect collision in _circleRectAABB\n");
+            // exit(4);
         }
     }
     return NONE;
