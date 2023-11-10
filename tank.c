@@ -9,6 +9,7 @@
 #include "cannonball.h"
 #include "collision.h"
 #include "queue.h"
+#include <time.h>
 
 
 #define MAX_HEALTH 100.f
@@ -230,15 +231,15 @@ void _tankCollectPowerUp(int i) {
 }
 
 void _tankUsePowerUp(int i) {
-	//	if (CP_Input_KeyDown(keybindings[i].usePower)) {
-	//		for (int j = 0; j < POWERUPS_COUNT; j++)
-	//		{
-	//			//takes in the tank that have the power up
-	//			if (tanks[i].activePermPowers[j] != 0) {
-	//				activatePowerUp(Tank* tanks[i], tanks[i].activePermPowers[j]);
-	//			}
-	//		}
-	//	}
+	if (CP_Input_KeyDown(keybindings[i].usePower)) {
+		for (int j = 0; j < POWERUPS_COUNT; j++)
+		{
+			//takes in the tank that have the power up
+			if (tanks[i].activePermPowers[j] != 0) {
+				tanks[i].activePowerUps = tanks[i].activePermPowers[j];
+			}
+		}
+	}
 
 }
 
