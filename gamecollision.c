@@ -3,8 +3,10 @@
 // // circle can represent cannonball.
 #include "math.h"
 #include "config.h"
+#include "tank.h"
 
 
+/*
 // Function to check collision between two rectangles using boundary check;
 int checkRectangleCollision(Rect r1, Rect r2)
 {
@@ -51,3 +53,4 @@ int checkCircleRectCollision(Rect r, double circleCenterX, double circleCenterY,
     // If squared dist less than squared radius, it means circle center is within the circle, indicating a collision.
     return (deltaX * deltaX + deltaY * deltaY) < (circleRadius * circleRadius);
 }
+*/

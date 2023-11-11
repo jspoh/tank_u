@@ -21,9 +21,6 @@
     <ClCompile Include="tank.c">
       <Filter>components\tank</Filter>
     </ClCompile>
-    <ClCompile Include="tank_utils.c">
-      <Filter>components\tank</Filter>
-    </ClCompile>
     <ClCompile Include="credits.c">
       <Filter>components\menu\subpages\credits</Filter>
     </ClCompile>
@@ -48,6 +45,12 @@
     <ClCompile Include="gamecollision.c">
       <Filter>util\game_collision</Filter>
     </ClCompile>
+    <ClCompile Include="queue.c">
+      <Filter>components\tank\utils\queue</Filter>
+    </ClCompile>
+    <ClCompile Include="tank_utils.c">
+      <Filter>components\tank\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="menu.h">
@@ -67,9 +70,6 @@
       <Filter>components\wall</Filter>
     </ClInclude>
     <ClInclude Include="tank.h">
-      <Filter>components\tank</Filter>
-    </ClInclude>
-    <ClInclude Include="tank_utils.h">
       <Filter>components\tank</Filter>
     </ClInclude>
     <ClInclude Include="credits.h">
@@ -95,6 +95,12 @@
     </ClInclude>
     <ClInclude Include="gamecollision.h">
       <Filter>util\game_collision</Filter>
+    </ClInclude>
+    <ClInclude Include="queue.h">
+      <Filter>components\tank\utils\queue</Filter>
+    </ClInclude>
+    <ClInclude Include="tank_utils.h">
+      <Filter>components\tank\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +151,12 @@
     </Filter>
     <Filter Include="util\game_collision">
       <UniqueIdentifier>{3dab3375-b184-43d5-9a6c-44da00a159cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\tank\utils">
+      <UniqueIdentifier>{5f1d3db3-91c7-4b75-991e-9bdaf1b45dc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\tank\utils\queue">
+      <UniqueIdentifier>{b1215ee7-2122-48b5-a20e-9b2500c81ba0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

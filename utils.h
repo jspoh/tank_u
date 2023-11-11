@@ -5,7 +5,7 @@
 #include "tank.h"
 
 #define M_PI 3.141592653589793238462643383279502884197
-enum { UP, DOWN, LEFT, RIGHT };
+enum { NONE, UP, DOWN, LEFT, RIGHT };
 
 
 typedef struct {
@@ -35,3 +35,4 @@ double degreesToRadians(double degrees);
 Vector scalarMultiply(Vector v, double scalar);
 Vector rotateVectorClockwise(Vector v, double degrees);
 Vector rotateVectorCounterClockwise(Vector v, double degrees);
+double pythagorean(double width, double height);
