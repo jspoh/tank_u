@@ -149,7 +149,8 @@ void _initVars(void) {
 void menuInit(void) {
 	menuState = FADE_IN;
 
-	font = CP_Font_Load("Assets/Exo2-Regular.ttf");
+	// font = CP_Font_Load("Assets/Exo2-Regular.ttf");
+	font = CP_Font_Load("Assets/fonts/PixelifySans-Regular.ttf");
 	CP_Font_Set(font);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
