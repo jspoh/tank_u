@@ -403,9 +403,11 @@ void _collisionsTank(void) {
 			puts("col wall");
 		}
 
-		bool hasCollidedCb = colTankCb(&tanks[i]);
+		double damageTaken = 0;
+		bool hasCollidedCb = colTankCb(&tanks[i], &damageTaken);
 		if (hasCollidedCb) {
-			puts("BOOM");
+			printf("Damage taken: %lf\n", damageTaken);
+			// !TODO: reduce tank health here
 		}
 
 		if (hasCollidedWall || hasCollidedTank) {
