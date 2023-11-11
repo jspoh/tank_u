@@ -214,7 +214,7 @@ void _damageTank(Tank* tank, double damage) {
 	tank->health -= damage;
 }
 
-void _tankCollectPowerUp(int i) {
+void _tankCollectPowerUp(int i) { //int i is which tank it is in the array tanks[i] 
 	//logic for collecting powerups draft will change once the actual code for the area of rect is there
 	//for (int i = 0; i < NUM_PLAYERS; i++) {
 	//	if (checkRectangleCollision(tanks[i].pos.x,tanks[i].pos.y, powerUps.pos.x,powerUps.pos.y)) {
@@ -232,7 +232,7 @@ void _tankCollectPowerUp(int i) {
 }
 
 
-void _tankUsePowerUp(int i) {
+void _tankUsePowerUp(int i) { //int i is which tank it is in the array tanks[i] 
 	static clock_t powerUpStartTime = 0;
 		if (CP_Input_KeyDown(keybindings[i].usePower)) {
 			for (int j = 0; j < POWERUPS_COUNT; j++)
@@ -269,7 +269,7 @@ Position _getTurretCenter(Tank* t, Size turretSize) {
 
 
 
-void _tankShoot(int i, int activePowerUp) {
+void _tankShoot(int i, int activePowerUp) { //int i is which tank it is in the array tanks[i] 
 	if (CP_Input_KeyDown(keybindings[i].shoot))
 	{
 		//using the exact address to find the directional vector 
