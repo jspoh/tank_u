@@ -4,61 +4,107 @@
 #include "config.h" // include as i am calling struct from here
 #include "tree.h"
 #include "utils.h"
+#include "collision.h"
+#include "wall.h"
 
-#define NUM_TREES 8
-#define SIZE_TREE 50
 
-extern Size WINDOW_SIZE;
+Tree activeTrees[MAX_TREES] = { 0 };
+CP_Image treeImgs[NUM_TREE_STYLES] = { 0 };
+int numTreeImgs = 0;
+int numTrees = MAX_TREES;
 
-// init trees 
-CP_Image treeImages[MAX] = { 0 }; // storing tree images in arr
-int treeImagesSize = 0; // tree image index
-enum { treeStyle1, treeStyle2 };
+extern Wall activeWalls[MAX_WALLS];
+extern int numWalls;
 
-Tree trees[NUM_TREES] = { 0 };
+extern Tank tanks[NUM_PLAYERS];
 
-void initTree() {
-	treeImages[treeImagesSize++] = CP_Image_Load("Assets/trees/tree_0.png"); // image setup
-	treeImages[treeImagesSize++] = CP_Image_Load("Assets/trees/tree_1.png"); // image setup
+
+void _drawTree(Tree* t) {
+	CP_Image_Draw(treeImgs[t->style], (float)t->rect.pos.x, (float)t->rect.pos.y, (float)t->rect.size.width, (float)t->rect.size.height, 255);
 }
 
-// construct tree array to build trees and store in arr
-Tree _treeConstructor(Position pos) {
-	Tree tree = { 0 };
-	Size treeSize = { 50.0f,50.0f };
-	tree.pos = pos;
-}
-
-// draw tree at random position 
-void _drawTree() { // own function must add 
-	int seed = time(NULL);
-	srand(seed);
-	int maxTrees = rand() % NUM_TREES + 4; 
-
-	for (int i = 0; i < maxTrees; i++) {
-
-		Size size = { 0 };
-		Position pos = { 0 };
-		pos.x = rand() % ((int)WINDOW_SIZE.width - SIZE_TREE) + SIZE_TREE; // draw at specific range, 50-1500
-		pos.y = rand() % ((int)WINDOW_SIZE.height - SIZE_TREE) + SIZE_TREE;  // draw at specific height, 50-850
-		Tree tree = _treeConstructor(pos);
-		Tree treeImg = rand()%2
-		CP_Image_Draw(treeImg, tree.pos.x, tree.pos.y, tree.size.width, tree.size.height, 255);
+void _renderTrees(void) {
+	for (int i = 0; i<numTrees; i++) {
+		_drawTree(&activeTrees[i]);
 	}
 }
 
-// function to check if tree is colliding with wall or tank
 
-void renderTree() {
-	srand(time(NULL));
-	int maxTrees = rand() % 10 + 4;
-	for (int i = 0; i < maxTrees; i++) {
-		_drawTree();
+void initTree(void) {
+	treeImgs[numTreeImgs++] = CP_Image_Load("Assets/trees/tree_0.png"); // image setup
+	treeImgs[numTreeImgs++] = CP_Image_Load("Assets/trees/tree_1.png"); // image setup
+
+	// initailise trees
+	for (int i = 0; i < MAX_TREES; i++) {
+		activeTrees[i].rect.size = (Size){ 50, 50 };
+		activeTrees[i].style = rand() % NUM_TREE_STYLES;  // screw the seed maybe, we dont need truly random values
+
+		bool isPosValid = false;
+
+		while (!isPosValid) {
+			/*get random position on screen*/
+			double randX = rand() % (int)(WINDOW_SIZE.width - activeTrees[i].rect.size.width);
+			randX = randX < 0 ? 0 : randX;
+			double randY = rand() % (int)(WINDOW_SIZE.height - activeTrees[i].rect.size.height);
+			randY = randY < 0 ? 0 : randY;
+			activeTrees[i].rect.pos = (Position){ randX, randY };
+
+			/*ensure position on screen is valid*/
+			// iterate through walls and check if tree is colliding with any of them
+			bool collidedWall = false;
+			for (int j=0; j<numWalls; j++) {
+				if (colRects(&activeTrees[i].rect, &activeWalls[j], (Vector){0,-1}, (Vector){0,-1}, false, false)) {  // collided with wall
+					collidedWall = true;
+					break;
+				}
+			}
+			if (collidedWall) {
+				continue;  // dont bother checking the rest if already invalid(collided with wall)
+			}
+
+			// iterate through current trees and ensure no collisions
+			bool collidedTree = false;
+			for (int j=0; j<numTrees; j++) {
+				if (i == j) {
+					continue;  // dont check if tree collides with itself (duh)
+				}
+				if (colRects(&activeTrees[i].rect, &activeTrees[j].rect, (Vector){0,-1}, (Vector){0,-1}, false, false)) {
+					collidedTree = true;
+					break;
+				}
+			}
+			if (collidedTree) {
+				continue;  // dont bother checking the resst if poss already invalid (overlaps with another tree)
+			}
+
+			bool collidedTank = false;
+			for (int j=0; j<NUM_PLAYERS; j++) {
+				Rect t = (Rect){tanks[j].size, tanks[j].pos};
+				// if (colRects(&t, &activeTrees[i].rect, (Vector){0,-1}, (Vector){0,-1}, false, false)) {
+				// 	collidedTank = true;
+				// 	break;
+				// }
+				if (colTankRect(&tanks[j], &activeTrees[i].rect, false)) {
+					collidedTank = true;
+					break;
+				}
+			}
+			if (collidedTank) {
+				continue;  // bro you were so close.. but you just had to spawn on top of the tank HUH
+			}
+
+			isPosValid = true;  // hooray!!
+		}
 	}
 }
 
-void destroyTree() {
-	for (int i = 0; i < treeImagesSize; i++) {
-		CP_Image_Free(&treeImages[i]);
+void updateTree(void) {
+	_renderTrees();  // lets test! code never works first try but fingers crossed ok
+}
+
+void destroyTree(void) {
+	for (int i = 0; i < numTreeImgs; i++) {
+		// puts("clear");
+		CP_Image_Free(&treeImgs[i]);
 	}
 }

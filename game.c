@@ -7,6 +7,7 @@
 #include "cannonball.h"
 #include "healthbar.h"
 #include "collision.h"
+#include "tree.h"
 
 CP_Font font;
 
@@ -40,6 +41,7 @@ void gameInit(void) {
 
 	initWall();
 	initTank();
+	initTree();
 }
 void gameUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 150, 0, 255));
@@ -49,6 +51,7 @@ void gameUpdate(void) {
 	}
 
 	drawWall();
+	updateTree();
 	updateTank();
 	updateCannonball();
 	updateHealthBar();
@@ -56,5 +59,6 @@ void gameUpdate(void) {
 }
 
 void gameExit(void) {
+	destroyTree();
 	destroyTank();
 }
