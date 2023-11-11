@@ -6,6 +6,7 @@
 #include "config.h"
 
 CP_Image winnerBackScreen;
+CP_Font font;
 
 extern Size WINDOW_SIZE;
 
@@ -15,6 +16,7 @@ char* winnerButton[][2] = {"Restart","Exit"};
 
 void initWinner(void) {
 	winnerBackScreen = CP_Image_Load("./Assets/winner screen");
+	font = CP_Font_Load("Assets/Exo2-Regular.ttf");
 	Rect restartButton = { 0 };
 	
 }
