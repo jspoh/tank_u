@@ -15,8 +15,12 @@ char* winnerButton[][2] = {"Restart","Exit"};
 
 
 void initWinner(void) {
+	//load assets
 	winnerBackScreen = CP_Image_Load("./Assets/winner screen");
 	font = CP_Font_Load("Assets/Exo2-Regular.ttf");
+
+	CP_Font_Set(font);
+	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	Rect restartButton = { 0 };
 	
 }
