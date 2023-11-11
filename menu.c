@@ -104,7 +104,7 @@ void _menuFadeToGame(void) {
 void _initVars(void) {
 	titleSong = CP_Sound_Load("Assets/audio/title.wav");
 
-	menuBg = CP_Image_Load("Assets/menu_bg.png");
+	menuBg = CP_Image_Load("Assets/menu/menu_bg.png");
 
 	/* colors */
 	btnColor = CP_Color_Create(0, 0, 0, 220);
