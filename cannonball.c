@@ -3,33 +3,19 @@
 
 #define CANNONBALL_SPEED 750
 #define CANNONBALL_RADIUS 10
-#define FIRERATE 1  // seconds per shot
+#define DEFAULT_DAMAGE 5
+#define DEFAULT_FIRERATE 0.5  // seconds per shot
 
-double timeSinceFireP1 = 1.0;  // time since last shot
-double timeSinceFireP2 = 1.0;
+extern CP_Color black;
+
+double firerates[NUM_PLAYERS] = { DEFAULT_FIRERATE, DEFAULT_FIRERATE };
+
+double timeSinceFireP1 = 100.0;  // time since last shot
+double timeSinceFireP2 = 100.0;
 
 CannonBall activeCbs[MAX] = { 0 };  // all currently active cannonballs
 int numCbs = 0; // no. of active cannonball
 
-// !TODO: to test code after collision with wall is done
-void _checkWallCollision(CannonBall* cb, int index) {
-	//if (collide with top wall or bottom wall) {
-	//	if (cb->bounced) {
-	//		_destroyCannonball(index);
-	//		return;
-	//	}
-	//	cb->d.y = -cb->d.y;
-	//	cb->bounced = true;
-	//}
-	//else if (collide with left or right wall) {
-	//	if (cb->bounced) {
-	//		_destroyCannonball(index);
-	//		return;
-	//	}
-	//	cb->d.x = -cb->d.x;
-	//	cb->bounced = true;
-	//}
-}
 
 bool _removeCannonball(int index) {
 	if (index >= numCbs) {
@@ -37,15 +23,23 @@ bool _removeCannonball(int index) {
 		exit(3);
 	}
 
+	// less efficient way but preserves array order
 	for (int i = index; i < numCbs; i++) {
 		activeCbs[i] = activeCbs[i + 1];
 	}
 	numCbs--;
 
+	// !TODO: this method is more efficient but seems to screw something up. see ticket TU90
+	// to reproduce issue, fire a cannonball and then fire another one. the second one will be despawned at the same time as the first one
+	// issue does not seem to occur with the less efficient method above
+	// more efficient way but does not preserve order (but order isnt important in this context lol)
+	// activeCbs[index] = activeCbs[numCbs--];
+
+	// printf("%d\n", numCbs);
 	return true;
 }
 
-void _destroyCannonball(int index) {
+void destroyCannonball(int index) {
 	_removeCannonball(index);
 	// !TODO: if possible, draw exploding animation with circles (create new function for this in utils/animations/explosion)
 }
@@ -68,24 +62,36 @@ void updateCannonball(void) {
 		CannonBall* cb = &activeCbs[i]; 
 
 		_moveCannonball(cb);
-		_checkWallCollision(cb, i);
+		CP_Settings_Fill((CP_Color){0,0,0,255});
 		CP_Graphics_DrawCircle((float)cb->pos.x, (float)cb->pos.y, (float)cb->radius);
 	}
 }
 
-CannonBall _cannonballConstructor(Position pos, Vector d) {
+CannonBall _cannonballConstructor(Position pos, Vector d, double damage, double radius) {
 	CannonBall cb = { 0 };
 	cb.pos = pos;
 	cb.d = d;
-	cb.radius = CANNONBALL_RADIUS;
+	cb.radius = radius;
+	cb.damage = damage;
 	return cb;
 }
 
-void onFireCannonball(Position startPos, Vector d, int player) {
-	// if time since last shot < FIRERATE, dont allow user to fire
+/**
+ * @param ammoType enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
+ * 
+*/
+void onFireCannonball(Position startPos, Vector d, int player, enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE } ammoType) {
+	if (ammoType == RAPID_FIRE) {
+		firerates[player] = DEFAULT_FIRERATE / 2;
+	}
+	else {
+		firerates[player] = DEFAULT_FIRERATE;
+	}
+
+	// if time since last shot < firerate, dont allow user to fire
 	switch (player) {
 		case 0:  // player 1
-			if (timeSinceFireP1 < FIRERATE) {
+			if (timeSinceFireP1 < firerates[player]) {
 				//fprintf(stdout, "P1 not yet allowed to fire!\n");
 				return;
 			}
@@ -93,7 +99,7 @@ void onFireCannonball(Position startPos, Vector d, int player) {
 			break;
 
 		case 1:  // player 2
-			if (timeSinceFireP2 < FIRERATE) {
+			if (timeSinceFireP2 < firerates[player]) {
 				//fprintf(stdout, "P2 not yet allowd to fire!\n");
 				return;
 			}
@@ -106,7 +112,41 @@ void onFireCannonball(Position startPos, Vector d, int player) {
 	}
 
 	// create cannonball
-	CannonBall cb = _cannonballConstructor(startPos, d);
+	CannonBall cb = { 0 };
+	switch (ammoType) {
+	case NORMAL:
+	case RAPID_FIRE:
+		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE, CANNONBALL_RADIUS);
+		break;
+	case BIG_BULLET:
+		startPos.x += d.x * CANNONBALL_RADIUS;
+		startPos.y += d.y * CANNONBALL_RADIUS;
+		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE * 2, CANNONBALL_RADIUS * 2);
+		break;
+	case SHOTGUN:
+		// !TODO: shotgun left and right cannonballs have issues
+		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE, CANNONBALL_RADIUS);
+		activeCbs[numCbs++] = cb;
+
+		Vector l = rotateVectorCounterClockwise(d, 45);
+		startPos.x += l.x * CANNONBALL_RADIUS;
+		startPos.y += l.y * CANNONBALL_RADIUS;
+		cb = _cannonballConstructor(startPos, l, DEFAULT_DAMAGE, CANNONBALL_RADIUS);
+		activeCbs[numCbs++] = cb;
+
+		Vector r = rotateVectorClockwise(d, 45);
+		startPos.x += r.x * CANNONBALL_RADIUS;
+		startPos.y += r.y * CANNONBALL_RADIUS;
+		cb = _cannonballConstructor(startPos, r, DEFAULT_DAMAGE, CANNONBALL_RADIUS);
+		activeCbs[numCbs++] = cb;
+		return;  // DO NOT REMOVE OR PUT BREAK ON TOP
+		//break;
+
+
+	default:  // else
+		fprintf(stderr, "Cannonball switch case reached default statement\n");
+		exit(6);
+	}
 	activeCbs[numCbs++] = cb;
 }
 

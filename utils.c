@@ -124,3 +124,7 @@ Vector rotateVectorCounterClockwise(Vector v, double degrees) {
 	u.y = (sin(radians)) * v.x + cos(radians) * v.y;
 	return u;
 }
+
+double pythagorean(double width, double height) {
+	return sqrt(pow(width, 2.0) + pow(height, 2.0));
+}
