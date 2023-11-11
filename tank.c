@@ -216,19 +216,19 @@ void _damageTank(Tank* tank, double damage) {
 
 void _tankCollectPowerUp(int i) {
 	//logic for collecting powerups draft will change once the actual code for the area of rect is there
-//for (int i = 0; i < NUM_PLAYERS; i++) {
-//	if (checkRectangleCollision(tanks[i], powerup)) {
-//		for (int j = 0; j < POWERUPS_COUNT; j++) 
-//		{
-//			if (tanks[i].activePermPowers[i] == 0) 
-//			{
-//				tanks[i].activePermPowers[i] += powerup;
-//			}
+	//for (int i = 0; i < NUM_PLAYERS; i++) {
+	//	if (checkRectangleCollision(tanks[i].pos.x,tanks[i].pos.y, powerUps.pos.x,powerUps.pos.y)) {
+	//		for (int j = 0; j < POWERUPS_COUNT; j++) 
+	//		{
+	//			if (tanks[i].activePermPowers[i] == 0) 
+	//			{
+	//				tanks[i].activePermPowers[i] += powerUps.num;// for the tank to take in which powerup is 
+	//			}
 
-//		}
-//	}
-//}
-//
+	//		}
+	//	}
+	//}
+
 }
 
 
@@ -240,7 +240,7 @@ void _tankUsePowerUp(int i) {
 				//takes in the tank that have the power up
 				if (tanks[i].activePermPowers[j] != 0) {
 					tanks[i].activePowerUps = tanks[i].activePermPowers[j];
-					powerUpStartTime = clock();
+					powerUpStartTime = clock(); //takes in the time that the function is being called
 				}
 			}
 		}
