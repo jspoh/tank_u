@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include "config.h"
+#include "cannonball.h"
 
 #define POWERUPS_COUNT 3
 #define MAX_HEALTH 100.0
@@ -19,7 +20,7 @@ typedef struct _tank {
 	double speed;
 	BYTE currentDir;
 	double elapsedPowerTime;
-	int activePowerUps;
+	enum AMMO_TYPE activePowerUps;
 	int activePermPowers[POWERUPS_COUNT];
 	int hasCollided;
 	double repairTimer;

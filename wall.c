@@ -7,8 +7,8 @@
 #include <time.h>
 
 #define VERTICALWALLWIDTH 50.f
-#define VERTICALWALLHEIGHT 300.f
-#define HORIZONTALWALLWIDTH 300.f
+#define VERTICALWALLHEIGHT 250.f
+#define HORIZONTALWALLWIDTH 250.f
 #define HORIZONTALWALLHEIGHT 50.f
 
 Wall activeWalls[MAX_WALLS] = { 0 };  // extern Wall activeWalls[];
@@ -103,12 +103,12 @@ void _wallBottom2(void)
 
 void _wallLeft2(void)
 {
-	const float GAPUPDOWN = (float)(VERTICALWALLHEIGHT / 2);
+	const float GAPUPDOWN = (float)((VERTICALWALLHEIGHT+50) / 2);
 	const float GAPLEFTRIGHT = (float)(HORIZONTALWALLWIDTH + HORIZONTALWALLWIDTH / 2);
 	// size of the wall
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
-	Position pos = { GAPLEFTRIGHT, WINDOW_SIZE.height - GAPUPDOWN - VERTICALWALLHEIGHT };
+	Position pos = { GAPLEFTRIGHT, WINDOW_SIZE.height - GAPUPDOWN - (VERTICALWALLHEIGHT+50) };
 	Wall wall = { size, pos };
 	activeWalls[numWalls++] = wall;
 
@@ -116,12 +116,12 @@ void _wallLeft2(void)
 
 void _wallRight2(void)
 {
-	const float GAPUPDOWN = (float)(VERTICALWALLHEIGHT / 2);
+	const float GAPUPDOWN = (float)((VERTICALWALLHEIGHT+50) / 2);
 	const float GAPLEFTRIGHT = (float)(HORIZONTALWALLWIDTH + HORIZONTALWALLWIDTH / 2);
 	// size of the wall
 	Size size = { VERTICALWALLWIDTH, VERTICALWALLHEIGHT };
 	// position of the wall
-	Position pos = { WINDOW_SIZE.width - GAPLEFTRIGHT - VERTICALWALLWIDTH, GAPUPDOWN };
+	Position pos = { WINDOW_SIZE.width - GAPLEFTRIGHT - VERTICALWALLWIDTH, GAPUPDOWN +50 };
 	Wall wall = { size, pos };
 	activeWalls[numWalls++] = wall;
 
