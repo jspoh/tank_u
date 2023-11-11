@@ -16,7 +16,7 @@ void drawHealthBar(Tank* tank, int playerIndex) {
 
 	// Calculate width of the health bar based on the tank's health
 	double barWidth = 3 * (tank->size.width * (healthPercentage / 100.0));
-	double barHeight = 30;
+	double barHeight = 30.0;
 	//Size size = { barWidth, barHeight };
 	double xPos, yPos;
 	// Calculate position based on player index
@@ -35,7 +35,7 @@ void drawHealthBar(Tank* tank, int playerIndex) {
 	//drawRect(&barPos, &size, &fillCol, &strokeCol);
 	CP_Settings_Fill(fillCol);
 	CP_Settings_Stroke(strokeCol);
-	CP_Graphics_DrawRect(xPos, yPos, barWidth, barHeight);
+	CP_Graphics_DrawRect((float)xPos, (float)yPos, (float)barWidth, (float)barHeight);
 
 	// Display HP value
 	CP_Settings_TextSize(25);
@@ -43,7 +43,7 @@ void drawHealthBar(Tank* tank, int playerIndex) {
 
 	char hpText[50];
 	snprintf(hpText, 50, "HP: %.0f", tank->health); // Convert HP value to string
-	CP_Font_DrawText(hpText, xPos + barWidth / 2, yPos - 20); // Draw HP text above health bar
+	CP_Font_DrawText(hpText, (float)xPos + (float)barWidth / 2, (float)yPos - 20); // Draw HP text above health bar
 }
 
 void _renderHealthBar(void) {
