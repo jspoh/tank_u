@@ -416,8 +416,6 @@ void updateTank(void) {
 			tanks[i].repairTimer = REPAIR_TIME;
 		}
 	}
-
-	printf("tank 2 repair timer: %lf\n", tanks[1].repairTimer);
 }
 
 void destroyTank(void) {
