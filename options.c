@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 extern int menuState;
+extern CP_Font font;
 extern CP_Color grey1;
 extern CP_Color grey2;
 extern CP_Color red;
@@ -79,13 +80,20 @@ void _renderMusicDial(Position pos, double volumePercentage) {
 void _render(void) {
 	renderBackdrop();
 
-	/*options screen stuff goes here*/
+	/*render shapes*/
 	Position sfxDialPos = { (WINDOW_SIZE.width - sfxDial.size.width) / 2, (WINDOW_SIZE.height - (sfxDial.size.height + musicDial.size.height)) / 3 };
 	Position musicDialPos = { (WINDOW_SIZE.width - musicDial.size.width) / 2, (WINDOW_SIZE.height - (musicDial.size.height + musicDial.size.height)) / 3 * 2 };
 
 	_renderSfxDial(sfxDialPos, sfxVolume);
 	_renderMusicDial(musicDialPos, musicVolume);
 
+	/*render text*/
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_BASELINE);
+	CP_Settings_TextSize(50);
+	CP_Font_DrawText("SFX Volume", (float)WINDOW_SIZE.width / 2, (float)sfxDialPos.y - 50);
+	CP_Font_DrawText("Music Volume", (float)WINDOW_SIZE.width / 2, (float)musicDialPos.y - 50);
+
+	/*event listeners*/
 	double mouseX = CP_Input_GetMouseX();
 	double mouseY = CP_Input_GetMouseY();
 
