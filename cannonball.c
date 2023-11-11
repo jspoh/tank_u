@@ -80,7 +80,7 @@ CannonBall _cannonballConstructor(Position pos, Vector d, double damage, double 
  * @param ammoType enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
  * 
 */
-void onFireCannonball(Position startPos, Vector d, int player, enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE } ammoType) {
+bool onFireCannonball(Position startPos, Vector d, int player, enum AMMO_TYPES ammoType) {
 	if (ammoType == RAPID_FIRE) {
 		firerates[player] = DEFAULT_FIRERATE / 2;
 	}
@@ -93,7 +93,7 @@ void onFireCannonball(Position startPos, Vector d, int player, enum { NORMAL, BI
 		case 0:  // player 1
 			if (timeSinceFireP1 < firerates[player]) {
 				//fprintf(stdout, "P1 not yet allowed to fire!\n");
-				return;
+				return false;
 			}
 			timeSinceFireP1 = 0.0;
 			break;
@@ -101,7 +101,7 @@ void onFireCannonball(Position startPos, Vector d, int player, enum { NORMAL, BI
 		case 1:  // player 2
 			if (timeSinceFireP2 < firerates[player]) {
 				//fprintf(stdout, "P2 not yet allowd to fire!\n");
-				return;
+				return false;
 			}
 			timeSinceFireP2 = 0.0;
 			break;
@@ -139,7 +139,7 @@ void onFireCannonball(Position startPos, Vector d, int player, enum { NORMAL, BI
 		startPos.y += r.y * CANNONBALL_RADIUS;
 		cb = _cannonballConstructor(startPos, r, DEFAULT_DAMAGE, CANNONBALL_RADIUS);
 		activeCbs[numCbs++] = cb;
-		return;  // DO NOT REMOVE OR PUT BREAK ON TOP
+		return true;  // DO NOT REMOVE OR PUT BREAK ON TOP
 		//break;
 
 
@@ -148,5 +148,7 @@ void onFireCannonball(Position startPos, Vector d, int player, enum { NORMAL, BI
 		exit(6);
 	}
 	activeCbs[numCbs++] = cb;
+
+	return true;
 }
 
