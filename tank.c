@@ -362,7 +362,7 @@ void _collisionsTank(void) {
 	}
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
-		tanks[i].repairTimer = tanks->repairTimer <= 0 ? 0 : tanks[i].repairTimer - dt;
+		tanks[i].repairTimer = tanks[i].repairTimer <= 0 ? 0 : tanks[i].repairTimer - dt;
 
 		bool hasCollidedWall = colTankWall(&tanks[i], &v);
 		if (hasCollidedWall) {
@@ -407,10 +407,11 @@ void updateTank(void) {
 		if (tanks[i].hasCollided) {
 			tanks[i] = _findNoColTank(i);
 			// tanks[i].speed = 0;
-			tanks[i].repairTimer = REPAIR_TIME;		
+			tanks[i].repairTimer = REPAIR_TIME;
 		}
 	}
 
+	printf("tank 2 repair timer: %lf\n", tanks[1].repairTimer);
 }
 
 void destroyTank(void) {
