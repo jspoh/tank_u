@@ -5,24 +5,33 @@
 #include "gamecollision.h"
 #include "config.h"
 #include "utils.h"
-
+#include "tank.h"
+#include <stdio.h>
 
 #define NUM_WINNER_BUTTONS 2
 
 //global assets initalisation
 CP_Image winnerBackScreen;
+CP_Image p1Win;
+CP_Image p2Win;
+
 CP_Font font;
 CP_Color buttonColor;
 CP_Color strokeColor;
 CP_Color blackColor;
 
 typedef struct Button {
-	char* winnerButton; // takes in what to display on the winner 
+	char* winnerButton; // takes in what to display on the winner
 	Rect rect; //takes in the size and the position
+	Position pos; //takes in for the text
 }Button;
 
-extern Size WINDOW_SIZE;
+enum {
+	RESTART=1,EXIT //used to define which state the game will be at
+};
 
+extern Size WINDOW_SIZE;
+extern Tank tanks[NUM_PLAYERS];
 
 Size winnerButtonsize = { 200.0,75.0 };
 Position firstButtonPos = { 0 };
@@ -32,51 +41,81 @@ double winnerTextSize = 50.0;
 char* winnerButton[NUM_WINNER_BUTTONS] = {"Restart","Exit"};
 Button winnerButtons[NUM_WINNER_BUTTONS] = {0};
 
+int nextState = 0;
 
 void buttonConstructor(void) {
+	firstButtonPos.x = WINDOW_SIZE.width / 2-winnerButtonsize.width/2;
+	firstButtonPos.y = WINDOW_SIZE.height / 4 + WINDOW_SIZE.height / 2;
 	for (int i = 0; i < NUM_WINNER_BUTTONS; i++) {
 		winnerButtons[i].winnerButton = winnerButton[i];
 		winnerButtons[i].rect.size = winnerButtonsize;
 		winnerButtons[i].rect.pos.x = firstButtonPos.x;
-		winnerButtons[i].rect.pos.y = firstButtonPos.y + (i * 2 * winnerButtonsize.height);
+		winnerButtons[i].rect.pos.y = firstButtonPos.y + (i * 3 * (winnerButtonsize.height)/2);
+		winnerButtons[i].pos.x = winnerButtons[i].rect.pos.x + winnerButtonsize.width / 2;
+		winnerButtons[i].pos.y = winnerButtons[i].rect.pos.y;
 	}
 
 }
 
+void buttonSelection(void) {
+	for (int i = 0; i < NUM_WINNER_BUTTONS; i++) {
+		if (mouseInRect(winnerButtons[i].rect, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				if (!strcmp(winnerButtons[i].winnerButton, "Restart")) {
+					nextState = RESTART;
+					printf("GAME RESTART");
+				}
+				else if (!strcmp(winnerButtons[i].winnerButton, "Exit")) {
+					nextState = EXIT;
+					printf("GAME EXIT");
+				}
+			}
+		}
+	}
+}
 
-void initWinner(void) {
+void winnerInit(void) {
 
 	//load assets
-	winnerBackScreen = CP_Image_Load("./Assets/winner_screen.png");
+	//winnerBackScreen = CP_Image_Load("./Assets/winner_screen.png");
+	p1Win = CP_Image_Load("./Assets/player1_winner.png");
+	p2Win = CP_Image_Load("./Assets/player2_winner.png");
 	font = CP_Font_Load("Assets/Exo2-Regular.ttf");
 
 	CP_Font_Set(font);
-	CP_Settings_RectMode(CP_POSITION_CENTER); //set it to center for easier reference
-	//CP_Settings_RectMode(CP_POSITION_CORNER);
+	CP_Settings_RectMode(CP_POSITION_CORNER); //set it to center for easier reference
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_TOP); //positioning of the text
+
+
 	buttonColor = CP_Color_Create(0, 0, 0, 220);
 	strokeColor = CP_Color_Create(0, 0, 0, 0);
 	blackColor = CP_Color_Create(0, 0, 0, 255);
 	//CP_Graphics_ClearBackground(blackColor);
 }
 
-void updateWinner(void) {
+void winnerUpdate(void) {
+	buttonConstructor();
+	if (tanks[0].health > tanks[1].health) {
+		winnerBackScreen = p1Win;
+		//draw player1 winning screen
+	}
+	else {
+		//draw player 2 winning screen
+		winnerBackScreen = p2Win;
+	}
 	CP_Image_Draw(winnerBackScreen, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 50); // to draw the image in the middle
 	for (int i = 0; i < NUM_WINNER_BUTTONS; i++) {
-		//drawRect(&winnerButtons[i].rect, &buttonColor, &strokeColor);
-		CP_Settings_Fill(buttonColor);
-		CP_Settings_Stroke(strokeColor);
-		CP_Graphics_DrawRect((float)(winnerButtons[i].rect.pos.x), (float)winnerButtons[i].rect.pos.y, (float)winnerButtons[i].rect.size.width, (float)winnerButtons[i].rect.size.height);
+		drawRect(&winnerButtons[i].rect, &strokeColor, &buttonColor);
+		drawText(winnerButtons[i].winnerButton, &winnerButtons[i].pos, winnerTextSize, &blackColor);
+	}
+	buttonSelection();
 
-	//	//drawText(winnerButtons[i].winnerButton, &winnerButtons[i].rect.pos, winnerTextSize, &blackColor);
-	//	//CP_Settings_TextSize((float)size);
-	//	//CP_Settings_Stroke(*strokeColor);
-	//	//CP_Settings_Fill(*strokeColor);
-	//	//CP_Font_DrawText(text, (float)A->x, (float)A->y);
-		}
 }
 
-void exitWinner(void) {
+void winnerExit(void) {
 	CP_Image_Free(&winnerBackScreen);
+	CP_Image_Free(&p1Win);
+	CP_Image_Free(&p2Win);
 }
 
 //CP_Engine_SetNextGameState(initWinner, updateWinner, exitWinner);

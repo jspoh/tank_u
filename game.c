@@ -50,7 +50,7 @@ void gameUpdate(void) {
 	}
 
 	if (CP_Input_KeyTriggered(KEY_HOME)) {
-		CP_Engine_SetNextGameState(initWinner, updateWinner, exitWinner); //for testing of winner screen
+		CP_Engine_SetNextGameState(winnerInit, winnerUpdate, winnerExit); //for testing of winner screen
 	}
 
 	drawWall();

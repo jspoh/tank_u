@@ -7,8 +7,8 @@ enum {
 }; //ENUM FOR THE 2 BUTTONS
 
 
-void initWinner(void);
+void winnerInit(void);
 
-void updateWinner(void);
+void winnerUpdate(void);
 
-void exitWinner(void);
+void winnerExit(void);
