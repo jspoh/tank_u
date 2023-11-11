@@ -49,7 +49,7 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
     /*shotgun = CP_Image_Load("./Assets/powerup/powerup_1.png");
     CP_Image_Draw(shotgun, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);*/
 
-    tank->activePowerUps = BIG_BULLET;
+    //tank->activePowerUps = BIG_BULLET;
     switch (tank->activePowerUps) {
     case NORMAL:
         break;
