@@ -25,11 +25,6 @@ enum { PLAYER_1, PLAYER_2 };
 Tank tanks[NUM_PLAYERS] = { 0 };
 Size tankSize = { 75.f, 100.f };
 
-//meant to use for implementing the powerups
-enum {
-	NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE
-};
-
 extern Keybinds keybindings[];
 
 //// HARD CODING CERTAIN STUFF FOR NOW!!!!
@@ -218,6 +213,9 @@ Tank _tankConstructor(Position pos, Color color) {
 	tank.color = color;
 	tank.health = MAX_HEALTH;
 	tank.size = tankSize;
+	// change to different kinds of ammo for debugging
+	// enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
+	tank.activePowerUps = SHOTGUN;
 
 	/* add tank to tanks array */
 	bool valid = false;
@@ -315,7 +313,7 @@ Position _getTurretCenter(Tank* t, Size turretSize) {
 
 
 
-void _tankShoot(int i, int activePowerUp) { //int i is which tank it is in the array tanks[i] 
+void _tankShoot(int i, enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE } activePowerUp) { //int i is which tank it is in the array tanks[i] 
 	if (CP_Input_KeyDown(keybindings[i].shoot))
 	{
 		//using the exact address to find the directional vector 
@@ -327,23 +325,7 @@ void _tankShoot(int i, int activePowerUp) { //int i is which tank it is in the a
 
 		Position turretTip = _getTurretCenter(&tanks[i], size);
 
-		switch (activePowerUp) {
-		case NORMAL:
-			onFireCannonball(turretTip, unitVector, i);
-			break;
-		//case BIG_BULLET:
-		//	onFireBigBullet(turretTip, unitVector, i);
-		//	break;
-		//case SHOTGUN:
-		//	onFireShotGunBullets(turretTip, unitVector, i);
-		//	break;
-		//case RAPID_FIRE:
-		//	onRapidFireCannonballs(turretTip, unitVector, i);
-		//	break;
-		default:
-			onFireCannonball(turretTip, unitVector, i); // switched default to normal cannonball shooting just incase
-			break;
-		}
+		onFireCannonball(turretTip, unitVector, i, activePowerUp);
 
 	}
 
