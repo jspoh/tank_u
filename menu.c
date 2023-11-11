@@ -15,6 +15,11 @@ bool isPlayingMusic = false;
 int SFX_GROUP = CP_SOUND_GROUP_0;
 int MUSIC_GROUP = CP_SOUND_GROUP_1;
 
+/*audio between 0 and 1*/
+double musicVolume = 1.0;
+/*audio between 0 and 1*/
+double sfxVolume = 1.0;
+
 CP_Font font;
 CP_Image menuBg;
 
@@ -59,11 +64,6 @@ Rect _oFadeRect;
 double menuElapsedTime = 0;
 #define GAME_TRANSITION_DURATION 0.5
 BYTE fadeOpacity = 0;
-
-/*audio between 0 and 1*/
-double musicVolume = 1.0;
-/*audio between 0 and 1*/
-double sfxVolume = 1.0;
 
 void _drawRect2(Rect* r, CP_Color fillColor, CP_Color strokeColor) {
 	CP_Settings_Fill(fillColor);

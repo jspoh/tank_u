@@ -13,13 +13,11 @@ extern CP_Color red;
 extern CP_Color black;
 extern CP_Color yellow;
 
-extern int SFX_GROUP;
-extern int MUSIC_GROUP;
 
-Circle musicKnob;
-Rect musicDial;
-Circle sfxKnob;
-Rect sfxDial;
+Circle musicKnob = { 0 };
+Rect musicDial = { 0 };
+Circle sfxKnob = { 0 };
+Rect sfxDial = { 0 };
 #define knobRadius 50
 
 
@@ -28,44 +26,53 @@ extern double musicVolume;
 /*audio between 0 and 1*/
 extern double sfxVolume;
 
+extern int SFX_GROUP;
+extern int MUSIC_GROUP;
+
 bool mouseHeldDown = false;
 enum { NOT_EDITING, MUSIC, SFX } editing = NOT_EDITING;
 
-void _drawDial(void) {
-	drawRect(&musicDial, &grey1, &grey2);
+void _drawDial(Rect* dial) {
+	drawRect(dial, &grey1, &grey2);
 }
 
-void _drawKnob(void) {
+void _drawKnob(Circle* knob) {
 	CP_Settings_Fill(yellow);
 	CP_Settings_Stroke(black);
-	CP_Graphics_DrawCircle((float)musicKnob.pos.x, (float)musicKnob.pos.y, (float)musicKnob.radius);
+	CP_Graphics_DrawCircle((float)knob->pos.x, (float)knob->pos.y, (float)knob->radius);
 }
 
 /**
 * @param volumePercentage should be between 0 and 1
 */
-void _renderVolumeDial(Position pos, double volumePercentage) {
-	musicDial.pos = pos;
-	musicDial.size.width = (WINDOW_SIZE.width / 2);
-	musicDial.size.height = (knobRadius / 5);
-	_drawDial();
-
-	musicKnob.radius = knobRadius;
-	musicKnob.pos.x = musicDial.pos.x + (volumePercentage * musicDial.size.width);
-	musicKnob.pos.y = musicDial.pos.y + musicDial.size.height / 2;
-	_drawKnob();
-}
-
 void _renderSfxDial(Position pos, double volumePercentage) {
 	sfxDial.pos = pos;
 	sfxDial.size.width = (WINDOW_SIZE.width / 2);
 	sfxDial.size.height = (knobRadius / 5);
-	_drawDial();
+	_drawDial(&sfxDial);
 
 	sfxKnob.radius = knobRadius;
 	sfxKnob.pos.x = sfxDial.pos.x + (volumePercentage * sfxDial.size.width);
 	sfxKnob.pos.y = sfxDial.pos.y + sfxDial.size.height / 2;
-	_drawKnob();
+	_drawKnob(&sfxKnob);
+}
+
+/**
+ * @brief 
+ * 
+ * @param pos 
+ * @param volumePercentage between 0 and 1 (inclusive)
+ */
+void _renderMusicDial(Position pos, double volumePercentage) {
+	musicDial.pos = pos;
+	musicDial.size.width = (WINDOW_SIZE.width / 2);
+	musicDial.size.height = (knobRadius / 5);
+	_drawDial(&musicDial);
+
+	musicKnob.radius = knobRadius;
+	musicKnob.pos.x = musicDial.pos.x + (volumePercentage * musicDial.size.width);
+	musicKnob.pos.y = musicDial.pos.y + musicDial.size.height / 2;
+	_drawKnob(&musicKnob);
 }
 
 
@@ -73,11 +80,11 @@ void renderOptions(void) {
 	renderBackdrop();
 
 	/*options screen stuff goes here*/
-	//Position sfxDialPos = { (WINDOW_SIZE.width - sfxDial.size.width) / 2, (WINDOW_SIZE.height - (sfxDial.size.height + musicDial.size.height)) / 3 };
-	//_renderSfxDial(sfxDialPos, sfxVolume);
-
+	Position sfxDialPos = { (WINDOW_SIZE.width - sfxDial.size.width) / 2, (WINDOW_SIZE.height - (sfxDial.size.height + musicDial.size.height)) / 3 };
 	Position musicDialPos = { (WINDOW_SIZE.width - musicDial.size.width) / 2, (WINDOW_SIZE.height - (musicDial.size.height + musicDial.size.height)) / 3 * 2 };
-	_renderVolumeDial(musicDialPos, musicVolume);
+
+	_renderSfxDial(sfxDialPos, sfxVolume);
+	_renderMusicDial(musicDialPos, musicVolume);
 
 	double mouseX = CP_Input_GetMouseX();
 	double mouseY = CP_Input_GetMouseY();
@@ -114,6 +121,18 @@ void renderOptions(void) {
 			// printf("music volume: %lf\n", musicVolume);
 			break;
 		case SFX:
+			/*move knob visually*/
+			sfxKnob.pos.x = mouseX;
+			if (sfxKnob.pos.x < sfxDial.pos.x) {
+				sfxKnob.pos.x = sfxDial.pos.x;
+			}
+			else if (sfxKnob.pos.x > sfxDial.pos.x + sfxDial.size.width) {
+				sfxKnob.pos.x = sfxDial.pos.x + sfxDial.size.width;
+			}
+
+			/*adjust volume*/
+			musicVolume = (sfxKnob.pos.x - sfxDial.pos.x) / sfxDial.size.width;
+			// printf("sfx volume: %lf\n", sfxVolume);
 			break;
 	}
 
