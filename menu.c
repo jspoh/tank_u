@@ -12,6 +12,8 @@
 
 CP_Sound titleSong;
 bool isPlayingMusic = false;
+int SFX_GROUP = CP_SOUND_GROUP_0;
+int MUSIC_GROUP = CP_SOUND_GROUP_1;
 
 CP_Font font;
 CP_Image menuBg;
@@ -237,7 +239,7 @@ void _destroySubpages(void) {
 void menuUpdate(void) {
 	if (!isPlayingMusic) {
 		isPlayingMusic = true;
-		CP_Sound_PlayAdvanced(titleSong, (float)musicVolume, 1.f, true, CP_SOUND_GROUP_0);
+		CP_Sound_PlayAdvanced(titleSong, (float)musicVolume, 1.f, true, MUSIC_GROUP);
 	}
 	CP_Graphics_ClearBackground(CP_Color_Create(150, 150, 150, 255));
 	CP_Image_Draw(menuBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), oAlpha);

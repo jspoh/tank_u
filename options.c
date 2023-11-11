@@ -13,8 +13,13 @@ extern CP_Color red;
 extern CP_Color black;
 extern CP_Color yellow;
 
+extern int SFX_GROUP;
+extern int MUSIC_GROUP;
+
 Circle musicKnob;
 Rect musicDial;
+Circle sfxKnob;
+Rect sfxDial;
 #define knobRadius 50
 
 
@@ -51,12 +56,27 @@ void _renderVolumeDial(Position pos, double volumePercentage) {
 	_drawKnob();
 }
 
+void _renderSfxDial(Position pos, double volumePercentage) {
+	sfxDial.pos = pos;
+	sfxDial.size.width = (WINDOW_SIZE.width / 2);
+	sfxDial.size.height = (knobRadius / 5);
+	_drawDial();
+
+	sfxKnob.radius = knobRadius;
+	sfxKnob.pos.x = sfxDial.pos.x + (volumePercentage * sfxDial.size.width);
+	sfxKnob.pos.y = sfxDial.pos.y + sfxDial.size.height / 2;
+	_drawKnob();
+}
+
 
 void renderOptions(void) {
 	renderBackdrop();
 
 	/*options screen stuff goes here*/
-	Position musicDialPos = { (WINDOW_SIZE.width - musicDial.size.width) / 2, WINDOW_SIZE.height / 2 };
+	//Position sfxDialPos = { (WINDOW_SIZE.width - sfxDial.size.width) / 2, (WINDOW_SIZE.height - (sfxDial.size.height + musicDial.size.height)) / 3 };
+	//_renderSfxDial(sfxDialPos, sfxVolume);
+
+	Position musicDialPos = { (WINDOW_SIZE.width - musicDial.size.width) / 2, (WINDOW_SIZE.height - (musicDial.size.height + musicDial.size.height)) / 3 * 2 };
 	_renderVolumeDial(musicDialPos, musicVolume);
 
 	double mouseX = CP_Input_GetMouseX();
@@ -93,7 +113,12 @@ void renderOptions(void) {
 			musicVolume = (musicKnob.pos.x - musicDial.pos.x) / musicDial.size.width;
 			// printf("music volume: %lf\n", musicVolume);
 			break;
+		case SFX:
+			break;
 	}
+
+	CP_Sound_SetGroupVolume(SFX_GROUP, (float)sfxVolume);
+	CP_Sound_SetGroupVolume(MUSIC_GROUP, (float)musicVolume);
 
 
 	bool isBackClicked = renderBackButton();
