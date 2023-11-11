@@ -11,7 +11,14 @@
 #include <stdio.h>
 
 CP_Sound titleSong;
-bool isPlaying = false;
+bool isPlayingMusic = false;
+int SFX_GROUP = CP_SOUND_GROUP_0;
+int MUSIC_GROUP = CP_SOUND_GROUP_1;
+
+/*audio between 0 and 1*/
+double musicVolume = 1.0;
+/*audio between 0 and 1*/
+double sfxVolume = 1.0;
 
 CP_Font font;
 CP_Image menuBg;
@@ -29,6 +36,9 @@ CP_Color white;
 CP_Color whiteHighlighted;
 CP_Color red;
 CP_Color oColor;
+CP_Color grey1 = { 200, 200, 200, 255 };
+CP_Color grey2 = { 150, 150, 150, 255 };
+CP_Color yellow = { 245, 245, 66, 255 };
 
 Position a = { 1500.0, 700.0 };
 Position b = { 1400.0, 650.0 };
@@ -227,9 +237,9 @@ void _destroySubpages(void) {
 }
 
 void menuUpdate(void) {
-	if (!isPlaying) {
-		isPlaying = true;
-		CP_Sound_PlayMusic(titleSong);
+	if (!isPlayingMusic) {
+		isPlayingMusic = true;
+		CP_Sound_PlayAdvanced(titleSong, (float)musicVolume, 1.f, true, MUSIC_GROUP);
 	}
 	CP_Graphics_ClearBackground(CP_Color_Create(150, 150, 150, 255));
 	CP_Image_Draw(menuBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), oAlpha);
@@ -266,4 +276,5 @@ void menuExit(void) {
 	_destroySubpages();
 	CP_Image_Free(&menuBg);
 	CP_Sound_Free(&titleSong);
+	isPlayingMusic = false;
 }

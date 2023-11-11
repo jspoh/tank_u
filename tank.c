@@ -19,6 +19,11 @@
 #define REPAIR_TIME 1  // seconds
 #define POWERUP_DURATION 10
 
+CP_Sound tankFire;
+
+extern double sfxVolume;
+extern int SFX_GROUP;
+
 Queue history;
 
 enum { PLAYER_1, PLAYER_2 };
@@ -215,7 +220,7 @@ Tank _tankConstructor(Position pos, Color color) {
 	tank.size = tankSize;
 	// change to different kinds of ammo for debugging
 	// enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
-	tank.activePowerUps = SHOTGUN;
+	tank.activePowerUps = NORMAL;
 
 	/* add tank to tanks array */
 	bool valid = false;
@@ -313,7 +318,7 @@ Position _getTurretCenter(Tank* t, Size turretSize) {
 
 
 
-void _tankShoot(int i, enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE } activePowerUp) { //int i is which tank it is in the array tanks[i] 
+void _tankShoot(int i, enum AMMO_TYPES activePowerUp) { //int i is which tank it is in the array tanks[i] 
 	if (CP_Input_KeyDown(keybindings[i].shoot))
 	{
 		//using the exact address to find the directional vector 
@@ -325,8 +330,11 @@ void _tankShoot(int i, enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE } activePo
 
 		Position turretTip = _getTurretCenter(&tanks[i], size);
 
-		onFireCannonball(turretTip, unitVector, i, activePowerUp);
-
+		bool firingSuccess = onFireCannonball(turretTip, unitVector, i, activePowerUp);
+		if (firingSuccess) {
+			CP_Sound_PlayAdvanced(tankFire, (float)sfxVolume, 1.f, false, SFX_GROUP);
+			puts("fired");
+		}
 	}
 
 }
@@ -346,7 +354,7 @@ void _tankRefillHealth(void) {
 void _actionTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		_tankCollectPowerUp(i);
-		_tankShoot(i,tanks[i].activePowerUps);
+		_tankShoot(i, tanks[i].activePowerUps);
 		_tankUsePowerUp(i);
 
 	}
@@ -414,6 +422,7 @@ void initTank(void) {
 	_createTank(WINDOW_SIZE.width / 6, WINDOW_SIZE.height / 2, 90.f, 0, 255, 0, 255);
 	_createTank(WINDOW_SIZE.width / 6 * 5, WINDOW_SIZE.height / 2, 270.f, 255, 0, 0, 255);
 	initQueue(&history);
+	tankFire = CP_Sound_Load("Assets/audio/sfx/tank_fire.wav");
 }
 
 void updateTank(void) {
@@ -444,4 +453,5 @@ void destroyTank(void) {
 		Tank tank = { 0 };
 		tanks[i] = tank;
 	}
+	CP_Sound_Free(&tankFire);
 }
