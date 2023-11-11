@@ -394,7 +394,6 @@ Tank _findNoColTank(int player) {
 			return history.data[i][player];
 		}
 	} while (i != history.front);
-	puts("cant find\n");	
 	return history.data[history.front][player];
 }
 
