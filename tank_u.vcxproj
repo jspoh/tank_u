@@ -173,6 +173,7 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     <ClCompile Include="tank_utils.c" />
     <ClCompile Include="utils.c" />
     <ClCompile Include="wall.c" />
+    <ClCompile Include="winner.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="backdrop.h" />
@@ -194,6 +195,7 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     <ClInclude Include="tank_utils.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="wall.h" />
+    <ClInclude Include="winner.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

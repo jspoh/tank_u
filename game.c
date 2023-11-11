@@ -7,6 +7,7 @@
 #include "cannonball.h"
 #include "healthbar.h"
 #include "collision.h"
+#include "winner.h"
 
 CP_Font font;
 
@@ -55,6 +56,8 @@ void gameUpdate(void) {
 	updateCannonball();
 	updateHealthBar();
 	colCbWall();
+
+
 }
 
 void gameExit(void) {
