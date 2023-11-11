@@ -428,33 +428,33 @@ void initTank(void) {
 	tankFire = CP_Sound_Load("Assets/audio/sfx/tank_fire.wav");
 }
 
-	void updateTank(void) {
+void updateTank(void) {
 
-		_moveTanks();
-		_actionTank();
-		_collisionsTank();
-		_renderTank();
-		//_renderHealthBar();
+	_moveTanks();
+	_actionTank();
+	_collisionsTank();
+	_renderTank();
+	//_renderHealthBar();
 
-		// capture history
-		enqueue(&history, tanks[0], tanks[1]);
+	// capture history
+	enqueue(&history, tanks[0], tanks[1]);
 
-		_debugTank();
+	_debugTank();
 
 
-		for (int i = 0; i < NUM_PLAYERS; i++) {
-			if (tanks[i].hasCollided) {
-				tanks[i] = _findNoColTank(i);
-				// tanks[i].speed = 0;
-				tanks[i].repairTimer = REPAIR_TIME;
-			}
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		if (tanks[i].hasCollided) {
+			tanks[i] = _findNoColTank(i);
+			// tanks[i].speed = 0;
+			tanks[i].repairTimer = REPAIR_TIME;
 		}
 	}
+}
 
-	void destroyTank(void) {
-		for (int i = 0; i < NUM_PLAYERS; i++) {
-			Tank tank = { 0 };
-			tanks[i] = tank;
-		}
-		CP_Sound_Free(&tankFire);
+void destroyTank(void) {
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		Tank tank = { 0 };
+		tanks[i] = tank;
 	}
+	CP_Sound_Free(&tankFire);
+}
