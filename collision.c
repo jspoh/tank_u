@@ -406,7 +406,8 @@ void colCbWall(void) {
  */
 bool colTankRect(Tank* t, Rect* r, bool rectUsingCenter) {
     Position tCorners[4] = { 0 };
-    _getRectCorners(t, &t->pos.d, tCorners, true);
+    Rect tRect = (Rect){ t->size, t->pos };
+    _getRectCorners(&tRect, &t->pos.d, tCorners, true);
 
     Position rCorners[4] = { 0 };
     Vector rVector = { 0, -1 };

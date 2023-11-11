@@ -11,7 +11,7 @@
 Tree activeTrees[MAX_TREES] = { 0 };
 CP_Image treeImgs[NUM_TREE_STYLES] = { 0 };
 int numTreeImgs = 0;
-int numTrees = MAX_TREES;
+int numTrees = 0;
 
 extern Wall activeWalls[MAX_WALLS];
 extern int numWalls;
@@ -79,7 +79,7 @@ void initTree(void) {
 
 			bool collidedTank = false;
 			for (int j=0; j<NUM_PLAYERS; j++) {
-				Rect t = (Rect){tanks[j].size, tanks[j].pos};
+				//Rect t = (Rect){tanks[j].size, tanks[j].pos};
 				// if (colRects(&t, &activeTrees[i].rect, (Vector){0,-1}, (Vector){0,-1}, false, false)) {
 				// 	collidedTank = true;
 				// 	break;
@@ -94,6 +94,7 @@ void initTree(void) {
 			}
 
 			isPosValid = true;  // hooray!!
+			numTrees++;
 		}
 	}
 }
@@ -107,4 +108,9 @@ void destroyTree(void) {
 		// puts("clear");
 		CP_Image_Free(&treeImgs[i]);
 	}
+	// CP_Image_Free(&treeImgs[0]);
+	// CP_Image_Free(&treeImgs[1]);
+
+	numTrees = 0;
+	numTreeImgs = 0;
 }
