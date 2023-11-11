@@ -263,7 +263,7 @@ void _damageTank(Tank* tank, double damage) {
 void _tankCollectPowerUp(int i) { //int i is which tank it is in the array tanks[i] 
 	//logic for collecting powerups draft will change once the actual code for the area of rect is there
 	//for (int i = 0; i < NUM_PLAYERS; i++) {
-	//	if (checkRectangleCollision(tanks[i].pos.x,tanks[i].pos.y, powerUps.pos.x,powerUps.pos.y)) {
+	//	if (colTankRect(tanks[i],powerUps.r,true)) {
 	//		for (int j = 0; j < POWERUPS_COUNT; j++) 
 	//		{
 	//			if (tanks[i].activePermPowers[i] == 0) 
@@ -273,7 +273,7 @@ void _tankCollectPowerUp(int i) { //int i is which tank it is in the array tanks
 
 	//		}
 	//	}
-	//}
+	//}	
 
 }
 
