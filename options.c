@@ -97,7 +97,10 @@ void renderOptions(void) {
 	}
 
 	if (mouseHeldDown) {
-		if (mouseInCircle(musicKnob, mouseX, mouseY)) {
+		if (mouseInCircle(sfxKnob, mouseX, mouseY)) {
+			editing = SFX;
+		}
+		else if (mouseInCircle(musicKnob, mouseX, mouseY)) {
 			editing = MUSIC;
 		}
 	}
@@ -131,7 +134,7 @@ void renderOptions(void) {
 			}
 
 			/*adjust volume*/
-			musicVolume = (sfxKnob.pos.x - sfxDial.pos.x) / sfxDial.size.width;
+			sfxVolume = (sfxKnob.pos.x - sfxDial.pos.x) / sfxDial.size.width;
 			// printf("sfx volume: %lf\n", sfxVolume);
 			break;
 	}
