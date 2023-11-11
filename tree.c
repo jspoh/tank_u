@@ -42,7 +42,7 @@ void _collisionTree(void) {
 		// iterate through active cannonballs
 		for (int j=0; j<numCbs; j++) {
 			CannonBall cb = activeCbs[j];
-			Rect cbR = (Rect){ (Size){ cb.radius*20, cb.radius*20 }, cb.pos };
+			Rect cbR = (Rect){ (Size){ cb.radius*2, cb.radius*2 }, cb.pos };
 			drawRect(&cbR, &red, &red);
 			if (colRects(&tree.rect, &cbR, (Vector){0, -1}, (Vector){0, -1}, false, true)) {
 				puts("ok fine u hit me");  //test first ok 

@@ -12,6 +12,8 @@
 
 CP_Font font;
 
+extern CP_Color red;
+
 // !TODO make dynamic (let user set)
 Keybinds P1_KEYBINDS = {
 	KEY_W,
@@ -30,6 +32,21 @@ Keybinds P2_KEYBINDS = {
 	KEY_SLASH
 };
 Keybinds keybindings[2];
+
+void _debugGame(void) {
+	Rect r = { (Size){100,100}, (Position){CP_Input_GetMouseX()-50, CP_Input_GetMouseY()-50} };
+	drawRect(&r, &red, &red);
+
+	extern Wall activeWalls[MAX_WALLS];
+	extern int numWalls;
+	for (int i=0; i<numWalls; i++) {
+		bool col = colRects(&r, &activeWalls[i], (Vector){0, -1},(Vector){0, -1},false,0);
+		if (col) {
+			puts("bang");
+		}
+	}
+	// puts("i am doing my job");
+}
 
 
 void gameInit(void) {
@@ -60,7 +77,7 @@ void gameUpdate(void) {
 	updateHealthBar();
 	colCbWall();
 
-
+	// _debugGame();
 }
 
 void gameExit(void) {
