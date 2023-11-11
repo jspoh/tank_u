@@ -64,11 +64,11 @@ void updateCannonball(void) {
 	}
 }
 
-CannonBall _cannonballConstructor(Position pos, Vector d, double damage) {
+CannonBall _cannonballConstructor(Position pos, Vector d, double damage, double radius) {
 	CannonBall cb = { 0 };
 	cb.pos = pos;
 	cb.d = d;
-	cb.radius = CANNONBALL_RADIUS;
+	cb.radius = radius;
 	cb.damage = damage;
 	return cb;
 }
@@ -113,16 +113,20 @@ void onFireCannonball(Position startPos, Vector d, int player, enum { NORMAL, BI
 	switch (ammoType) {
 	case NORMAL:
 	case RAPID_FIRE:
-		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE);
+		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE, CANNONBALL_RADIUS);
 		break;
 	case BIG_BULLET:
-		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE * 2);
+		startPos.x += d.x * CANNONBALL_RADIUS;
+		startPos.y += d.y * CANNONBALL_RADIUS;
+		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE * 2, CANNONBALL_RADIUS * 2);
 		break;
 	case SHOTGUN:
 		// use rotation matrix (see utils.h) to rotate vector d given 45 deg to left and right. here will create 3 cannonballs
 		// cb1,cb2,cb3
 		// update activeCbs, once updated, use RETURN(IMPORTANT DONT BREAK)
-		break;
+		// rotate vector using rotateVectorClockwise and rotateVectorCounterClockwise
+		return;  // DO NOT REMOVE OR PUT BREAK ON TOP
+		//break;
 
 
 	default:  // else
