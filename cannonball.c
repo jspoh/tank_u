@@ -3,10 +3,11 @@
 
 #define CANNONBALL_SPEED 750
 #define CANNONBALL_RADIUS 10
-#define FIRERATE 1  // shots per second
 
-double timeSinceFireP1 = 1.0;  // time since last shot
-double timeSinceFireP2 = 1.0;
+double firerate = 0.5;  // seconds per shot
+
+double timeSinceFireP1 = 100.0;  // time since last shot
+double timeSinceFireP2 = 100.0;
 
 CannonBall activeCbs[MAX] = { 0 };  // all currently active cannonballs
 int numCbs = 0; // no. of active cannonball
@@ -82,10 +83,10 @@ CannonBall _cannonballConstructor(Position pos, Vector d) {
 }
 
 void onFireCannonball(Position startPos, Vector d, int player) {
-	// if time since last shot < FIRERATE, dont allow user to fire
+	// if time since last shot < firerate, dont allow user to fire
 	switch (player) {
 		case 0:  // player 1
-			if (timeSinceFireP1 < FIRERATE) {
+			if (timeSinceFireP1 < firerate) {
 				//fprintf(stdout, "P1 not yet allowed to fire!\n");
 				return;
 			}
@@ -93,7 +94,7 @@ void onFireCannonball(Position startPos, Vector d, int player) {
 			break;
 
 		case 1:  // player 2
-			if (timeSinceFireP2 < FIRERATE) {
+			if (timeSinceFireP2 < firerate) {
 				//fprintf(stdout, "P2 not yet allowd to fire!\n");
 				return;
 			}
