@@ -9,6 +9,7 @@
 #include "collision.h"
 #include "tree.h"
 #include "winner.h"
+#include <stdio.h>
 
 CP_Font font;
 

@@ -12,6 +12,17 @@ typedef struct {
 	enum TREE_STYLES style;
 } Tree;
 
+/**
+ * @brief use this to remove a tree (and play animation?) upon tree death
+ * 
+ */
+bool _destroyTree(int index);
+
 void initTree(void);
 void updateTree(void);
+
+/**
+ * @brief use this to handle cleanup upon exiting tree component
+ * 
+ */
 void destroyTree(void);

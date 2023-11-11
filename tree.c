@@ -58,50 +58,6 @@ bool _destroyTree(int index) {
 	// !TODO: animation for tree destroy if time allows it (prob not)
 }
 
-void _collisionTree(void) {
-	int toRemove[MAX_TREES] = { 0 };
-	int sizeTR = 0;
-
-	// iterate through active trees
-	for (int i=0; i<numTrees; i++) {
-		bool treeRemoved = false;
-		Tree tree = activeTrees[i];  // declare variable for clearer code (altho uses more memory but negligible la)
-		Rect treeHitbox = (Rect){ tree.rect.size, (Position) { tree.rect.pos.x - tree.rect.size.width/2, tree.rect.pos.y - tree.rect.size.height/2 } };
-		//drawRect(&treeHitbox, &blue, &blue);  // draw tree hitbox
-		
-		// iterate through active cannonballs
-		for (int j=0; j<numCbs; j++) {
-			CannonBall cb = activeCbs[j];
-			Rect cbHitbox = (Rect){ (Size){ cb.radius*2, cb.radius*2 }, (Position){cb.pos.x - cb.radius, cb.pos.y - cb.radius} };
-			//drawRect(&cbHitbox, &red, &red);  // draw cb hitbox
-			if (colRects(&treeHitbox, &cbHitbox, (Vector){0, -1}, (Vector){0, -1}, false, false)) {
-				//puts("ok fine u hit me");  //test first ok 
-				destroyCannonball(j);
-				toRemove[sizeTR++] = i;
-				treeRemoved = true;
-				break;
-			}
-		}
-
-		if (treeRemoved) {  // optimization. no need to check if tree and tank collides because tree has been destroyed
-			continue;
-		}
-
-		// iterate through tanks
-		for (int j = 0; j < NUM_PLAYERS; j++) {
-			Tank tank = tanks[j];
-			if (colTankRect(&tank, &treeHitbox, false)) {
-				puts("wow tank stupid ah");
-			}
-		}
-	}
-
-	for (int i = 0; i < sizeTR; i++) {
-		puts("hm");
-		_destroyTree(toRemove[i]);
-	}
-}
-
 
 void initTree(void) {
 	treeImgs[numTreeImgs++] = CP_Image_Load("Assets/trees/tree_0.png"); // image setup
@@ -173,8 +129,7 @@ void initTree(void) {
 }
 
 void updateTree(void) {
-	_renderTrees();  // lets test! code never works first try but fingers crossed ok
-	_collisionTree();
+	_renderTrees();
 }
 
 void destroyTree(void) {
