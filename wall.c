@@ -11,11 +11,11 @@
 #define HORIZONTALWALLWIDTH 300.f
 #define HORIZONTALWALLHEIGHT 50.f
 
-Wall activeWalls[maxNumWalls] = { 0 };  // extern Wall activeWalls[];
+Wall activeWalls[MAX_WALLS] = { 0 };  // extern Wall activeWalls[];
 int numWalls = 0;
 
 void _resetWalls(void) {
-	for (int i = 0; i < maxNumWalls; i++) {
+	for (int i = 0; i < MAX_WALLS; i++) {
 		Wall wall = { 0 };
 		activeWalls[i] = wall;
 	}
@@ -192,9 +192,39 @@ void _preset3(void)
 	_wallright3();
 }
 
+void _initBorderWalls(void) {
+	const double wallThickness = 50.0;
+
+	// top wall
+	Size size = { WINDOW_SIZE.width, wallThickness };
+	Position pos = { 0, -wallThickness };
+	Wall wall = { size, pos };
+	activeWalls[numWalls++] = wall;
+
+	// bottom wall
+	size = (Size){ WINDOW_SIZE.width, wallThickness };
+	pos = (Position){ 0, WINDOW_SIZE.height };
+	wall = (Wall){ size, pos };
+	activeWalls[numWalls++] = wall;
+
+	// left wall
+	size = (Size){ wallThickness, WINDOW_SIZE.height };
+	pos = (Position){ -wallThickness, 0 };
+	wall = (Wall){ size, pos };
+	activeWalls[numWalls++] = wall;
+
+	// right wall
+	size = (Size){ wallThickness, WINDOW_SIZE.height };
+	pos = (Position){ WINDOW_SIZE.width, 0 };
+	wall = (Wall){ size, pos };
+	activeWalls[numWalls++] = wall;
+}
+
 void initWall(void)
 {
 	_resetWalls();
+	_initBorderWalls();
+
 	// do a random function that rotates between preset maps 1,2,3
 	int seed = (int)time(NULL);
 	srand(seed);

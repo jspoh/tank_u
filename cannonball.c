@@ -12,25 +12,6 @@ double timeSinceFireP2 = 100.0;
 CannonBall activeCbs[MAX] = { 0 };  // all currently active cannonballs
 int numCbs = 0; // no. of active cannonball
 
-// !TODO: to test code after collision with wall is done
-void _checkWallCollision(CannonBall* cb, int index) {
-	//if (collide with top wall or bottom wall) {
-	//	if (cb->bounced) {
-	//		_destroyCannonball(index);
-	//		return;
-	//	}
-	//	cb->d.y = -cb->d.y;
-	//	cb->bounced = true;
-	//}
-	//else if (collide with left or right wall) {
-	//	if (cb->bounced) {
-	//		_destroyCannonball(index);
-	//		return;
-	//	}
-	//	cb->d.x = -cb->d.x;
-	//	cb->bounced = true;
-	//}
-}
 
 bool _removeCannonball(int index) {
 	if (index >= numCbs) {
@@ -38,15 +19,23 @@ bool _removeCannonball(int index) {
 		exit(3);
 	}
 
+	// less efficient way but preserves array order
 	for (int i = index; i < numCbs; i++) {
 		activeCbs[i] = activeCbs[i + 1];
 	}
 	numCbs--;
 
+	// !TODO: this method is more efficient but seems to screw something up. see ticket TU90
+	// to reproduce issue, fire a cannonball and then fire another one. the second one will be despawned at the same time as the first one
+	// issue does not seem to occur with the less efficient method above
+	// more efficient way but does not preserve order (but order isnt important in this context lol)
+	// activeCbs[index] = activeCbs[numCbs--];
+
+	// printf("%d\n", numCbs);
 	return true;
 }
 
-void _destroyCannonball(int index) {
+void destroyCannonball(int index) {
 	_removeCannonball(index);
 	// !TODO: if possible, draw exploding animation with circles (create new function for this in utils/animations/explosion)
 }
@@ -69,7 +58,6 @@ void updateCannonball(void) {
 		CannonBall* cb = &activeCbs[i]; 
 
 		_moveCannonball(cb);
-		_checkWallCollision(cb, i);
 		CP_Graphics_DrawCircle((float)cb->pos.x, (float)cb->pos.y, (float)cb->radius);
 	}
 }
