@@ -414,3 +414,25 @@ bool colTankRect(Tank* t, Rect* r, bool rectUsingCenter) {
 
     return _rectSAT(tCorners, rCorners);
 }
+
+/**
+ * @brief uses separation axis theorem
+ * 
+ * @param r1 
+ * @param r2 
+ * @param d1 directional vector of r1 (use `(Vector){0, -1}` if you didnt rotate the rectangle)
+ * @param d2 directional vector of r2 (use `(Vector){0, -1}` if you didnt rotate the rectangle)
+ * @param r1UsingCenter rendered using CP_RECT_CENTER. set to `false` if you dont know what this means
+ * @param r2UsingCenter rendered using CP_RECT_CENTER. set to `false` if you dont know what this means
+ * @return true 
+ * @return false 
+ */
+bool colRects(Rect* r1, Rect* r2, Vector d1, Vector d2, bool r1UsingCenter, bool r2UsingCenter) {
+    Position r1Corners[4] = { 0 };
+    _getRectCorners(r1, &d1, r1Corners, r1UsingCenter);
+
+    Position r2Corners[4] = { 0 };
+    _getRectCorners(r2, &d2, r2Corners, r2UsingCenter);
+
+    return _rectSAT(r1Corners, r2Corners);
+}
