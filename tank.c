@@ -307,6 +307,14 @@ void _tankShoot(int i, int activePowerUp) {
 }
 
 
+void _tankRefillHealth(void) {
+	if (CP_Input_KeyDown(KEY_F5)) {
+		for (int i = 0; i < NUM_PLAYERS; i++) {
+			tanks[i].health = MAX_HEALTH;
+		}
+	}
+}
+
 /*!
 * @brief logic to handle shooting, collecting, using powerups
 */
@@ -405,6 +413,7 @@ void updateTank(void) {
 			tanks[i].repairTimer = REPAIR_TIME;		
 		}
 	}
+
 }
 
 void destroyTank(void) {
