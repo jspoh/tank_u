@@ -232,10 +232,8 @@ void _tankCollectPowerUp(int i) {
 }
 
 
-void _tankUsePowerUp(void) {
+void _tankUsePowerUp(int i) {
 	static clock_t powerUpStartTime = 0;
-	for (int i = 0; i < NUM_PLAYERS; i++) 
-	{
 		if (CP_Input_KeyDown(keybindings[i].usePower)) {
 			for (int j = 0; j < POWERUPS_COUNT; j++)
 			{
@@ -252,10 +250,9 @@ void _tankUsePowerUp(void) {
 
 			if (elapsedTime >= POWERUP_DURATION) {
 				// Power-up duration has elapsed, reset activePowerUps to 0
-				tanks[i].activePowerUps = 0;
+				tanks[i].activePowerUps = NORMAL;
 			}
 		}
-	}
 
 }
 
@@ -322,9 +319,9 @@ void _actionTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		_tankCollectPowerUp(i);
 		_tankShoot(i,tanks[i].activePowerUps);
-	}
-	_tankUsePowerUp();
+		_tankUsePowerUp(i);
 
+	}
 }
 
 
