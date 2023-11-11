@@ -3,6 +3,8 @@
 #include "config.h"
 #include "utils.h"
 
+enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
+
 typedef struct {
 	Position pos;
 	double radius;
@@ -13,6 +15,6 @@ typedef struct {
 } CannonBall;
 
 void updateCannonball(void);
-void onFireCannonball(Position startPos, Vector d, int player);
+void onFireCannonball(Position startPos, Vector d, int player, enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE } ammoType);
 void destroyCannonball(int index);
 
