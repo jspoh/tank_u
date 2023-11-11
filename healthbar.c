@@ -15,7 +15,7 @@ void drawHealthBar(Tank* tank, int playerIndex) {
 	double healthPercentage = (tank->health / MAX_HEALTH) * 100.0;
 
 	// Calculate width of the health bar based on the tank's health
-	double barWidth = 2 * (tank->size.width * (healthPercentage / 100.0));
+	double barWidth = 3 * (tank->size.width * (healthPercentage / 100.0));
 	double barHeight = 30;
 	//Size size = { barWidth, barHeight };
 	double xPos, yPos;
