@@ -49,9 +49,6 @@ void gameUpdate(void) {
 		CP_Engine_SetNextGameState(menuInit, menuUpdate, menuExit);
 	}
 
-	if (CP_Input_KeyTriggered(KEY_HOME)) {
-		CP_Engine_SetNextGameState(winnerInit, winnerUpdate, winnerExit); //for testing of winner screen
-	}
 
 	drawWall();
 	updateTank();
