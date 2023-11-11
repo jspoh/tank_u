@@ -5,6 +5,10 @@
 #include "math.h"
 #include <stdio.h>
 
+CP_Image shotgun;
+CP_Image bigbullet;
+CP_Image rapidfire;
+
 extern Tank tanks[];
 // HARD CODING CERTAIN STUFF FOR NOW!!!!
 void _drawHealthBar(Tank* tank, int playerIndex) {
@@ -40,9 +44,35 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
     char hpText[50];
     snprintf(hpText, 50, "HP: %.0f", tank->health); // Convert HP value to string
     CP_Font_DrawText(hpText, (float)xPos + (float)barWidth / 2, (float)yPos - 20); // Draw HP text above health bar
-    //printf("tank->size.width: %f\n", tank->size.width);
-    //printf("healthPercentage: %f\n", healthPercentage);
 
+    // REMEMBER TO CP_Image_Free
+    /*shotgun = CP_Image_Load("./Assets/powerup/powerup_1.png");
+    CP_Image_Draw(shotgun, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);*/
+
+    tank->activePowerUps = BIG_BULLET;
+    switch (tank->activePowerUps) {
+    case NORMAL:
+        break;
+    case RAPID_FIRE:
+        rapidfire = CP_Image_Load("./Assets/powerup/powerup_3.png");
+        CP_Image_Draw(rapidfire, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
+        break;
+
+    case BIG_BULLET:
+        bigbullet = CP_Image_Load("./Assets/powerup/powerup_2.png");
+        CP_Image_Draw(bigbullet, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
+        break;
+
+    case SHOTGUN:
+        shotgun = CP_Image_Load("./Assets/powerup/powerup_1.png");
+        CP_Image_Draw(shotgun, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
+        break;
+
+
+    default:  // else
+        fprintf(stderr, "Cannonball switch case reached default statement\n");
+        exit(6);
+    }
 }
 
 void _renderHealthBar(void) {

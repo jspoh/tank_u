@@ -127,10 +127,10 @@ void _moveTanks(void) {
 				t->speed = 0;
 			}
 
-		if (t->repairTimer > 0) {
-			t->speed = 0;
-			// dDegrees = 0;	
-		}
+			if (t->repairTimer > 0) {
+				t->speed = 0;
+				// dDegrees = 0;	
+			}
 
 			const double distance = dt * abs((int)t->speed);  // i have absolutely no idea why i cannot use other methods to ensure this isnt negative
 
@@ -283,25 +283,25 @@ void _tankCollectPowerUp(int i) { //int i is which tank it is in the array tanks
 
 void _tankUsePowerUp(int i) { //int i is which tank it is in the array tanks[i] 
 	static clock_t powerUpStartTime = 0;
-		if (CP_Input_KeyDown(keybindings[i].usePower)) {
-			for (int j = 0; j < POWERUPS_COUNT; j++)
-			{
-				//takes in the tank that have the power up
-				if (tanks[i].activePermPowers[j] != 0) {
-					tanks[i].activePowerUps = tanks[i].activePermPowers[j];
-					powerUpStartTime = clock(); //takes in the time that the function is being called
-				}
+	if (CP_Input_KeyDown(keybindings[i].usePower)) {
+		for (int j = 0; j < POWERUPS_COUNT; j++)
+		{
+			//takes in the tank that have the power up
+			if (tanks[i].activePermPowers[j] != 0) {
+				tanks[i].activePowerUps = tanks[i].activePermPowers[j];
+				powerUpStartTime = clock(); //takes in the time that the function is being called
 			}
 		}
-		if (tanks[i].activePowerUps != 0) {
-			clock_t currentTime = clock();
-			double elapsedTime = (double)(currentTime - powerUpStartTime) / CLOCKS_PER_SEC;
+	}
+	if (tanks[i].activePowerUps != 0) {
+		clock_t currentTime = clock();
+		double elapsedTime = (double)(currentTime - powerUpStartTime) / CLOCKS_PER_SEC;
 
-			if (elapsedTime >= POWERUP_DURATION) {
-				// Power-up duration has elapsed, reset activePowerUps to 0
-				tanks[i].activePowerUps = NORMAL;
-			}
+		if (elapsedTime >= POWERUP_DURATION) {
+			// Power-up duration has elapsed, reset activePowerUps to 0
+			tanks[i].activePowerUps = NORMAL;
 		}
+	}
 
 }
 
@@ -406,9 +406,9 @@ void _collisionsTank(void) {
 		double damageTaken = 0;
 		bool hasCollidedCb = colTankCb(&tanks[i], &damageTaken);
 		if (hasCollidedCb) {
-			puts("BOOM");
+			//puts("BOOM");
 			_damageTank(&tanks[i], damageTaken);
-			printf("health of tank: %lf\n", tanks[i].health);
+			//printf("health of tank: %lf\n", tanks[i].health);
 		}
 
 		if (hasCollidedWall || hasCollidedTank) {
@@ -428,33 +428,33 @@ void initTank(void) {
 	tankFire = CP_Sound_Load("Assets/audio/sfx/tank_fire.wav");
 }
 
-void updateTank(void) {
+	void updateTank(void) {
 
-	_moveTanks();
-	_actionTank();
-	_collisionsTank();
-	_renderTank();
-	//_renderHealthBar();
+		_moveTanks();
+		_actionTank();
+		_collisionsTank();
+		_renderTank();
+		//_renderHealthBar();
 
-	// capture history
-	enqueue(&history, tanks[0], tanks[1]);
+		// capture history
+		enqueue(&history, tanks[0], tanks[1]);
 
-	_debugTank();
+		_debugTank();
 
 
-	for (int i = 0; i < NUM_PLAYERS; i++) {
-		if (tanks[i].hasCollided) {
-			tanks[i] = _findNoColTank(i);
-			// tanks[i].speed = 0;
-			tanks[i].repairTimer = REPAIR_TIME;
+		for (int i = 0; i < NUM_PLAYERS; i++) {
+			if (tanks[i].hasCollided) {
+				tanks[i] = _findNoColTank(i);
+				// tanks[i].speed = 0;
+				tanks[i].repairTimer = REPAIR_TIME;
+			}
 		}
 	}
-}
 
-void destroyTank(void) {
-	for (int i = 0; i < NUM_PLAYERS; i++) {
-		Tank tank = { 0 };
-		tanks[i] = tank;
+	void destroyTank(void) {
+		for (int i = 0; i < NUM_PLAYERS; i++) {
+			Tank tank = { 0 };
+			tanks[i] = tank;
+		}
+		CP_Sound_Free(&tankFire);
 	}
-	CP_Sound_Free(&tankFire);
-}

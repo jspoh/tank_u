@@ -76,7 +76,7 @@ void _renderMusicDial(Position pos, double volumePercentage) {
 }
 
 
-void renderOptions(void) {
+void _render(void) {
 	renderBackdrop();
 
 	/*options screen stuff goes here*/
@@ -141,7 +141,11 @@ void renderOptions(void) {
 
 	CP_Sound_SetGroupVolume(SFX_GROUP, (float)sfxVolume);
 	CP_Sound_SetGroupVolume(MUSIC_GROUP, (float)musicVolume);
+}
 
+void renderOptions(void) {
+	_render();
+	
 
 	bool isBackClicked = renderBackButton();
 
