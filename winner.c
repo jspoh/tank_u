@@ -32,12 +32,14 @@ typedef struct Button {
 	Position pos; //takes in for the text
 }Button;
 
-enum {
-	RESTART=1,EXIT //used to define which state the game will be at
-};
 
 extern Size WINDOW_SIZE;
 extern Tank tanks[NUM_PLAYERS];
+
+extern double sfxVolume;
+
+extern int SFX_GROUP;
+extern int MUSIC_GROUP;
 
 Size winnerButtonsize = { 200.0,75.0 };
 Position firstButtonPos = { 0 };
@@ -100,9 +102,8 @@ void winnerInit(void) {
 
 void winnerUpdate(void) {
 	if (!playing) {
+		CP_Sound_PlayAdvanced(winAudio, (float)sfxVolume, 1.f, false, SFX_GROUP);
 		playing = true;
-		CP_Sound_Play(winAudio);
-
 	}
 	buttonConstructor();
 	if (tanks[0].health > tanks[1].health) {

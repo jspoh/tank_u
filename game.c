@@ -50,7 +50,6 @@ void gameUpdate(void) {
 		CP_Engine_SetNextGameState(menuInit, menuUpdate, menuExit);
 	}
 
-
 	drawWall();
 	updateTank();
 	updateCannonball();
