@@ -18,6 +18,11 @@ extern int numWalls;
 
 extern Tank tanks[NUM_PLAYERS];
 
+extern CannonBall activeCbs[MAX];
+extern int numCbs;
+
+extern CP_Color red;
+
 
 void _drawTree(Tree* t) {
 	CP_Image_Draw(treeImgs[t->style], (float)t->rect.pos.x, (float)t->rect.pos.y, (float)t->rect.size.width, (float)t->rect.size.height, 255);
@@ -26,6 +31,25 @@ void _drawTree(Tree* t) {
 void _renderTrees(void) {
 	for (int i = 0; i<numTrees; i++) {
 		_drawTree(&activeTrees[i]);
+	}
+}
+
+void _collisionTree(void) {
+	// iterate through active trees
+	for (int i=0; i<numTrees; i++) {
+		Tree tree = activeTrees[i];  // declare variable for clearer code (altho uses more memory but negligible la)
+		
+		// iterate through active cannonballs
+		for (int j=0; j<numCbs; j++) {
+			CannonBall cb = activeCbs[j];
+			Rect cbR = (Rect){ (Size){ cb.radius*20, cb.radius*20 }, cb.pos };
+			drawRect(&cbR, &red, &red);
+			if (colRects(&tree.rect, &cbR, (Vector){0, -1}, (Vector){0, -1}, false, true)) {
+				puts("ok fine u hit me");  //test first ok 
+			}
+		}
+
+		// iterate through tanks
 	}
 }
 
@@ -101,6 +125,7 @@ void initTree(void) {
 
 void updateTree(void) {
 	_renderTrees();  // lets test! code never works first try but fingers crossed ok
+	_collisionTree();
 }
 
 void destroyTree(void) {
