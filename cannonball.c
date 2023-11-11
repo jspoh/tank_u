@@ -6,6 +6,8 @@
 #define DEFAULT_DAMAGE 5
 #define DEFAULT_FIRERATE 0.5  // seconds per shot
 
+extern CP_Color black;
+
 double firerates[NUM_PLAYERS] = { DEFAULT_FIRERATE, DEFAULT_FIRERATE };
 
 double timeSinceFireP1 = 100.0;  // time since last shot
@@ -60,6 +62,7 @@ void updateCannonball(void) {
 		CannonBall* cb = &activeCbs[i]; 
 
 		_moveCannonball(cb);
+		CP_Settings_Fill((CP_Color){0,0,0,255});
 		CP_Graphics_DrawCircle((float)cb->pos.x, (float)cb->pos.y, (float)cb->radius);
 	}
 }
@@ -121,6 +124,7 @@ void onFireCannonball(Position startPos, Vector d, int player, enum { NORMAL, BI
 		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE * 2, CANNONBALL_RADIUS * 2);
 		break;
 	case SHOTGUN:
+		// !TODO: shotgun left and right cannonballs have issues
 		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE, CANNONBALL_RADIUS);
 		activeCbs[numCbs++] = cb;
 
