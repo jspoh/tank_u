@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 
-#define FRAMERATE 60
+#define FRAMERATE 60  // DO NOT CHANGE
 #define true 1
 #define false 0
 #define MAX 256

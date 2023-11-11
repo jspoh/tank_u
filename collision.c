@@ -18,6 +18,10 @@ bool mouseInRect(Rect r, double mouseX, double mouseY) {
     return (mouseX >= r.pos.x && mouseX <= r.pos.x + r.size.width && mouseY >= r.pos.y && mouseY <= r.pos.y + r.size.height);
 }
 
+bool mouseInCircle(Circle c, double mouseX, double mouseY) {
+    return getDistance(c.pos.x, c.pos.y, mouseX, mouseY) <= c.radius;
+}
+
 /**
  * @brief assuming rect r holds the center of the rectangle, get the corner positions of the rectangle
  *

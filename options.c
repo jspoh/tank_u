@@ -3,6 +3,7 @@
 #include "back_btn.h"
 #include "menu.h"
 #include "utils.h"
+#include "collision.h"
 
 extern int menuState;
 extern CP_Color grey1;
