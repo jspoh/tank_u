@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "wall.h"
 #include "cannonball.h"
+#include "healthbar.h"
 
 CP_Font font;
 
@@ -38,6 +39,7 @@ void gameInit(void) {
 
 	initWall();
 	initTank();
+	initHealthBar();
 }
 void gameUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 150, 0, 255));
@@ -49,6 +51,7 @@ void gameUpdate(void) {
 	drawWall();
 	updateTank();
 	updateCannonball();
+	updateHealthBar();
 }
 
 void gameExit(void) {

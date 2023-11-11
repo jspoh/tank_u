@@ -4,6 +4,8 @@
 #include "config.h"
 
 #define POWERUPS_COUNT 3
+#define MAX_HEALTH 100.f
+#define NUM_PLAYERS 2
 
 enum { FRONT, BACK };
 
