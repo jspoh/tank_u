@@ -54,6 +54,9 @@
     <ClCompile Include="healthbar.c">
       <Filter>components\healthbar</Filter>
     </ClCompile>
+    <ClCompile Include="powerup.c">
+      <Filter>components\powerup</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="menu.h">
@@ -107,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="healthbar.h">
       <Filter>components\healthbar</Filter>
+    </ClInclude>
+    <ClInclude Include="powerup.h">
+      <Filter>components\powerup</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +172,9 @@
     </Filter>
     <Filter Include="components\healthbar">
       <UniqueIdentifier>{3e31fae1-002c-4cb3-a6d6-2d00c3be37ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\powerup">
+      <UniqueIdentifier>{72454c7c-85c1-4554-b0c0-df2840c76f5d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
