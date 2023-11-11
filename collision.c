@@ -18,6 +18,10 @@ bool mouseInRect(Rect r, double mouseX, double mouseY) {
     return (mouseX >= r.pos.x && mouseX <= r.pos.x + r.size.width && mouseY >= r.pos.y && mouseY <= r.pos.y + r.size.height);
 }
 
+bool mouseInCircle(Circle c, double mouseX, double mouseY) {
+    return getDistance(c.pos.x, c.pos.y, mouseX, mouseY) <= c.radius;
+}
+
 /**
  * @brief assuming rect r holds the center of the rectangle, get the corner positions of the rectangle
  *
@@ -279,7 +283,7 @@ int _circleRectAABB(Rect* r, Circle* c, bool usingCenter) {
  * @return true
  * @return false
  */
-bool colTankCb(Tank* t) {
+bool colTankCb(Tank* t, double* damageTaken) {
     Rect r = { t->size, t->pos };
     Position tCorners[4] = { 0 };
     _getRectCorners(&r, &t->pos.d, tCorners, true);
@@ -293,6 +297,7 @@ bool colTankCb(Tank* t) {
 
         Circle c = { activeCbs[i].radius, activeCbs[i].pos };
         if (_circleRectSAT(&r, &c, &t->pos.d, true)) {
+            *damageTaken = activeCbs[i].damage;
             destroyCannonball(i);
             return true;
         }
@@ -408,4 +413,26 @@ bool colTankRect(Tank* t, Rect* r, bool rectUsingCenter) {
     _getRectCorners(r, &rVector, rCorners, rectUsingCenter);
 
     return _rectSAT(tCorners, rCorners);
+}
+
+/**
+ * @brief uses separation axis theorem
+ * 
+ * @param r1 
+ * @param r2 
+ * @param d1 directional vector of r1 (use `(Vector){0, -1}` if you didnt rotate the rectangle)
+ * @param d2 directional vector of r2 (use `(Vector){0, -1}` if you didnt rotate the rectangle)
+ * @param r1UsingCenter rendered using CP_RECT_CENTER. set to `false` if you dont know what this means
+ * @param r2UsingCenter rendered using CP_RECT_CENTER. set to `false` if you dont know what this means
+ * @return true 
+ * @return false 
+ */
+bool colRects(Rect* r1, Rect* r2, Vector d1, Vector d2, bool r1UsingCenter, bool r2UsingCenter) {
+    Position r1Corners[4] = { 0 };
+    _getRectCorners(r1, &d1, r1Corners, r1UsingCenter);
+
+    Position r2Corners[4] = { 0 };
+    _getRectCorners(r2, &d2, r2Corners, r2UsingCenter);
+
+    return _rectSAT(r1Corners, r2Corners);
 }

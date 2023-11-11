@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 
-#define FRAMERATE 60
+#define FRAMERATE 60  // DO NOT CHANGE
 #define true 1
 #define false 0
 #define MAX 256
@@ -44,12 +44,12 @@ typedef struct {
 	Position pos;
 } Rect;
 
-extern Size WINDOW_SIZE;
-
 typedef struct {
 	double radius;
 	Position pos;
 } Circle;
+
+extern Size WINDOW_SIZE;
 
 /***
 * @brief Initializes app wide variables
