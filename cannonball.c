@@ -3,8 +3,10 @@
 
 #define CANNONBALL_SPEED 750
 #define CANNONBALL_RADIUS 10
+#define DEFAULT_DAMAGE 5
+#define DEFAULT_FIRERATE 0.5  // seconds per shot
 
-double firerate = 0.5;  // seconds per shot
+double firerates[NUM_PLAYERS] = { DEFAULT_FIRERATE, DEFAULT_FIRERATE };
 
 double timeSinceFireP1 = 100.0;  // time since last shot
 double timeSinceFireP2 = 100.0;
@@ -62,19 +64,31 @@ void updateCannonball(void) {
 	}
 }
 
-CannonBall _cannonballConstructor(Position pos, Vector d) {
+CannonBall _cannonballConstructor(Position pos, Vector d, double damage) {
 	CannonBall cb = { 0 };
 	cb.pos = pos;
 	cb.d = d;
 	cb.radius = CANNONBALL_RADIUS;
+	cb.damage = damage;
 	return cb;
 }
 
-void onFireCannonball(Position startPos, Vector d, int player) {
+/**
+ * @param ammoType enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
+ * 
+*/
+void onFireCannonball(Position startPos, Vector d, int player, enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE } ammoType) {
+	if (ammoType == RAPID_FIRE) {
+		firerates[player] = DEFAULT_FIRERATE / 2;
+	}
+	else {
+		firerates[player] = DEFAULT_FIRERATE;
+	}
+
 	// if time since last shot < firerate, dont allow user to fire
 	switch (player) {
 		case 0:  // player 1
-			if (timeSinceFireP1 < firerate) {
+			if (timeSinceFireP1 < firerates[player]) {
 				//fprintf(stdout, "P1 not yet allowed to fire!\n");
 				return;
 			}
@@ -82,7 +96,7 @@ void onFireCannonball(Position startPos, Vector d, int player) {
 			break;
 
 		case 1:  // player 2
-			if (timeSinceFireP2 < firerate) {
+			if (timeSinceFireP2 < firerates[player]) {
 				//fprintf(stdout, "P2 not yet allowd to fire!\n");
 				return;
 			}
@@ -95,7 +109,26 @@ void onFireCannonball(Position startPos, Vector d, int player) {
 	}
 
 	// create cannonball
-	CannonBall cb = _cannonballConstructor(startPos, d);
+	CannonBall cb = { 0 };
+	switch (ammoType) {
+	case NORMAL:
+	case RAPID_FIRE:
+		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE);
+		break;
+	case BIG_BULLET:
+		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE * 2);
+		break;
+	case SHOTGUN:
+		// use rotation matrix (see utils.h) to rotate vector d given 45 deg to left and right. here will create 3 cannonballs
+		// cb1,cb2,cb3
+		// update activeCbs, once updated, use RETURN(IMPORTANT DONT BREAK)
+		break;
+
+
+	default:  // else
+		fprintf(stderr, "Cannonball switch case reached default statement\n");
+		exit(6);
+	}
 	activeCbs[numCbs++] = cb;
 }
 
