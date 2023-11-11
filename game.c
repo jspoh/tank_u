@@ -7,6 +7,7 @@
 #include "cannonball.h"
 #include "healthbar.h"
 #include "collision.h"
+#include "tree.h"
 #include "winner.h"
 
 CP_Font font;
@@ -42,6 +43,7 @@ void gameInit(void) {
 
 	initWall();
 	initTank();
+	initTree();
 	initHealthBar();
 }
 void gameUpdate(void) {
@@ -52,6 +54,7 @@ void gameUpdate(void) {
 	}
 
 	drawWall();
+	updateTree();
 	updateTank();
 	updateCannonball();
 	updateHealthBar();
@@ -61,6 +64,7 @@ void gameUpdate(void) {
 }
 
 void gameExit(void) {
+	destroyTree();
 	destroyTank();
 	destroyHealthBar();
 }
