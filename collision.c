@@ -283,7 +283,7 @@ int _circleRectAABB(Rect* r, Circle* c, bool usingCenter) {
  * @return true
  * @return false
  */
-bool colTankCb(Tank* t) {
+bool colTankCb(Tank* t, double* damageTaken) {
     Rect r = { t->size, t->pos };
     Position tCorners[4] = { 0 };
     _getRectCorners(&r, &t->pos.d, tCorners, true);
@@ -297,6 +297,7 @@ bool colTankCb(Tank* t) {
 
         Circle c = { activeCbs[i].radius, activeCbs[i].pos };
         if (_circleRectSAT(&r, &c, &t->pos.d, true)) {
+            *damageTaken = activeCbs[i].damage;
             destroyCannonball(i);
             return true;
         }
