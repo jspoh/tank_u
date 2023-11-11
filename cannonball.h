@@ -13,7 +13,6 @@ typedef struct {
 	bool bounced;
 	Vector d;
 } CannonBall;
-#define CANNONBALL_DAMAGE 10
 
 void updateCannonball(void);
 bool onFireCannonball(Position startPos, Vector d, int player, enum AMMO_TYPES ammoType);
