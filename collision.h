@@ -5,7 +5,7 @@
 bool mouseInRect(Rect r, double mouseX, double mouseY);
 bool mouseInCircle(Circle c, double mouseX, double mouseY);
 bool areTanksColliding(Tank* t1, Tank* t2);
-void _getRectCorners(Rect* r, Vector* d, Position* corners, bool usingCenter);  // for debugging
+void _getRectCorners(Rect* r, Vector* d, Position* corners, bool usingCenter);
 bool colTankWall(Tank* t);
 bool colTankCb(Tank* t, double* damageTaken);
 void colCbWall(void);
@@ -34,3 +34,12 @@ bool colTankRect(Tank* t, Rect* r, bool rectUsingCenter);
  * @return false 
  */
 bool colRects(Rect* r1, Rect* r2, Vector d1, Vector d2, bool r1UsingCenter, bool r2UsingCenter);
+
+/**
+ * @brief handle collisions between trees and cannonballs and trees and tanks
+ * 
+ * @param tank 
+ * @return true 
+ * @return false 
+ */
+bool collisionTree(Tank* tank);

@@ -18,6 +18,12 @@ extern int numWalls;
 
 extern Tank tanks[NUM_PLAYERS];
 
+extern CannonBall activeCbs[MAX];
+extern int numCbs;
+
+extern CP_Color red;
+extern CP_Color blue;
+
 
 void _drawTree(Tree* t) {
 	CP_Image_Draw(treeImgs[t->style], (float)t->rect.pos.x, (float)t->rect.pos.y, (float)t->rect.size.width, (float)t->rect.size.height, 255);
@@ -27,6 +33,29 @@ void _renderTrees(void) {
 	for (int i = 0; i<numTrees; i++) {
 		_drawTree(&activeTrees[i]);
 	}
+}
+
+bool _removeTree(int index) {
+	if (index >= numTrees) {
+		fprintf(stderr, "Index out of range\n");
+		exit(8);
+	}
+
+	// less efficient way but preserves array order
+	for (int i = index; i < numTrees - 1; i++) {
+		activeTrees[i] = activeTrees[i + 1];
+	}
+	numTrees--;
+
+	printf("trees left: %d\n", numTrees);
+
+	return true;
+}
+
+
+bool _destroyTree(int index) {
+	return _removeTree(index);
+	// !TODO: animation for tree destroy if time allows it (prob not)
 }
 
 
@@ -100,7 +129,7 @@ void initTree(void) {
 }
 
 void updateTree(void) {
-	_renderTrees();  // lets test! code never works first try but fingers crossed ok
+	_renderTrees();
 }
 
 void destroyTree(void) {
