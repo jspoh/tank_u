@@ -8,6 +8,7 @@
 #include "healthbar.h"
 #include "collision.h"
 #include "tree.h"
+#include "winner.h"
 
 CP_Font font;
 
@@ -32,7 +33,8 @@ Keybinds keybindings[2];
 
 
 void gameInit(void) {
-	font = CP_Font_Load("Assets/Exo2-Regular.ttf");
+	// font = CP_Font_Load("Assets/fonts/Exo2-Regular.ttf");
+	font = CP_Font_Load("Assets/fonts/PixelifySans-Regular.ttf");
 	CP_Font_Set(font);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
@@ -42,6 +44,7 @@ void gameInit(void) {
 	initWall();
 	initTank();
 	initTree();
+	initHealthBar();
 }
 void gameUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 150, 0, 255));
@@ -56,9 +59,12 @@ void gameUpdate(void) {
 	updateCannonball();
 	updateHealthBar();
 	colCbWall();
+
+
 }
 
 void gameExit(void) {
 	destroyTree();
 	destroyTank();
+	destroyHealthBar();
 }
