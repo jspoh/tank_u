@@ -56,6 +56,7 @@
     </ClCompile>
     <ClCompile Include="winner.c">
       <Filter>components\game end screen</Filter>
+	</ClCompile>
     <ClCompile Include="powerup.c">
       <Filter>components\powerup</Filter>
     </ClCompile>
@@ -115,6 +116,7 @@
     </ClInclude>
     <ClInclude Include="winner.h">
       <Filter>components\game end screen</Filter>
+	</ClInclude>
     <ClInclude Include="powerup.h">
       <Filter>components\powerup</Filter>
     </ClInclude>
@@ -179,6 +181,7 @@
     </Filter>
     <Filter Include="components\game end screen">
       <UniqueIdentifier>{cce9d6e7-81cc-4f4b-aaae-d971e54a7517}</UniqueIdentifier>
+    </Filter>
     <Filter Include="components\powerup">
       <UniqueIdentifier>{72454c7c-85c1-4554-b0c0-df2840c76f5d}</UniqueIdentifier>
     </Filter>
