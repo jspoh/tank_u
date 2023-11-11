@@ -41,6 +41,7 @@ void gameInit(void) {
 
 	initWall();
 	initTank();
+	initHealthBar();
 }
 void gameUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 150, 0, 255));
@@ -58,4 +59,5 @@ void gameUpdate(void) {
 
 void gameExit(void) {
 	destroyTank();
+	destroyHealthBar();
 }
