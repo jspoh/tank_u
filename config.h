@@ -51,6 +51,11 @@ typedef struct {
 
 extern Size WINDOW_SIZE;
 
+typedef struct {
+	double radius;
+	Position pos;
+} Circle;
+
 /***
 * @brief Initializes app wide variables
 * 
