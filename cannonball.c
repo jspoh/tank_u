@@ -3,7 +3,7 @@
 
 #define CANNONBALL_SPEED 750
 #define CANNONBALL_RADIUS 10
-#define FIRERATE 1  // shots per second
+#define FIRERATE 0.5  // seconds per shot
 
 double timeSinceFireP1 = 1.0;  // time since last shot
 double timeSinceFireP2 = 1.0;
@@ -19,13 +19,16 @@ bool _removeCannonball(int index) {
 	}
 
 	// less efficient way but preserves array order
-	// for (int i = index; i < numCbs; i++) {
-	// 	activeCbs[i] = activeCbs[i + 1];
-	// }
-	// numCbs--;
+	for (int i = index; i < numCbs; i++) {
+		activeCbs[i] = activeCbs[i + 1];
+	}
+	numCbs--;
 
+	// !TODO: this method is more efficient but seems to screw something up. see ticket TU90
+	// to reproduce issue, fire a cannonball and then fire another one. the second one will be despawned at the same time as the first one
+	// issue does not seem to occur with the less efficient method above
 	// more efficient way but does not preserve order (but order isnt important in this context lol)
-	activeCbs[index] = activeCbs[numCbs--];
+	// activeCbs[index] = activeCbs[numCbs--];
 
 	// printf("%d\n", numCbs);
 	return true;

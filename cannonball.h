@@ -7,7 +7,7 @@ typedef struct {
 	Position pos;
 	double radius;
 	//double velocity;
-	int damage;
+	double damage;
 	bool bounced;
 	Vector d;
 } CannonBall;
