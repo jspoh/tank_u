@@ -9,6 +9,7 @@
 #include "cannonball.h"
 #include "collision.h"
 #include "queue.h"
+#include <time.h>
 
 
 #define MOVEMENT_SPEED 500
@@ -16,6 +17,7 @@
 #define DECELERATION (ACCELERATION * 3)
 #define TURN_SPEED 100
 #define REPAIR_TIME 1  // seconds
+#define POWERUP_DURATION 10
 
 Queue history;
 
@@ -258,33 +260,45 @@ void _damageTank(Tank* tank, double damage) {
 	tank->health -= damage;
 }
 
-void _tankCollectPowerUp(int i) {
+void _tankCollectPowerUp(int i) { //int i is which tank it is in the array tanks[i] 
 	//logic for collecting powerups draft will change once the actual code for the area of rect is there
-//for (int i = 0; i < NUM_PLAYERS; i++) {
-//	if (checkRectangleCollision(tanks[i], powerup)) {
-//		for (int j = 0; j < POWERUPS_COUNT; j++) 
-//		{
-//			if (tanks[i].activePermPowers[i] == 0) 
-//			{
-//				tanks[i].activePermPowers[i] += powerup;
-//			}
-
-//		}
-//	}
-//}
-//
-}
-
-void _tankUsePowerUp(int i) {
-	//	if (CP_Input_KeyDown(keybindings[i].usePower)) {
-	//		for (int j = 0; j < POWERUPS_COUNT; j++)
+	//for (int i = 0; i < NUM_PLAYERS; i++) {
+	//	if (checkRectangleCollision(tanks[i].pos.x,tanks[i].pos.y, powerUps.pos.x,powerUps.pos.y)) {
+	//		for (int j = 0; j < POWERUPS_COUNT; j++) 
 	//		{
-	//			//takes in the tank that have the power up
-	//			if (tanks[i].activePermPowers[j] != 0) {
-	//				activatePowerUp(Tank* tanks[i], tanks[i].activePermPowers[j]);
+	//			if (tanks[i].activePermPowers[i] == 0) 
+	//			{
+	//				tanks[i].activePermPowers[i] += powerUps.num;// for the tank to take in which powerup is 
 	//			}
+
 	//		}
 	//	}
+	//}
+
+}
+
+
+void _tankUsePowerUp(int i) { //int i is which tank it is in the array tanks[i] 
+	static clock_t powerUpStartTime = 0;
+		if (CP_Input_KeyDown(keybindings[i].usePower)) {
+			for (int j = 0; j < POWERUPS_COUNT; j++)
+			{
+				//takes in the tank that have the power up
+				if (tanks[i].activePermPowers[j] != 0) {
+					tanks[i].activePowerUps = tanks[i].activePermPowers[j];
+					powerUpStartTime = clock(); //takes in the time that the function is being called
+				}
+			}
+		}
+		if (tanks[i].activePowerUps != 0) {
+			clock_t currentTime = clock();
+			double elapsedTime = (double)(currentTime - powerUpStartTime) / CLOCKS_PER_SEC;
+
+			if (elapsedTime >= POWERUP_DURATION) {
+				// Power-up duration has elapsed, reset activePowerUps to 0
+				tanks[i].activePowerUps = NORMAL;
+			}
+		}
 
 }
 
@@ -298,7 +312,10 @@ Position _getTurretCenter(Tank* t, Size turretSize) {
 	return O;
 }
 
-void _tankShoot(int i) {
+
+
+
+void _tankShoot(int i, int activePowerUp) { //int i is which tank it is in the array tanks[i] 
 	if (CP_Input_KeyDown(keybindings[i].shoot))
 	{
 		//using the exact address to find the directional vector 
@@ -310,12 +327,36 @@ void _tankShoot(int i) {
 
 		Position turretTip = _getTurretCenter(&tanks[i], size);
 
-		onFireCannonball(turretTip, unitVector, i);
+		switch (activePowerUp) {
+		case NORMAL:
+			onFireCannonball(turretTip, unitVector, i);
+			break;
+		//case BIG_BULLET:
+		//	onFireBigBullet(turretTip, unitVector, i);
+		//	break;
+		//case SHOTGUN:
+		//	onFireShotGunBullets(turretTip, unitVector, i);
+		//	break;
+		//case RAPID_FIRE:
+		//	onRapidFireCannonballs(turretTip, unitVector, i);
+		//	break;
+		default:
+			onFireCannonball(turretTip, unitVector, i); // switched default to normal cannonball shooting just incase
+			break;
+		}
 
 	}
 
 }
 
+
+void _tankRefillHealth(void) {
+	if (CP_Input_KeyDown(KEY_F5)) {
+		for (int i = 0; i < NUM_PLAYERS; i++) {
+			tanks[i].health = MAX_HEALTH;
+		}
+	}
+}
 
 /*!
 * @brief logic to handle shooting, collecting, using powerups
@@ -323,10 +364,10 @@ void _tankShoot(int i) {
 void _actionTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		_tankCollectPowerUp(i);
+		_tankShoot(i,tanks[i].activePowerUps);
 		_tankUsePowerUp(i);
-		_tankShoot(i);
-	}
 
+	}
 }
 
 
