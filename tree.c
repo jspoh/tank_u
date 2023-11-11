@@ -22,6 +22,7 @@ extern CannonBall activeCbs[MAX];
 extern int numCbs;
 
 extern CP_Color red;
+extern CP_Color blue;
 
 
 void _drawTree(Tree* t) {
@@ -38,18 +39,26 @@ void _collisionTree(void) {
 	// iterate through active trees
 	for (int i=0; i<numTrees; i++) {
 		Tree tree = activeTrees[i];  // declare variable for clearer code (altho uses more memory but negligible la)
+		Rect treeHitbox = (Rect){ tree.rect.size, (Position) { tree.rect.pos.x - tree.rect.size.width/2, tree.rect.pos.y - tree.rect.size.height/2 } };
+		//drawRect(&treeHitbox, &blue, &blue);  // draw tree hitbox
 		
 		// iterate through active cannonballs
 		for (int j=0; j<numCbs; j++) {
 			CannonBall cb = activeCbs[j];
-			Rect cbR = (Rect){ (Size){ cb.radius*2, cb.radius*2 }, cb.pos };
-			drawRect(&cbR, &red, &red);
-			if (colRects(&tree.rect, &cbR, (Vector){0, -1}, (Vector){0, -1}, false, true)) {
+			Rect cbHitbox = (Rect){ (Size){ cb.radius*2, cb.radius*2 }, (Position){cb.pos.x - cb.radius, cb.pos.y - cb.radius} };
+			//drawRect(&cbHitbox, &red, &red);  // draw cb hitbox
+			if (colRects(&treeHitbox, &cbHitbox, (Vector){0, -1}, (Vector){0, -1}, false, false)) {
 				puts("ok fine u hit me");  //test first ok 
 			}
 		}
 
 		// iterate through tanks
+		for (int j = 0; j < NUM_PLAYERS; j++) {
+			Tank tank = tanks[j];
+			if (colTankRect(&tank, &treeHitbox, false)) {
+				puts("wow tank stupid ah");
+			}
+		}
 	}
 }
 
