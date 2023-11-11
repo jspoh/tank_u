@@ -7,6 +7,7 @@
 #include "cannonball.h"
 #include "healthbar.h"
 #include "collision.h"
+#include "winner.h"
 
 CP_Font font;
 
@@ -48,11 +49,17 @@ void gameUpdate(void) {
 		CP_Engine_SetNextGameState(menuInit, menuUpdate, menuExit);
 	}
 
+	if (CP_Input_KeyTriggered(KEY_HOME)) {
+		CP_Engine_SetNextGameState(initWinner, updateWinner, exitWinner); //for testing of winner screen
+	}
+
 	drawWall();
 	updateTank();
 	updateCannonball();
 	updateHealthBar();
 	colCbWall();
+
+
 }
 
 void gameExit(void) {
