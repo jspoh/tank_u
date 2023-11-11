@@ -72,11 +72,10 @@ void _getRectCorners(Rect* r, Vector* d, Position* corners, bool usingCenter) {
  *
  * @param r1
  * @param r2
- * @param collisionVector if there is a collision, this will be filled with the collision vector
  * @return true if there is a collision
  * @return false if there is no collision
  */
-bool _rectSAT(Position* r1Corners, Position* r2Corners, Vector* collisionVector) {
+bool _rectSAT(Position* r1Corners, Position* r2Corners) {
     const int UNIQUE_EDGES = 4;
     Vector allEdges[] = {
         { r1Corners[2].x - r1Corners[0].x, r1Corners[2].y - r1Corners[0].y },  // r1 bottom left to top left (b -> t)
@@ -125,7 +124,7 @@ bool _rectSAT(Position* r1Corners, Position* r2Corners, Vector* collisionVector)
 
 }
 
-bool areTanksColliding(Tank* t1, Tank* t2, Vector* d) {
+bool areTanksColliding(Tank* t1, Tank* t2) {
     Rect r1 = { t1->size, t1->pos };
     Position t1Corners[4] = { 0 };
     _getRectCorners(&r1, &t1->pos.d, t1Corners, true);
@@ -134,18 +133,17 @@ bool areTanksColliding(Tank* t1, Tank* t2, Vector* d) {
     Position t2Corners[4] = { 0 };
     _getRectCorners(&r2, &t2->pos.d, t2Corners, true);
 
-    return _rectSAT(t1Corners, t2Corners, d);
+    return _rectSAT(t1Corners, t2Corners);
 }
 
 /**
  * @brief uses extern activeWalls from wall.c
  *
  * @param t
- * @param collisionVector
  * @return true
  * @return false
  */
-bool colTankWall(Tank* t, Vector* collisionVector) {
+bool colTankWall(Tank* t) {
     Rect r = { t->size, t->pos };
     Position tCorners[4] = { 0 };
     _getRectCorners(&r, &t->pos.d, tCorners, true);
@@ -162,7 +160,7 @@ bool colTankWall(Tank* t, Vector* collisionVector) {
         Vector wVector = { 0, -1 };
         _getRectCorners(&activeWalls[i], &wVector, wCorners, false);
 
-        if (_rectSAT(tCorners, wCorners, collisionVector)) {
+        if (_rectSAT(tCorners, wCorners)) {
             return true;
         }
     }
@@ -281,7 +279,7 @@ int _circleRectAABB(Rect* r, Circle* c, bool usingCenter) {
  * @return true
  * @return false
  */
-bool colTankCb(Tank* t, Vector* collisionVector) {
+bool colTankCb(Tank* t) {
     Rect r = { t->size, t->pos };
     Position tCorners[4] = { 0 };
     _getRectCorners(&r, &t->pos.d, tCorners, true);
@@ -295,7 +293,6 @@ bool colTankCb(Tank* t, Vector* collisionVector) {
 
         Circle c = { activeCbs[i].radius, activeCbs[i].pos };
         if (_circleRectSAT(&r, &c, &t->pos.d, true)) {
-            *collisionVector = activeCbs[i].pos.d;
             destroyCannonball(i);
             return true;
         }
@@ -393,6 +390,22 @@ void colCbWall(void) {
     // puts("end");
 }
 
+/**
+ * @brief 
+ * 
+ * @param t tank
+ * @param r axis aligned(not rotated) rectangle
+ * @param rectUsingCenter whether the position of the rect is using CP_RECT_CENTER
+ * @return true 
+ * @return false 
+ */
+bool colTankRect(Tank* t, Rect* r, bool rectUsingCenter) {
+    Position tCorners[4] = { 0 };
+    _getRectCorners(r, &t->pos.d, tCorners, true);
 
-// !TODO: cannonball-border fn to prevent memory leak
-// !TODO: tank border fn
+    Position rCorners[4] = { 0 };
+    Vector rVector = { 0, -1 };
+    _getRectCorners(r, &rVector, rCorners, rectUsingCenter);
+
+    return _rectSAT(tCorners, rCorners);
+}

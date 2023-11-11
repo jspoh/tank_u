@@ -382,8 +382,7 @@ Tank _findNoColTank(int player) {
 void _collisionsTank(void) {
 	const double dt = CP_System_GetDt();
 
-	Vector v = { 0 };
-	bool hasCollidedTank = areTanksColliding(&tanks[0], &tanks[1], &v);
+	bool hasCollidedTank = areTanksColliding(&tanks[0], &tanks[1]);
 	if (hasCollidedTank) {
 		puts("col tank");
 	}
@@ -391,12 +390,12 @@ void _collisionsTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		tanks[i].repairTimer = tanks[i].repairTimer <= 0 ? 0 : tanks[i].repairTimer - dt;
 
-		bool hasCollidedWall = colTankWall(&tanks[i], &v);
+		bool hasCollidedWall = colTankWall(&tanks[i]);
 		if (hasCollidedWall) {
 			puts("col wall");
 		}
 
-		bool hasCollidedCb = colTankCb(&tanks[i], &v);
+		bool hasCollidedCb = colTankCb(&tanks[i]);
 		if (hasCollidedCb) {
 			puts("BOOM");
 		}
