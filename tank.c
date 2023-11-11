@@ -215,7 +215,7 @@ Tank _tankConstructor(Position pos, Color color) {
 	tank.size = tankSize;
 	// change to different kinds of ammo for debugging
 	// enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
-	tank.activePowerUps = NORMAL;
+	tank.activePowerUps = SHOTGUN;
 
 	/* add tank to tanks array */
 	bool valid = false;
