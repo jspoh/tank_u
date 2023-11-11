@@ -453,5 +453,5 @@ void destroyTank(void) {
 		Tank tank = { 0 };
 		tanks[i] = tank;
 	}
-	CP_Sound_Free(tankFire);
+	CP_Sound_Free(&tankFire);
 }
