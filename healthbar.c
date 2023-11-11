@@ -5,9 +5,9 @@
 #include "math.h"
 #include <stdio.h>
 
-CP_Image shotgun;
-CP_Image bigbullet;
-CP_Image rapidfire;
+CP_Image shotGun;
+CP_Image bigBullet;
+CP_Image rapidFire;
 
 extern Tank tanks[];
 // HARD CODING CERTAIN STUFF FOR NOW!!!!
@@ -54,24 +54,24 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
     case NORMAL:
         break;
     case RAPID_FIRE:
-        rapidfire = CP_Image_Load("./Assets/powerup/powerup_3.png");
-        CP_Image_Draw(rapidfire, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
+        rapidFire = CP_Image_Load("./Assets/powerup/powerup_3.png");
+        CP_Image_Draw(rapidFire, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
         break;
 
     case BIG_BULLET:
-        bigbullet = CP_Image_Load("./Assets/powerup/powerup_2.png");
-        CP_Image_Draw(bigbullet, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
+        bigBullet = CP_Image_Load("./Assets/powerup/powerup_2.png");
+        CP_Image_Draw(bigBullet, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
         break;
 
     case SHOTGUN:
-        shotgun = CP_Image_Load("./Assets/powerup/powerup_1.png");
-        CP_Image_Draw(shotgun, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
+        shotGun = CP_Image_Load("./Assets/powerup/powerup_1.png");
+        CP_Image_Draw(shotGun, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
         break;
 
 
     default:  // else
-        fprintf(stderr, "Cannonball switch case reached default statement\n");
-        exit(6);
+        fprintf(stderr, "Healthbar switch case reached default statement\n");
+        exit(7);
     }
 }
 
