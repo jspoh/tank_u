@@ -125,6 +125,7 @@ void onFireCannonball(Position startPos, Vector d, int player, enum { NORMAL, BI
 		// cb1,cb2,cb3
 		// update activeCbs, once updated, use RETURN(IMPORTANT DONT BREAK)
 		// rotate vector using rotateVectorClockwise and rotateVectorCounterClockwise
+		// do properly
 		return;  // DO NOT REMOVE OR PUT BREAK ON TOP
 		//break;
 
