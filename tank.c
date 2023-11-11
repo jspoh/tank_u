@@ -418,6 +418,8 @@ void _collisionsTank(void) {
 		bool hasCollidedCb = colTankCb(&tanks[i], &v);
 		if (hasCollidedCb) {
 			puts("BOOM");
+			_damageTank(&tanks[i], CANNONBALL_DAMAGE);
+			printf("health of tank: %lf\n", tanks[i].health);
 		}
 
 		if (hasCollidedWall || hasCollidedTank) {
