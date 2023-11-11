@@ -35,9 +35,36 @@ void _renderTrees(void) {
 	}
 }
 
+bool _removeTree(int index) {
+	if (index >= numTrees) {
+		fprintf(stderr, "Index out of range\n");
+		exit(8);
+	}
+
+	// less efficient way but preserves array order
+	for (int i = index; i < numTrees - 1; i++) {
+		activeTrees[i] = activeTrees[i + 1];
+	}
+	numTrees--;
+
+	printf("trees left: %d\n", numTrees);
+
+	return true;
+}
+
+
+bool _destroyTree(int index) {
+	return _removeTree(index);
+	// !TODO: animation for tree destroy if time allows it (prob not)
+}
+
 void _collisionTree(void) {
+	int toRemove[MAX_TREES] = { 0 };
+	int sizeTR = 0;
+
 	// iterate through active trees
 	for (int i=0; i<numTrees; i++) {
+		bool treeRemoved = false;
 		Tree tree = activeTrees[i];  // declare variable for clearer code (altho uses more memory but negligible la)
 		Rect treeHitbox = (Rect){ tree.rect.size, (Position) { tree.rect.pos.x - tree.rect.size.width/2, tree.rect.pos.y - tree.rect.size.height/2 } };
 		//drawRect(&treeHitbox, &blue, &blue);  // draw tree hitbox
@@ -48,8 +75,16 @@ void _collisionTree(void) {
 			Rect cbHitbox = (Rect){ (Size){ cb.radius*2, cb.radius*2 }, (Position){cb.pos.x - cb.radius, cb.pos.y - cb.radius} };
 			//drawRect(&cbHitbox, &red, &red);  // draw cb hitbox
 			if (colRects(&treeHitbox, &cbHitbox, (Vector){0, -1}, (Vector){0, -1}, false, false)) {
-				puts("ok fine u hit me");  //test first ok 
+				//puts("ok fine u hit me");  //test first ok 
+				destroyCannonball(j);
+				toRemove[sizeTR++] = i;
+				treeRemoved = true;
+				break;
 			}
+		}
+
+		if (treeRemoved) {  // optimization. no need to check if tree and tank collides because tree has been destroyed
+			continue;
 		}
 
 		// iterate through tanks
@@ -59,6 +94,11 @@ void _collisionTree(void) {
 				puts("wow tank stupid ah");
 			}
 		}
+	}
+
+	for (int i = 0; i < sizeTR; i++) {
+		puts("hm");
+		_destroyTree(toRemove[i]);
 	}
 }
 
