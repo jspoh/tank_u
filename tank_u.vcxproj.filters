@@ -51,6 +51,9 @@
     <ClCompile Include="tank_utils.c">
       <Filter>components\tank\utils</Filter>
     </ClCompile>
+    <ClCompile Include="healthbar.c">
+      <Filter>components\healthbar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="menu.h">
@@ -101,6 +104,9 @@
     </ClInclude>
     <ClInclude Include="tank_utils.h">
       <Filter>components\tank\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="healthbar.h">
+      <Filter>components\healthbar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +163,9 @@
     </Filter>
     <Filter Include="components\tank\utils\queue">
       <UniqueIdentifier>{b1215ee7-2122-48b5-a20e-9b2500c81ba0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\healthbar">
+      <UniqueIdentifier>{3e31fae1-002c-4cb3-a6d6-2d00c3be37ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
