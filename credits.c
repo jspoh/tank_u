@@ -19,9 +19,14 @@ void renderCredits(void) {
 
 	renderBackdrop();
 	CP_Image_Draw(creditsPng, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)CP_Image_GetWidth(creditsPng), (float)CP_Image_GetHeight(creditsPng), 255);
-	bool isBackClicked = renderBackButton();
 
+	bool isBackClicked = renderBackButton();
 	if (isBackClicked) {
 		menuState = MENU_PAGE;
+	}
+
+	bool isNextClicked = renderNextButton();
+	if (isNextClicked) {
+		//
 	}
 }

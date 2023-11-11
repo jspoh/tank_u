@@ -5,7 +5,7 @@
 #include "tank.h"
 
 #define M_PI 3.141592653589793238462643383279502884197
-enum { NONE, UP, DOWN, LEFT, RIGHT };
+typedef enum { NONE, UP, DOWN, LEFT, RIGHT } DIRECTIONS;
 
 
 typedef struct {
