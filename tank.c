@@ -226,17 +226,17 @@ void _damageTank(Tank* tank, double damage) {
 
 void _tankCollectPowerUp(int i) { //int i is which tank it is in the array tanks[i] 
 	//logic for collecting powerups draft will change once the actual code for the area of rect is there
-	Rect dropHittank = (Rect){ dropbox.size, (Position) { dropbox.pos.x - dropbox.size.width / 2, dropbox.pos.y - dropbox.size.height / 2 } };
+	Rect dbHitbox = (Rect){ dropbox.size, (Position) { dropbox.pos.x - dropbox.size.width / 2, dropbox.pos.y - dropbox.size.height / 2 } };
 	for (int i = 0; i < NUM_PLAYERS; i++) {
-		if (colTankRect(&tanks[i],&dropHittank,false)) {
+		if (colTankRect(&tanks[i],&dbHitbox,false)) {
 			printf("tank %d collide with dropbox\n", i+1);
-			for (int j = 0; j < POWERUPS_COUNT; j++) {
-				if (tanks[i].activePermPowers[i] == 0) {
-				tanks[i].activePermPowers[i] += 1; // will change back to the other variable as soon as dropbox is ready for the tank to take in which powerup is 
-			
-				}
+			//for (int j = 0; j < POWERUPS_COUNT; j++) {
+			//	if (tanks[i].activePermPowers[i] == 0) {
+			//	tanks[i].activePermPowers[i] += 1; // will change back to the other variable as soon as dropbox is ready for the tank to take in which powerup is 
+			//
+			//	}
 
-			}
+			//}
 		}
 	}	
 

@@ -131,7 +131,6 @@ void initTree(void) {
 				continue;  // bro you were so close.. but you just had to spawn on top of the tank HUH
 			}
 
-			// 
 			Rect dropHitbox = (Rect){ dropbox.size, (Position) { dropbox.pos.x - dropbox.size.width / 2, dropbox.pos.y - dropbox.size.height / 2 } };
 
 			bool collidedDropbox = false;
