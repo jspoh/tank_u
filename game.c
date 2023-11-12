@@ -18,6 +18,7 @@ CP_Image gameBg;
 CP_Sound gameMusic;
 
 bool gameMusicPlaying = false;
+bool isPaused = false;
 
 extern CP_Color red;
 extern double musicVolume;
@@ -89,14 +90,14 @@ void gameUpdate(void) {
 	}
 
 	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
-		CP_Engine_SetNextGameState(pauseInit, pauseUpdate, pauseExit);
+		isPaused = !isPaused;
 	}
 
 	dropBox();
 	drawWall();
 	updateTree();
-	updateTank();
-	updateCannonball();
+	updateTank(isPaused);
+	updateCannonball(isPaused);
 	updateHealthBar();
 	colCbWall();
 

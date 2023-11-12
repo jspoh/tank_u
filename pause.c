@@ -10,8 +10,17 @@
 #include "utils.h"
 #include <stdio.h>
 
+typedef struct {
+	char* pauseButton;
+	Rect rect;
+	Position pos;
+} Button;
+
 #define NUM_PAUSE_BUTTONS 5
-// continue, restart, options, help, exit
+char* pauseButtonTexts[NUM_PAUSE_BUTTONS] = { "Resume", "Restart", "Options", "Help", "Exit" };
+Button pauseButtons[NUM_PAUSE_BUTTONS] = { 0 };
+
+
 CP_Font font;
 
 CP_Color pauseButtonColor;
@@ -22,15 +31,8 @@ Size pauseButtonSize = { 200.0, 75.0 };
 Position firstBtnPos = { 0 };
 double pauseTextSize = 50.0;
 
-typedef struct {
-	char* pauseButton;
-	Rect rect;
-	Position pos;
-}Button;
 
 
-char* pauseButton[NUM_PAUSE_BUTTONS] = { "Continue", "Restart", "Options", "Help", "Exit" };
-Button pauseButtons[NUM_PAUSE_BUTTONS] = { 0 };
 
 void pauseButtonConstructor(void)
 {
@@ -38,7 +40,7 @@ void pauseButtonConstructor(void)
 	firstBtnPos.y = WINDOW_SIZE.height / 5 + WINDOW_SIZE.height / 5;
 	for (int i = 0; i < NUM_PAUSE_BUTTONS; i++)
 	{
-		pauseButtons[i].pauseButton = pauseButton[i];
+		pauseButtons[i].pauseButton = pauseButtonTexts[i];
 		pauseButtons[i].rect.size = pauseButtonSize;
 		pauseButtons[i].rect.pos.x = firstBtnPos.x;
 		pauseButtons[i].rect.pos.y = firstBtnPos.y + (i * 3 * (pauseButtonSize.height) / 2);

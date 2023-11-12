@@ -392,12 +392,16 @@ void initTank(void) {
 	debug_log("loaded tank firing sfx\n");
 }
 
-void updateTank(void) {
+void updateTank(bool isPaused) {
+	_renderTank();
+
+	if (isPaused) {
+		return;
+	}
 
 	_moveTanks();
 	_actionTank();
 	_collisionsTank();
-	_renderTank();
 	//_renderHealthBar();
 
 	// capture history
