@@ -47,7 +47,7 @@ void destroyCannonball(int index) {
 void _moveCannonball(CannonBall* cb) {
 	const float dt = CP_System_GetDt();
 	Vector v = cb->d;
-	v = scalarMultiply(v, dt * CANNONBALL_SPEED);
+	v = scalarMultiply(v, dt * CANNONBALL_SPEED); // scalar multiplication 
 
 	cb->pos.x += v.x;
 	cb->pos.y += v.y;

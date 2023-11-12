@@ -42,6 +42,9 @@
     <ClCompile Include="cannonball.c">
       <Filter>components\cannonball</Filter>
     </ClCompile>
+    <ClCompile Include="tree.c">
+      <Filter>components\tree</Filter>
+    </ClCompile>
     <ClCompile Include="gamecollision.c">
       <Filter>util\game_collision</Filter>
     </ClCompile>
@@ -101,6 +104,9 @@
     </ClInclude>
     <ClInclude Include="cannonball.h">
       <Filter>components\cannonball</Filter>
+    </ClInclude>
+    <ClInclude Include="tree.h">
+      <Filter>components\tree</Filter>
     </ClInclude>
     <ClInclude Include="gamecollision.h">
       <Filter>util\game_collision</Filter>
@@ -166,6 +172,9 @@
     </Filter>
     <Filter Include="components\cannonball">
       <UniqueIdentifier>{35d623de-1266-4c44-a40c-f3992c3d8083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\tree">
+      <UniqueIdentifier>{68d4405d-dae9-4b46-bc01-cefb1744384b}</UniqueIdentifier>
     </Filter>
     <Filter Include="util\game_collision">
       <UniqueIdentifier>{3dab3375-b184-43d5-9a6c-44da00a159cb}</UniqueIdentifier>

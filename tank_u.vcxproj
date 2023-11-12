@@ -171,6 +171,7 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     <ClCompile Include="splash.c" />
     <ClCompile Include="tank.c" />
     <ClCompile Include="tank_utils.c" />
+    <ClCompile Include="tree.c" />
     <ClCompile Include="utils.c" />
     <ClCompile Include="wall.c" />
     <ClCompile Include="winner.c" />
@@ -193,6 +194,7 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     <ClInclude Include="splash.h" />
     <ClInclude Include="tank.h" />
     <ClInclude Include="tank_utils.h" />
+    <ClInclude Include="tree.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="wall.h" />
     <ClInclude Include="winner.h" />

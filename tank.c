@@ -32,45 +32,6 @@ Size tankSize = { 75.f, 100.f };
 
 extern Keybinds keybindings[];
 
-//// HARD CODING CERTAIN STUFF FOR NOW!!!!
-//void drawHealthBar(Tank* tank, int playerIndex) {
-//	CP_Color fillCol = CP_Color_Create(0, 255, 0, 255); // Green colour for health
-//	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255); // Black colour for border
-//
-//	// Calculate percentage of health remaining
-//	double healthPercentage = (tank->health / MAX_HEALTH) * 100.0;
-//
-//	// Calculate width of the health bar based on the tank's health
-//	double barWidth = 2*(tank->size.width * (healthPercentage / 100.0));
-//	double barHeight = 30;
-//	//Size size = { barWidth, barHeight };
-//	double xPos, yPos;
-//	// Calculate position based on player index
-//	if (playerIndex == 0)
-//	{
-//		xPos = 10; // Adjust x-position for player 1
-//	}
-//	else
-//	{
-//		xPos = WINDOW_SIZE.width - barWidth - 10; // Adjust x position for player 2
-//	}
-//
-//	yPos = 50;
-//
-//	//Position barPos = { xPos, yPos };
-//	//drawRect(&barPos, &size, &fillCol, &strokeCol);
-//	CP_Settings_Fill(fillCol);
-//	CP_Settings_Stroke(strokeCol);
-//	CP_Graphics_DrawRect(xPos, yPos, barWidth, barHeight);
-//
-//	// Display HP value
-//	CP_Settings_TextSize(25);
-//	CP_Settings_Fill(fillCol);
-//
-//	char hpText[50];
-//	snprintf(hpText, 50, "HP: %.0f", tank->health); // Convert HP value to string
-//	CP_Font_DrawText(hpText, xPos + barWidth / 2, yPos - 20); // Draw HP text above health bar
-//}
 
 void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
@@ -94,7 +55,6 @@ void _setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
 	tank->color.b = b;
 	tank->color.a = a;
 }
-
 
 void _moveTanks(void) {
 	const double dt = CP_System_GetDt();
@@ -210,7 +170,6 @@ void _moveTanks(void) {
 		t->pos.d = getDVector(t);
 	}
 }
-
 
 Tank _tankConstructor(Position pos, Color color) {
 	Tank tank = { 0 };
@@ -411,7 +370,12 @@ void _collisionsTank(void) {
 			//printf("health of tank: %lf\n", tanks[i].health);
 		}
 
-		if (hasCollidedWall || hasCollidedTank) {
+		bool hasCollidedTree = collisionTree(&tanks[i]);
+		if (hasCollidedTree) {
+			puts("col tree");
+		}
+
+		if (hasCollidedWall || hasCollidedTank || hasCollidedTree) {
 			// puts("have ok\n");
 			tanks[i].hasCollided = true;
 		}
@@ -444,6 +408,7 @@ void updateTank(void) {
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		if (tanks[i].hasCollided) {
+			printf("tank %d collided\n", i + 1);
 			tanks[i] = _findNoColTank(i);
 			// tanks[i].speed = 0;
 			tanks[i].repairTimer = REPAIR_TIME;
