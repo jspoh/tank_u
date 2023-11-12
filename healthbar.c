@@ -14,6 +14,7 @@ extern Tank tanks[];
 void _drawHealthBar(Tank* tank, int playerIndex) {
 	CP_Color fillCol = CP_Color_Create(0, 255, 0, 255); // Green colour for health
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255); // Black colour for border
+	CP_Color transFill = CP_Color_Create(0, 0, 0, 0);
 
 	// Calculate percentage of health remaining
 	double healthPercentage = (tank->health / MAX_HEALTH) * 100.0;
@@ -34,6 +35,24 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 
 	yPos = 50;
 
+	//original length of the health bar
+	double originalBarWidth = 3 * (tank->size.width * (MAX_HEALTH / 100.0));
+	double originalBarHeight = 30.0;
+
+	double originalxPos; // only need the x pos as y pos is the same as the original
+
+	// Calculate position based on player index
+	if (playerIndex == 0) {
+		originalxPos = 10; // Adjust x-position for player 1
+	}
+	else {
+		originalxPos = WINDOW_SIZE.width - originalBarWidth - 10; // Adjust x position for player 2
+	}
+
+
+	Rect originalBarRect = { {originalBarWidth, originalBarHeight}, {originalxPos, yPos} };
+	drawRect(&originalBarRect,&transFill,&strokeCol);
+
 	Rect barRect = { {barWidth, barHeight}, {xPos, yPos} };
 	drawRect(&barRect, &fillCol, &strokeCol);
 
@@ -43,7 +62,7 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 
 	char hpText[50];
 	snprintf(hpText, 50, "HP: %.0f", tank->health); // Convert HP value to string
-	CP_Font_DrawText(hpText, (float)xPos + (float)barWidth / 2, (float)yPos - 20); // Draw HP text above health bar
+	CP_Font_DrawText(hpText, (float)originalxPos + (float)originalBarWidth / 2, (float)yPos - 20); // Draw HP text above health bar
 
 	// REMEMBER TO CP_Image_Free
 	/*shotgun = CP_Image_Load("./Assets/powerup/powerup_1.png");
@@ -77,6 +96,7 @@ void initHealthBar(void)
 	rapidFire = CP_Image_Load("./Assets/powerup/powerup_3.png");
 	bigBullet = CP_Image_Load("./Assets/powerup/powerup_2.png");
 	shotGun = CP_Image_Load("./Assets/powerup/powerup_1.png");
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE); //positioning of the text
 }
 void _renderHealthBar(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
