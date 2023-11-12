@@ -61,8 +61,6 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 	CP_Settings_Fill(fillCol);
 
 	char hpText[50];
-	snprintf(hpText, 50, "HP: %.0f", tank->health); // Convert HP value to string
-	CP_Font_DrawText(hpText, (float)originalxPos + (float)originalBarWidth / 2, (float)yPos - 20); // Draw HP text above health bar
 
 	// REMEMBER TO CP_Image_Free
 	/*shotgun = CP_Image_Load("./Assets/powerup/powerup_1.png");
@@ -96,7 +94,6 @@ void initHealthBar(void)
 	rapidFire = CP_Image_Load("./Assets/powerup/powerup_3.png");
 	bigBullet = CP_Image_Load("./Assets/powerup/powerup_2.png");
 	shotGun = CP_Image_Load("./Assets/powerup/powerup_1.png");
-	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE); //positioning of the text
 }
 void _renderHealthBar(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
