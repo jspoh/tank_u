@@ -424,8 +424,8 @@ void updateTank(bool isPaused) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		if (tanks[i].health == 0) {
 			loser = i + 1;
-			CP_Engine_SetNextGameState(winnerInit, winnerUpdate, winnerExit);
-			//callwinner();
+			//CP_Engine_SetNextGameState(winnerInit, winnerUpdate, winnerExit);
+			renderWinner();
 		}
 	}
 } 

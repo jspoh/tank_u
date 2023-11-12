@@ -1,10 +1,5 @@
 #pragma once
-#include "config.h"
 
-void winnerInit(void);
+void destroyWinner(void);
 
-void winnerUpdate(void);
-
-void winnerExit(void);
-
-void callwinner(void);
+void renderWinner(void);
