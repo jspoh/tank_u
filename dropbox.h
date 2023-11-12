@@ -5,4 +5,4 @@
 
 typedef Rect Dropbox;
 
-void drop_box(void);
+void dropBox(void);

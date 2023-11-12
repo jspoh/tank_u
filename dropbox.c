@@ -5,9 +5,13 @@
 #include "dropbox.h"
 
 
-
+//void drawDropBox(void)
+//{
+//	// load img
+//	CP_Image_Draw()
+//}
 // create a draw dropbox function
-void drop_box(void) {
+void dropBox(void) {
 	// size of the dropbox
 	Size size = { 50, 50 };
 	// position of the wall
@@ -19,6 +23,7 @@ void drop_box(void) {
 	drawRect(&dropbox, &fillCol, &strokeCol);
 
 	// now that i have the dropbox size and position i need do x`
+
 }
 
 

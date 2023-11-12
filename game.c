@@ -77,9 +77,7 @@ void gameUpdate(void) {
 	updateCannonball();
 	updateHealthBar();
 	colCbWall();
-
-	// _debugGame();
-	drop_box();
+	dropBox();
 }
 
 void gameExit(void) {
