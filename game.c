@@ -92,13 +92,13 @@ void gameUpdate(void) {
 		CP_Engine_SetNextGameState(pauseInit, pauseUpdate, pauseExit);
 	}
 
+	dropBox();
 	drawWall();
 	updateTree();
 	updateTank();
 	updateCannonball();
 	updateHealthBar();
 	colCbWall();
-	dropBox();
 
 	if (DEBUG_MODE) {
 		// _debugGame();
