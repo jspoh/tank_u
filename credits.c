@@ -33,10 +33,13 @@ void renderCredits(void) {
 	bool isBackClicked = renderBackButton();
 	if (isBackClicked) {
 		menuState = MENU_PAGE;
+		creditsPage = PAGE_1;
 	}
 
-	bool isNextClicked = renderNextButton();
-	if (isNextClicked) {
-		creditsPage = PAGE_2;
+	if (creditsPage < numCreditsPngs - 1) {
+		bool isNextClicked = renderNextButton();
+		if (isNextClicked) {
+			creditsPage = PAGE_2;
+		}
 	}
 }
