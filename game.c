@@ -118,7 +118,7 @@ void gameUpdate(void) {
 
 	switch (gameState) {
 	case GAME:
-		renderDropBox();
+		renderDropbox();
 		drawWall();
 		updateTree();
 		updateTank(freezeGame);

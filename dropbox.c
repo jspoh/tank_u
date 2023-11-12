@@ -11,7 +11,7 @@ void initDropbox(void)
 {
 	dropboxImg = CP_Image_Load("Assets/powerup/4.png");
 }
-void renderDropBox(void) {
+void renderDropbox(void) {
 	// size of the dropbox
 	Size size = { 50, 50 };
 	// position of the wall
