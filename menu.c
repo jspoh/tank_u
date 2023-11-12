@@ -103,8 +103,10 @@ void _menuFadeToGame(void) {
 
 void _initVars(void) {
 	titleMusic = CP_Sound_LoadMusic("Assets/audio/music/title.wav");
+	debug_log("loaded menu title music\n");
 
 	menuBg = CP_Image_Load("Assets/menu/menu_bg.png");
+	debug_log("loaded menu background image\n");
 
 	/* colors */
 	btnColor = CP_Color_Create(0, 0, 0, 220);
@@ -236,6 +238,7 @@ void _renderMenuPage(void) {
 
 void _destroySubpages(void) {
 	destroyCredits();
+	destroyHelp();
 }
 
 void menuUpdate(void) {
@@ -273,5 +276,7 @@ void menuExit(void) {
 	// why doesnt this work? wow suddenly it worked when i was about to open issue on github
 	_destroySubpages();
 	CP_Image_Free(&menuBg);
+	debug_log("freed menu background img\n");
 	CP_Sound_Free(&titleMusic);
+	debug_log("freed menu title music\n");
 }

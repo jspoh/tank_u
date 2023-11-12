@@ -48,7 +48,7 @@ bool _removeTree(int index) {
 	}
 	numTrees--;
 
-	// printf("trees left: %d\n", numTrees);
+	debug_log("1 tree destroyed. trees left: %d\n", numTrees);
 
 	return true;
 }
@@ -60,8 +60,12 @@ bool _destroyTree(int index) {
 
 
 void initTree(void) {
-	treeImgs[numTreeImgs++] = CP_Image_Load("Assets/game/trees/tree_0.png"); // image setup
-	treeImgs[numTreeImgs++] = CP_Image_Load("Assets/game/trees/tree_1.png"); // image setup
+	for (int i=0; i<NUM_TREE_STYLES; i++) {
+		char path[MAX] = "";
+		snprintf(path, MAX, "Assets/game/trees/tree_%d.png", i);
+		treeImgs[numTreeImgs++] = CP_Image_Load(path); // image setup
+		debug_log("loaded tree img %d/%d\n", i+1, NUM_TREE_STYLES);
+	}
 
 	// initailise trees
 	for (int i = 0; i < MAX_TREES; i++) {
@@ -146,11 +150,9 @@ void updateTree(void) {
 
 void destroyTree(void) {
 	for (int i = 0; i < numTreeImgs; i++) {
-		// puts("clear");
 		CP_Image_Free(&treeImgs[i]);
+		debug_log("freed tree img %d/%d\n", i+1, NUM_TREE_STYLES);
 	}
-	// CP_Image_Free(&treeImgs[0]);
-	// CP_Image_Free(&treeImgs[1]);
 
 	numTrees = 0;
 	numTreeImgs = 0;

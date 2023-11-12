@@ -58,3 +58,9 @@ int init(void);
 
 
 int getRand(int min, int max);
+
+
+// debugging
+#define DEBUG_MODE true
+
+void debug_log(const char *format, ...);

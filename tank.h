@@ -28,5 +28,5 @@ typedef struct _tank {
 
 
 void initTank(void);
-void updateTank(void);
+void updateTank(bool isPaused);
 void destroyTank(void);
