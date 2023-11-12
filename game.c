@@ -11,6 +11,7 @@
 #include "winner.h"
 #include <stdio.h>
 #include "pause.h"
+#include "dropbox.h"
 
 CP_Font font;
 CP_Image gameBg;
@@ -75,6 +76,7 @@ void gameInit(void) {
 	initTank();
 	initTree();
 	initHealthBar();
+	initDropbox();
 
 	CP_Sound_PlayAdvanced(gameMusic, (float)musicVolume, 1.f, true, MUSIC_GROUP);
 }
@@ -96,6 +98,7 @@ void gameUpdate(void) {
 	updateCannonball();
 	updateHealthBar();
 	colCbWall();
+	dropBox();
 
 	if (DEBUG_MODE) {
 		// _debugGame();
@@ -106,6 +109,7 @@ void gameExit(void) {
 	destroyTree();
 	destroyTank();
 	destroyHealthBar();
+	destroyDropbox();
 	CP_Sound_Free(&gameMusic);
 	debug_log("freed game music\n");
 }
