@@ -28,7 +28,7 @@ Position __getTankCenterCorner(Tank* t) {
 
 	/* get rect center */
 	Vector currentDirection = getDVector(t);  // is a unit vector
-	//printf("%f ,%f @ %f degrees\n", currentDirection.x, currentDirection.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected -0.707107, -0.707107 @ 45 degrees
+	// debug_log("%f ,%f @ %f degrees\n", currentDirection.x, currentDirection.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected -0.707107, -0.707107 @ 45 degrees
 	Vector n = { -currentDirection.y, currentDirection.x };  // normal vector to current direction
 
 	// Vector v is used to define a scalar of vector currentDirection
@@ -41,7 +41,7 @@ Position __getTankCenterCorner(Tank* t) {
 	v.x = scalar * n.x;
 	v.y = scalar * n.y;
 	const Position O = _translatePosition(ML, v);
-	//printf("%f, %f @ %f degrees\n", O.x, O.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected 1061.88, 508.84 @ 45 degrees
+	// debug_log("%f, %f @ %f degrees\n", O.x, O.y, r->pos.direction);  // correct here (testing with 45deg rotation) expected 1061.88, 508.84 @ 45 degrees
 	/* end get rect center */
 
 	return O;

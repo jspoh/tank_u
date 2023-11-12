@@ -33,8 +33,8 @@
     <ClCompile Include="splash.c">
       <Filter>components\menu\splash</Filter>
     </ClCompile>
-    <ClCompile Include="back_btn.c">
-      <Filter>components\menu\back_button</Filter>
+    <ClCompile Include="action_btn.c">
+      <Filter>components\menu\action_button</Filter>
     </ClCompile>
     <ClCompile Include="config.c">
       <Filter>config</Filter>
@@ -96,8 +96,8 @@
     <ClInclude Include="splash.h">
       <Filter>components\menu\splash</Filter>
     </ClInclude>
-    <ClInclude Include="back_btn.h">
-      <Filter>components\menu\back_button</Filter>
+    <ClInclude Include="action_btn.h">
+      <Filter>components\menu\action_button</Filter>
     </ClInclude>
     <ClInclude Include="config.h">
       <Filter>config</Filter>
@@ -164,7 +164,7 @@
     <Filter Include="components\menu\splash">
       <UniqueIdentifier>{8982ad8c-939f-47c0-86d0-1602228905ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="components\menu\back_button">
+    <Filter Include="components\menu\action_button">
       <UniqueIdentifier>{8b343abd-f77e-43dd-8ad6-78b0828e3c05}</UniqueIdentifier>
     </Filter>
     <Filter Include="config">
