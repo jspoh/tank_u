@@ -18,7 +18,7 @@
 #define ACCELERATION 200
 #define DECELERATION (ACCELERATION * 3)
 #define TURN_SPEED 100
-#define REPAIR_TIME 1  // seconds
+#define REPAIR_TIME 0.1  // seconds
 #define POWERUP_DURATION 10
 
 CP_Sound tankFire;
@@ -30,7 +30,7 @@ Queue history;
 
 enum { PLAYER_1, PLAYER_2 };
 Tank tanks[NUM_PLAYERS] = { 0 };
-Size tankSize = { 75.f, 100.f };
+Size tankSize = { 75.f/2, 100.f/2 };
 
 extern Keybinds keybindings[];
 extern Rect dropbox;
@@ -269,7 +269,7 @@ void _tankUsePowerUp(int i) { //int i is which tank it is in the array tanks[i]
 }
 
 Position _getTurretCenter(Tank* t, Size turretSize) {
-	double scalar = sqrt(pow(t->size.width / 2.0, 2.0) + pow(t->size.height / 2.0, 2.0)); //the distance between the point
+	double scalar = sqrt(pow(t->size.width / 2.0, 2.0) + pow(t->size.height / 2.0, 2.0)) * 2; //the distance between the point
 
 	Position O = { 0 };
 	O.x = t->pos.x + scalar * t->pos.d.x;
