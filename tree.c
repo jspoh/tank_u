@@ -90,7 +90,6 @@ void initTree(void) {
 			// WORKS 
 			bool collidedWall = false;
 			for (int j=0; j<numWalls; j++) {
-				// created a new rect treeHitbox
 				if (colRects(&treeHitbox, &activeWalls[j], (Vector){0,-1}, (Vector){0,-1}, false, false)) {  // collided with wall
 					collidedWall = true;
 					break;
@@ -137,7 +136,6 @@ void initTree(void) {
 			bool collidedDropbox = false;
 			if (colRects(&dropbox, &treeHitbox, (Vector) { 0, -1 }, (Vector) { 0, -1 }, false, false)) {
 				collidedDropbox = true;
-				break;
 			}
 
 			if (collidedDropbox) {
