@@ -13,8 +13,6 @@ typedef uint8_t BYTE;
 
 typedef uint8_t bool;
 
-
-
 typedef struct {
 	double width, height, diameter;
 } Size;

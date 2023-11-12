@@ -7,3 +7,5 @@
 * @returns `true` if button is clicked, else `false`
 */
 bool renderBackButton(void);
+
+bool renderNextButton(void);

@@ -83,15 +83,15 @@ void buttonSelection(void) {
 void winnerInit(void) {
 
 	//load assets
-	p1Win = CP_Image_Load("./Assets/player1_winner.png");
-	p2Win = CP_Image_Load("./Assets/player2_winner.png");
+	p1Win = CP_Image_Load("./Assets/game/winner/player1_winner.png");
+	p2Win = CP_Image_Load("./Assets/game/winner/player2_winner.png");
 	font = CP_Font_Load("Assets/Exo2-Regular.ttf");
 
 	CP_Font_Set(font);
 	CP_Settings_RectMode(CP_POSITION_CORNER); //set it to center for easier reference
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_TOP); //positioning of the text
 
-	winAudio = CP_Sound_Load("./Assets/audio/winner.mp3");
+	winAudio = CP_Sound_Load("./Assets/audio/sfx/winner.mp3");
 
 	buttonColor = CP_Color_Create(0, 0, 0, 220);
 	strokeColor = CP_Color_Create(0, 0, 0, 0);
