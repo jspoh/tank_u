@@ -4,6 +4,7 @@
 #define CANNONBALL_SPEED 750
 #define CANNONBALL_RADIUS 10
 #define DEFAULT_DAMAGE 5
+//#define DEFAULT_DAMAGE 100
 #define DEFAULT_FIRERATE 0.5  // seconds per shot
 
 extern CP_Color black;
