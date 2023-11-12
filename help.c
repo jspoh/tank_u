@@ -2,12 +2,14 @@
 #include "config.h"
 #include "action_btn.h"
 #include "menu.h"
+#include "game.h"
 #include <stdio.h>
 
 #define numHelpPages 2
 CP_Image helpImgs[numHelpPages] = { 0 };
 enum PAGE_NUMS helpPage = PAGE_1;
 extern int menuState;
+extern enum GAME_STATES gameState;
 
 
 void destroyHelp(void) {
@@ -35,6 +37,7 @@ void renderHelp(void) {
 
 	if (isBackClicked) {
 		menuState = MENU_PAGE;
+		gameState = GAME;
 		helpPage = PAGE_1;
 	}
 

@@ -12,6 +12,11 @@
 #include <stdio.h>
 #include "pause.h"
 #include "dropbox.h"
+#include "options.h"
+#include "help.h"
+#include "game.h"
+
+enum GAME_STATES gameState = GAME;
 
 CP_Font font;
 CP_Image gameBg;
@@ -46,13 +51,13 @@ Keybinds P2_KEYBINDS = {
 Keybinds keybindings[2];
 
 void _debugGame(void) {
-	Rect r = { (Size){100,100}, (Position){CP_Input_GetMouseX()-50, CP_Input_GetMouseY()-50} };
+	Rect r = { (Size) { 100,100 }, (Position) { CP_Input_GetMouseX() - 50, CP_Input_GetMouseY() - 50 } };
 	drawRect(&r, &red, &red);
 
 	extern Wall activeWalls[MAX_WALLS];
 	extern int numWalls;
-	for (int i=0; i<numWalls; i++) {
-		bool col = colRects(&r, &activeWalls[i], (Vector){0, -1},(Vector){0, -1},false,0);
+	for (int i = 0; i < numWalls; i++) {
+		bool col = colRects(&r, &activeWalls[i], (Vector) { 0, -1 }, (Vector) { 0, -1 }, false, 0);
 		if (col) {
 			debug_log("mouse rect collided with wall/border\n");
 		}
@@ -85,7 +90,7 @@ void gameUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 150, 0, 255));
 	CP_Image_Draw(gameBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 255);
 
-	if (CP_Input_KeyTriggered(KEY_Q)) {
+	if (CP_Input_KeyTriggered(KEY_Q) && DEBUG_MODE) {
 		CP_Engine_SetNextGameState(menuInit, menuUpdate, menuExit);
 	}
 
@@ -93,13 +98,30 @@ void gameUpdate(void) {
 		isPaused = !isPaused;
 	}
 
-	dropBox();
-	drawWall();
-	updateTree();
-	updateTank(isPaused);
-	updateCannonball(isPaused);
-	updateHealthBar();
-	colCbWall();
+	switch (gameState) {
+	case GAME:
+		dropBox();
+		drawWall();
+		updateTree();
+		updateTank(isPaused);
+		updateCannonball(isPaused);
+		updateHealthBar();
+		colCbWall();
+
+		if (isPaused) {
+			renderPause();
+		}
+		break;
+
+	case GAME_OPTIONS:
+		renderOptions();
+		break;
+
+	case GAME_HELP:
+		renderHelp();
+		break;
+	}
+
 
 	if (DEBUG_MODE) {
 		// _debugGame();

@@ -280,7 +280,7 @@ Position _getTurretCenter(Tank* t, Size turretSize) {
 
 
 void _tankShoot(int i, enum AMMO_TYPES activePowerUp) { //int i is which tank it is in the array tanks[i] 
-	if (CP_Input_KeyDown(keybindings[i].shoot))
+	if (CP_Input_KeyDown(keybindings[i].shoot) && tanks[i].repairTimer == 0)
 	{
 		//using the exact address to find the directional vector 
 		Vector unitVector = getDVector(&tanks[i]);
