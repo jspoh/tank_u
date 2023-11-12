@@ -276,6 +276,8 @@ void menuExit(void) {
 		debug_log("freed menu title music\n");
 	}
 
-	void checkMem(void);
-	checkMem();
+	if (DEBUG_MODE) {
+		void checkMem(void);
+		checkMem();
+	}
 }

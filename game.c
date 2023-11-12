@@ -168,6 +168,8 @@ void gameExit(void) {
 	isPaused = false;
 	freezeGame = false;
 
-	void checkMem(void);
-	checkMem();
+	if (DEBUG_MODE) {
+		void checkMem(void);
+		checkMem();
+	}
 }
