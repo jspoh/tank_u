@@ -62,7 +62,7 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 
 	char hpText[50];
 	snprintf(hpText, 50, "HP: %.0f", tank->health); // Convert HP value to string
-	CP_Font_DrawText(hpText, (float)xPos + (float)barWidth / 2, (float)yPos - 20); // Draw HP text above health bar
+	CP_Font_DrawText(hpText, (float)originalxPos + (float)originalBarWidth / 2, (float)yPos - 20); // Draw HP text above health bar
 
 	// REMEMBER TO CP_Image_Free
 	/*shotgun = CP_Image_Load("./Assets/powerup/powerup_1.png");
