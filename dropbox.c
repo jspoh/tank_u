@@ -2,21 +2,25 @@
 #include "config.h"
 #include "game.h"
 #include <stdio.h>
-#include "powerup.h"
+#include "dropbox.h"
 
 
-// create struct for powerup 
-//typedef struct {
-	// perimeter (for collision collect)
-	//RECT perimeter;
-	// an img file???
-	// spawn time
-	//double spawntime;
-	// powerup duration
-	//double poweruptime;
-	// powerupactive (bool)
-	//bool powerupactive;
- //PowerUp;
+
+// create a draw dropbox function
+void drop_box(void) {
+	// size of the dropbox
+	Size size = { 50, 50 };
+	// position of the wall
+	Position pos = { (WINDOW_SIZE.width / 2)-25, (WINDOW_SIZE.height / 2)-25 };
+	Dropbox dropbox = { size, pos };
+	// so now instead of colour I load img of dropbox from asset
+	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
+	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
+	drawRect(&dropbox, &fillCol, &strokeCol);
+
+	// now that i have the dropbox size and position i need do x`
+}
+
 
 
 //PowerUp damage;
