@@ -79,6 +79,7 @@ void gameUpdate(void) {
 	colCbWall();
 
 	// _debugGame();
+	drop_box();
 }
 
 void gameExit(void) {
