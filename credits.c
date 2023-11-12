@@ -1,27 +1,45 @@
 #include "backdrop.h"
 #include "config.h"
-#include "back_btn.h"
+#include "action_btn.h"
 #include "menu.h"
 #include <stdio.h>
 
 
-CP_Image creditsPng;
+#define numCreditsPages 2
+CP_Image creditsImgs[numCreditsPages] = { 0 };
+enum PAGE_NUMS creditsPage = PAGE_1;
 extern int menuState;
 
 void destroyCredits(void) {
-	CP_Image_Free(&creditsPng);
+	for (int i=0; i<numCreditsPages; i++) {
+		CP_Image_Free(&creditsImgs[i]);
+	}
+	creditsPage = PAGE_1;
 }
 
 void renderCredits(void) {
-	if (creditsPng == NULL) {
-		creditsPng = CP_Image_Load("Assets/menu/credits.png");
+	for (int i=0; i<numCreditsPages; i++) {
+		if (creditsImgs[i] == NULL) {
+			char path[MAX] = "";
+			snprintf(path, MAX, "Assets/menu/credits/credits_%d.png", i+1);
+			// puts(path);
+			creditsImgs[i] = CP_Image_Load(path);
+		}
 	}
 
 	renderBackdrop();
-	CP_Image_Draw(creditsPng, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)CP_Image_GetWidth(creditsPng), (float)CP_Image_GetHeight(creditsPng), 255);
-	bool isBackClicked = renderBackButton();
+	CP_Image_Draw(creditsImgs[creditsPage], (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)CP_Image_GetWidth(creditsImgs[creditsPage]), (float)CP_Image_GetHeight(creditsImgs[creditsPage]), 255);
 
+	bool isBackClicked = renderBackButton();
 	if (isBackClicked) {
 		menuState = MENU_PAGE;
+		creditsPage = PAGE_1;
+	}
+
+	if (creditsPage < numCreditsPages - 1) {
+		bool isNextClicked = renderNextButton();
+		if (isNextClicked) {
+			creditsPage++;
+		}
 	}
 }
