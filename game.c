@@ -15,6 +15,7 @@
 #include "options.h"
 #include "help.h"
 #include "game.h"
+#include "credits.h"
 #include "winner.h"
 
 enum GAME_STATES gameState = GAME;
@@ -105,7 +106,7 @@ void gameInit(void) {
 }
 void gameUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 150, 0, 255));
-	CP_Image_Draw(gameBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 255);
+		CP_Image_Draw(gameBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 255);
 
 	if (CP_Input_KeyTriggered(KEY_Q) && DEBUG_MODE) {
 		CP_Engine_SetNextGameState(menuInit, menuUpdate, menuExit);
@@ -153,9 +154,22 @@ void gameExit(void) {
 	destroyTank();
 	destroyHealthBar();
 	destroyDropbox();
-	CP_Sound_Free(&gameMusic);
-	debug_log("freed game music\n");
+	destroyCredits();
+	destroyHelp();
 	destroyWinner();
+	if (gameMusic != NULL) {
+		CP_Sound_Free(&gameMusic);
+		debug_log("freed game music\n");
+	}
+	if (gameBg != NULL) {
+		CP_Image_Free(&gameBg);
+		debug_log("freed game background\n");
+	}
 	isPaused = false;
 	freezeGame = false;
+
+	if (DEBUG_MODE) {
+		void checkMem(void);
+		checkMem();
+	}
 }

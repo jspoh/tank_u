@@ -429,6 +429,8 @@ void destroyTank(void) {
 		Tank tank = { 0 };
 		tanks[i] = tank;
 	}
-	CP_Sound_Free(&tankFire);
+	if (tankFire != NULL) {
+		CP_Sound_Free(&tankFire);
+	}
 	debug_log("freed tank fire sfx\n");
 }
