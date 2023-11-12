@@ -85,7 +85,7 @@ CannonBall _cannonballConstructor(Position pos, Vector d, double damage, double 
  * 
 */
 bool onFireCannonball(Position startPos, Vector d, int player, enum AMMO_TYPES ammoType) {
-	if (ammoType == RAPID_FIRE) {
+	if (ammoType == NORMAL) {
 		firerates[player] = DEFAULT_FIRERATE / 2;
 	}
 	else {
