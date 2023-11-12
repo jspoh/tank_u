@@ -92,8 +92,11 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 void initHealthBar(void)
 {
 	rapidFire = CP_Image_Load("./Assets/powerup/powerup_3.png");
+	debug_log("loaded rapid fire powerup img\n");
 	bigBullet = CP_Image_Load("./Assets/powerup/powerup_2.png");
+	debug_log("loaded big bullet powerup img\n");
 	shotGun = CP_Image_Load("./Assets/powerup/powerup_1.png");
+	debug_log("loaded shotgun powerup img\n");
 }
 void _renderHealthBar(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
@@ -109,6 +112,9 @@ void updateHealthBar(void)
 void destroyHealthBar(void)
 {
 	CP_Image_Free(&rapidFire);
+	debug_log("freed rapid fire img\n");
 	CP_Image_Free(&bigBullet);
+	debug_log("freed big bullet img\n");
 	CP_Image_Free(&shotGun);
+	debug_log("freed shotgun img\n");
 }

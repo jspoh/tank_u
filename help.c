@@ -13,6 +13,7 @@ extern int menuState;
 void destroyHelp(void) {
 	for (int i=0; i<numHelpPages; i++) {
 		CP_Image_Free(&helpImgs[i]);
+		debug_log("Freed help img %d/%d\n", i+1, numHelpPages);
 	}
 	helpPage = PAGE_1;
 }
@@ -22,8 +23,8 @@ void renderHelp(void) {
 		if (helpImgs[i] == NULL) {
 			char path[MAX] = "";
 			snprintf(path, MAX, "Assets/menu/help/help_%d.png", i+1);
-			// puts(path);
 			helpImgs[i] = CP_Image_Load(path);
+			debug_log("Loaded help img %d/%d from path %s\n", i+1, numHelpPages, path);
 		}
 	}
 

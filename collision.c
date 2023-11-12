@@ -53,19 +53,19 @@ void _getRectCorners(Rect* r, Vector* d, Position* corners, bool usingCenter) {
         topLeft.x = r->pos.x;
         topLeft.y = r->pos.y;
     }
-    //printf("%f %f | %f %f\n", r->pos.x, r->pos.y, topLeft.x, topLeft.y);
+    // debug_log("%f %f | %f %f\n", r->pos.x, r->pos.y, topLeft.x, topLeft.y);
 
     /*top right*/
     Position topRight = { topLeft.x + changeW.x * 2, topLeft.y + changeW.y * 2 };
-    //printf("%f %f | %f %f\n", r->pos.x, r->pos.y, topRight.x, topRight.y);
+    // debug_log("%f %f | %f %f\n", r->pos.x, r->pos.y, topRight.x, topRight.y);
 
     /*bottom left*/
     Position bottomLeft = { topLeft.x - changeH.x * 2, topLeft.y - changeH.y * 2 };
-    //printf("%f %f | %f %f\n", r->pos.x, r->pos.y, bottomLeft.x, bottomLeft.y);
+    // debug_log("%f %f | %f %f\n", r->pos.x, r->pos.y, bottomLeft.x, bottomLeft.y);
 
     /*bottom right*/
     Position bottomRight = { topRight.x - changeH.x * 2, topRight.y - changeH.y * 2 };
-    //printf("%f %f | %f %f\n", r->pos.x, r->pos.y, bottomRight.x, bottomRight.y);
+    // debug_log("%f %f | %f %f\n", r->pos.x, r->pos.y, bottomRight.x, bottomRight.y);
 
     corners[0] = topLeft;
     corners[1] = topRight;
@@ -154,11 +154,11 @@ bool colTankWall(Tank* t) {
     Rect r = { t->size, t->pos };
     Position tCorners[4] = { 0 };
     _getRectCorners(&r, &t->pos.d, tCorners, true);
-    //printf("Tank %f %f %f %f\n", t->pos.x, t->pos.y, t->size.width, t->size.height);
+    // debug_log("Tank %f %f %f %f\n", t->pos.x, t->pos.y, t->size.width, t->size.height);
 
     // iterate through active walls
     for (int i = 0; i < numWalls; i++) {
-        // printf("Wall %d: %f %f %f %f\n", i+1, activeWalls[i].pos.x, activeWalls[i].pos.y, activeWalls[i].size.width, activeWalls[i].size.height);
+        // debug_log("Wall %d: %f %f %f %f\n", i+1, activeWalls[i].pos.x, activeWalls[i].pos.y, activeWalls[i].size.width, activeWalls[i].size.height);
         if (activeWalls[i].size.width == 0) {
             continue;
         }
@@ -290,7 +290,7 @@ bool colTankCb(Tank* t, double* damageTaken) {
     Rect r = { t->size, t->pos };
     Position tCorners[4] = { 0 };
     _getRectCorners(&r, &t->pos.d, tCorners, true);
-    //printf("Tank %f %f %f %f\n", t->pos.x, t->pos.y, t->size.width, t->size.height);
+    // debug_log("Tank %f %f %f %f\n", t->pos.x, t->pos.y, t->size.width, t->size.height);
 
     // iterate through active cannonballs
     for (int i = 0; i < numCbs; i++) {
@@ -360,7 +360,6 @@ void colCbWall(void) {
             Circle c = {cb->radius, cb->pos};
             // bool cbWallCollided = _circleRectSAT(&wall, &c, &wallVector, false);
             int cbWallCollided = _circleRectAABB(&wall, &c, false);
-            // printf("%d\n", cbWallCollided);  // !TODO !CRITICAL bugfix required. after a few shots where cannonballs are despawned, collisions start to glitch out. same for tank
 
             if (cbWallCollided) {
 
@@ -389,13 +388,6 @@ void colCbWall(void) {
             }
         }
     }
-
-    // puts("start");
-    // for (int i = 0; i<tdi; i++) {
-    //     // printf("%i: %d\n", i, toDestroy[i]);
-    //     destroyCannonball(toDestroy[i]);
-    // }
-    // puts("end");
 }
 
 /**
@@ -466,7 +458,7 @@ bool collisionTree(Tank* tank) {
 			Rect cbHitbox = (Rect){ (Size){ cb.radius*2, cb.radius*2 }, (Position){cb.pos.x - cb.radius, cb.pos.y - cb.radius} };
 			//drawRect(&cbHitbox, &red, &red);  // draw cb hitbox
 			if (colRects(&treeHitbox, &cbHitbox, (Vector){0, -1}, (Vector){0, -1}, false, false)) {
-				//puts("ok fine u hit me");  //test first ok 
+				debug_log("Tree hit by cannonball\n");
 				destroyCannonball(j);
 				toRemove[sizeTR++] = i;
 				treeRemoved = true;
@@ -480,15 +472,11 @@ bool collisionTree(Tank* tank) {
 
 		// iterate through tanks
 			if (colTankRect(tank, &treeHitbox, false)) {
-				//puts("wow tank stupid ah");
-				//tanks[j].pos.x = 0;
-				// tank->hasCollided = true;
                 tankCol = true;
 			}
 	}
 
 	for (int i = 0; i < sizeTR; i++) {
-		//puts("hm");
 		_destroyTree(toRemove[i]);
 	}
 

@@ -63,6 +63,7 @@ void splashScreenFadeInOut() {
 
 void splashInit(void) {
 	logo = CP_Image_Load("Assets/menu/DigiPen_BLACK.png");
+	debug_log("loaded digipen logo img\n");
 	CP_System_SetFrameRate(FRAMERATE);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 }
@@ -74,4 +75,5 @@ void splashUpdate(void) {
 
 void splashExit(void) {
 	CP_Image_Free(&logo);
+	debug_log("freed digipen logo img\n");
 }

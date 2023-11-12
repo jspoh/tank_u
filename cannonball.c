@@ -35,7 +35,7 @@ bool _removeCannonball(int index) {
 	// more efficient way but does not preserve order (but order isnt important in this context lol)
 	// activeCbs[index] = activeCbs[numCbs--];
 
-	// printf("%d\n", numCbs);
+	// debug_log("%d\n", numCbs);
 	return true;
 }
 
@@ -92,7 +92,7 @@ bool onFireCannonball(Position startPos, Vector d, int player, enum AMMO_TYPES a
 	switch (player) {
 		case 0:  // player 1
 			if (timeSinceFireP1 < firerates[player]) {
-				//fprintf(stdout, "P1 not yet allowed to fire!\n");
+				// debug_log("P1 not yet allowed to fire!\n");
 				return false;
 			}
 			timeSinceFireP1 = 0.0;
@@ -100,7 +100,7 @@ bool onFireCannonball(Position startPos, Vector d, int player, enum AMMO_TYPES a
 
 		case 1:  // player 2
 			if (timeSinceFireP2 < firerates[player]) {
-				//fprintf(stdout, "P2 not yet allowd to fire!\n");
+				// debug_log("P2 not yet allowd to fire!\n");
 				return false;
 			}
 			timeSinceFireP2 = 0.0;
