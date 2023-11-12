@@ -60,8 +60,8 @@ bool _destroyTree(int index) {
 
 
 void initTree(void) {
-	treeImgs[numTreeImgs++] = CP_Image_Load("Assets/trees/tree_0.png"); // image setup
-	treeImgs[numTreeImgs++] = CP_Image_Load("Assets/trees/tree_1.png"); // image setup
+	treeImgs[numTreeImgs++] = CP_Image_Load("Assets/game/trees/tree_0.png"); // image setup
+	treeImgs[numTreeImgs++] = CP_Image_Load("Assets/game/trees/tree_1.png"); // image setup
 
 	// initailise trees
 	for (int i = 0; i < MAX_TREES; i++) {
