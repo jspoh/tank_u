@@ -159,6 +159,7 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     <ClCompile Include="collision.c" />
     <ClCompile Include="config.c" />
     <ClCompile Include="credits.c" />
+    <ClCompile Include="debug.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="gamecollision.c" />
     <ClCompile Include="healthbar.c" />

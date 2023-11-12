@@ -14,6 +14,9 @@ extern enum GAME_STATES gameState;
 
 void destroyHelp(void) {
 	for (int i=0; i<numHelpPages; i++) {
+		if (helpImgs[i] == NULL) {
+			continue;
+		}
 		CP_Image_Free(&helpImgs[i]);
 		debug_log("Freed help img %d/%d\n", i+1, numHelpPages);
 	}

@@ -140,6 +140,9 @@ void updateTree(void) {
 
 void destroyTree(void) {
 	for (int i = 0; i < numTreeImgs; i++) {
+		if (treeImgs[i] == NULL) {
+			continue;
+		}
 		CP_Image_Free(&treeImgs[i]);
 		debug_log("freed tree img %d/%d\n", i+1, NUM_TREE_STYLES);
 	}
