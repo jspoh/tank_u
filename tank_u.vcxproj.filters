@@ -69,6 +69,9 @@
     <ClCompile Include="dropbox.c">
       <Filter>components\dropbox</Filter>
     </ClCompile>
+    <ClCompile Include="debug.c">
+      <Filter>debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="menu.h">
@@ -211,6 +214,9 @@
     </Filter>
     <Filter Include="components\dropbox">
       <UniqueIdentifier>{866c774a-d1ef-47a4-b23b-00ef7e5c312a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debug">
+      <UniqueIdentifier>{2a73ff3d-bf0d-4f5c-a537-90d371c72842}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

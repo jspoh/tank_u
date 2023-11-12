@@ -266,8 +266,16 @@ void menuUpdate(void) {
 void menuExit(void) {
 	// why doesnt this work? wow suddenly it worked when i was about to open issue on github
 	_destroySubpages();
-	CP_Image_Free(&menuBg);
-	debug_log("freed menu background img\n");
-	CP_Sound_Free(&titleMusic);
-	debug_log("freed menu title music\n");
+	if (menuBg != NULL) {
+		debug_log("BEFORE freeing menu background img. menuBg is null: %d\n", menuBg == NULL);
+		CP_Image_Free(&menuBg);
+		debug_log("freed menu background img. menuBg is null: %d\n", menuBg == NULL);
+	}
+	if (titleMusic != NULL) {
+		CP_Sound_Free(&titleMusic);
+		debug_log("freed menu title music\n");
+	}
+
+	void checkMem(void);
+	checkMem();
 }

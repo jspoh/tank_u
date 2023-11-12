@@ -29,5 +29,8 @@ void renderDropbox(void) {
 }
 
 void destroyDropbox(void) {
+	if (dropboxImg == NULL) {
+		return;
+	}
 	CP_Image_Free(&dropboxImg);
 }
