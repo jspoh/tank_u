@@ -51,10 +51,9 @@ void _debugGame(void) {
 	for (int i=0; i<numWalls; i++) {
 		bool col = colRects(&r, &activeWalls[i], (Vector){0, -1},(Vector){0, -1},false,0);
 		if (col) {
-			puts("bang");
+			debug_log("mouse rect collided with wall/border\n");
 		}
 	}
-	// puts("i am doing my job");
 }
 
 
@@ -91,7 +90,9 @@ void gameUpdate(void) {
 	updateHealthBar();
 	colCbWall();
 
-	// _debugGame();
+	if (DEBUG_MODE) {
+		// _debugGame();
+	}
 }
 
 void gameExit(void) {

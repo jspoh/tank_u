@@ -129,7 +129,7 @@ void _render(void) {
 
 			/*adjust volume*/
 			musicVolume = (musicKnob.pos.x - musicDial.pos.x) / musicDial.size.width;
-			// printf("music volume: %lf\n", musicVolume);
+			debug_log("music volume: %lf\n", musicVolume);
 			break;
 		case SFX:
 			/*move knob visually*/
@@ -143,7 +143,7 @@ void _render(void) {
 
 			/*adjust volume*/
 			sfxVolume = (sfxKnob.pos.x - sfxDial.pos.x) / sfxDial.size.width;
-			// printf("sfx volume: %lf\n", sfxVolume);
+			debug_log("sfx volume: %lf\n", sfxVolume);
 			break;
 	}
 

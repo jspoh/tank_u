@@ -22,7 +22,7 @@ void renderCredits(void) {
 		if (creditsImgs[i] == NULL) {
 			char path[MAX] = "";
 			snprintf(path, MAX, "Assets/menu/credits/credits_%d.png", i+1);
-			// puts(path);
+			debug_log("Loaded credits png %d from path %s\n", i+1, path);
 			creditsImgs[i] = CP_Image_Load(path);
 		}
 	}

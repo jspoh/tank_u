@@ -47,7 +47,7 @@ bool _removeTree(int index) {
 	}
 	numTrees--;
 
-	// printf("trees left: %d\n", numTrees);
+	debug_log("1 tree destroyed. trees left: %d\n", numTrees);
 
 	return true;
 }
@@ -136,11 +136,8 @@ void updateTree(void) {
 
 void destroyTree(void) {
 	for (int i = 0; i < numTreeImgs; i++) {
-		// puts("clear");
 		CP_Image_Free(&treeImgs[i]);
 	}
-	// CP_Image_Free(&treeImgs[0]);
-	// CP_Image_Free(&treeImgs[1]);
 
 	numTrees = 0;
 	numTreeImgs = 0;
