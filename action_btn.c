@@ -51,6 +51,16 @@ bool renderArrowButton(enum DIRECTIONS direction, char* btnText, Position A) {
 		s = (Size){ tHeight * 2, backBtnTriangleLength / 3 };
 		p = (Position){ A.x - tHeight - s.width + 1, A.y - backBtnTriangleLength / 6 };
 		r = (Rect){ s, p };
+
+		/* text */
+		textPos = (Position){ A.x - (tHeight + s.width) / 2, A.y + backBtnTriangleLength * 1.5 };
+
+		/* clickbox */
+		cb.pos.x = A.x - tHeight - s.width;
+		cb.pos.y = A.y - (backBtnTriangleLength / 2);
+		cb.size.width = tHeight + s.width;
+		cb.size.height = 1.5 * backBtnTriangleLength + backBtnTriangleLength;  // space from top of arrow to top of text + font size
+		// drawRect(&cb, &red, &red);
 	}
 	else {
 		fprintf(stderr, "Arrow button direction not implemented\n");
