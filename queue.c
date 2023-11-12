@@ -16,7 +16,7 @@ int qFull(Queue *q) {
 }
 
 void dequeue(Queue *q) {
-  //puts("removing from queue");
+  // debug_log("removing from queue");
     if (qEmpty(q)) {
         return;
     }
@@ -33,7 +33,7 @@ void enqueue(Queue *q, Tank tank1, Tank tank2) {  // circular buffer to avoid ov
     q->data[q->rear][1] = tank2;
     q->size++;
 
-    //puts("added to queue");
+    // debug_log("added to queue");
 }
 
 

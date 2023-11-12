@@ -14,6 +14,7 @@ extern Tank tanks[];
 void _drawHealthBar(Tank* tank, int playerIndex) {
 	CP_Color fillCol = CP_Color_Create(0, 255, 0, 255); // Green colour for health
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255); // Black colour for border
+	CP_Color transFill = CP_Color_Create(0, 0, 0, 0);
 
 	// Calculate percentage of health remaining
 	double healthPercentage = (tank->health / MAX_HEALTH) * 100.0;
@@ -34,6 +35,24 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 
 	yPos = 50;
 
+	//original length of the health bar
+	double originalBarWidth = 3 * (tank->size.width * (MAX_HEALTH / 100.0));
+	double originalBarHeight = 30.0;
+
+	double originalxPos; // only need the x pos as y pos is the same as the original
+
+	// Calculate position based on player index
+	if (playerIndex == 0) {
+		originalxPos = 10; // Adjust x-position for player 1
+	}
+	else {
+		originalxPos = WINDOW_SIZE.width - originalBarWidth - 10; // Adjust x position for player 2
+	}
+
+
+	Rect originalBarRect = { {originalBarWidth, originalBarHeight}, {originalxPos, yPos} };
+	drawRect(&originalBarRect,&transFill,&strokeCol);
+
 	Rect barRect = { {barWidth, barHeight}, {xPos, yPos} };
 	drawRect(&barRect, &fillCol, &strokeCol);
 
@@ -41,9 +60,7 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 	CP_Settings_TextSize(25);
 	CP_Settings_Fill(fillCol);
 
-	char hpText[50];
-	snprintf(hpText, 50, "HP: %.0f", tank->health); // Convert HP value to string
-	CP_Font_DrawText(hpText, (float)xPos + (float)barWidth / 2, (float)yPos - 20); // Draw HP text above health bar
+	//char hpText[50];
 
 	// REMEMBER TO CP_Image_Free
 	/*shotgun = CP_Image_Load("./Assets/powerup/powerup_1.png");
@@ -75,8 +92,11 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 void initHealthBar(void)
 {
 	rapidFire = CP_Image_Load("./Assets/powerup/powerup_3.png");
+	debug_log("loaded rapid fire powerup img\n");
 	bigBullet = CP_Image_Load("./Assets/powerup/powerup_2.png");
+	debug_log("loaded big bullet powerup img\n");
 	shotGun = CP_Image_Load("./Assets/powerup/powerup_1.png");
+	debug_log("loaded shotgun powerup img\n");
 }
 void _renderHealthBar(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
@@ -92,6 +112,9 @@ void updateHealthBar(void)
 void destroyHealthBar(void)
 {
 	CP_Image_Free(&rapidFire);
+	debug_log("freed rapid fire img\n");
 	CP_Image_Free(&bigBullet);
+	debug_log("freed big bullet img\n");
 	CP_Image_Free(&shotGun);
+	debug_log("freed shotgun img\n");
 }

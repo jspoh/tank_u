@@ -2,17 +2,15 @@
 #include "game.h"
 #include "cprocessing.h"
 #include "collision.h"
-#include "gamecollision.h"
 #include "config.h"
 #include "utils.h"
-#include "tank.h"
 #include <stdio.h>
 #include "menu.h"
+#include "backdrop.h"
 
 #define NUM_WINNER_BUTTONS 2
 
 //global assets initalisation
-CP_Image winnerBackScreen;
 CP_Image p1Win;
 CP_Image p2Win;
 
@@ -35,6 +33,7 @@ typedef struct Button {
 
 extern Size WINDOW_SIZE;
 extern Tank tanks[NUM_PLAYERS];
+extern int loser;
 
 extern double sfxVolume;
 
@@ -46,19 +45,19 @@ Position firstButtonPos = { 0 };
 double winnerTextSize = 50.0;
 
 
-char* winnerButton[NUM_WINNER_BUTTONS] = {"Restart","Exit"};
-Button winnerButtons[NUM_WINNER_BUTTONS] = {0};
+char* winnerButton[NUM_WINNER_BUTTONS] = { "Restart","Exit" };
+Button winnerButtons[NUM_WINNER_BUTTONS] = { 0 };
 
 int nextState = 0;
 
 void buttonConstructor(void) {
-	firstButtonPos.x = WINDOW_SIZE.width / 2-winnerButtonsize.width/2;
+	firstButtonPos.x = WINDOW_SIZE.width / 2 - winnerButtonsize.width / 2;
 	firstButtonPos.y = WINDOW_SIZE.height / 4 + WINDOW_SIZE.height / 2;
 	for (int i = 0; i < NUM_WINNER_BUTTONS; i++) {
 		winnerButtons[i].winnerButton = winnerButton[i];
 		winnerButtons[i].rect.size = winnerButtonsize;
 		winnerButtons[i].rect.pos.x = firstButtonPos.x;
-		winnerButtons[i].rect.pos.y = firstButtonPos.y + (i * 3 * (winnerButtonsize.height)/2);
+		winnerButtons[i].rect.pos.y = firstButtonPos.y + (i * 3 * (winnerButtonsize.height) / 2);
 		winnerButtons[i].pos.x = winnerButtons[i].rect.pos.x + winnerButtonsize.width / 2;
 		winnerButtons[i].pos.y = winnerButtons[i].rect.pos.y;
 	}
@@ -84,16 +83,18 @@ void buttonSelection(void) {
 void winnerInit(void) {
 
 	//load assets
-	//winnerBackScreen = CP_Image_Load("./Assets/winner_screen.png");
-	p1Win = CP_Image_Load("./Assets/player1_winner.png");
-	p2Win = CP_Image_Load("./Assets/player2_winner.png");
+	p1Win = CP_Image_Load("./Assets/game/winner/player1_winner.png");
+	debug_log("loaded p1 win image\n");
+	p2Win = CP_Image_Load("./Assets/game/winner/player2_winner.png");
+	debug_log("loaded p2 win image\n");
 	font = CP_Font_Load("Assets/Exo2-Regular.ttf");
 
 	CP_Font_Set(font);
 	CP_Settings_RectMode(CP_POSITION_CORNER); //set it to center for easier reference
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_TOP); //positioning of the text
 
-	winAudio = CP_Sound_Load("./Assets/audio/winner.mp3");
+	winAudio = CP_Sound_Load("./Assets/audio/sfx/winner.mp3");
+	debug_log("loaded winner audio\n");
 
 	buttonColor = CP_Color_Create(0, 0, 0, 220);
 	strokeColor = CP_Color_Create(0, 0, 0, 0);
@@ -106,13 +107,14 @@ void winnerUpdate(void) {
 		playing = true;
 	}
 	buttonConstructor();
-	if (tanks[0].health > tanks[1].health) {
-		winnerBackScreen = p1Win; //draw player1 winning screen
+	if (loser == 2) {
+		// renderBackdrop();
+		CP_Image_Draw(p1Win, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 50); // to draw the image in the middle
 	}
-	else {
-		winnerBackScreen = p2Win; //draw player 2 winning screen
+	else if (loser == 1) {
+		// renderBackdrop();
+		CP_Image_Draw(p2Win, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 50); // to draw the image in the middle
 	}
-	CP_Image_Draw(winnerBackScreen, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 50); // to draw the image in the middle
 	for (int i = 0; i < NUM_WINNER_BUTTONS; i++) {
 		drawRect(&winnerButtons[i].rect, &strokeColor, &buttonColor);
 		drawText(winnerButtons[i].winnerButton, &winnerButtons[i].pos, winnerTextSize, &blackColor);
@@ -122,8 +124,11 @@ void winnerUpdate(void) {
 }
 
 void winnerExit(void) {
-	CP_Image_Free(&winnerBackScreen);
 	CP_Image_Free(&p1Win);
+	debug_log("freed image p1 win\n");
 	CP_Image_Free(&p2Win);
+	debug_log("freed image p2 win\n");
 	CP_Sound_Free(&winAudio);
+	debug_log("freed win audio\n");
+	playing = false;
 }

@@ -3,7 +3,7 @@
 #include "config.h"
 #include "utils.h"
 
-#define MAX_TREES 6
+#define MAX_TREES 12
 
 enum { treeStyle1, treeStyle2, NUM_TREE_STYLES } TREE_STYLES;
 

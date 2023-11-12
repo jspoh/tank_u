@@ -10,6 +10,7 @@
 #include "collision.h"
 #include "queue.h"
 #include <time.h>
+#include "winner.h"
 
 
 #define MOVEMENT_SPEED 500
@@ -32,6 +33,7 @@ Size tankSize = { 75.f, 100.f };
 
 extern Keybinds keybindings[];
 
+int loser=0;
 
 void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
@@ -39,7 +41,7 @@ void _drawTank(Tank* tank) {
 	drawTankAdvanced(tank, &fillCol, &strokeCol);
 
 	if (tank->repairTimer > 0) {
-		//printf("%lf\n", tank->repairTimer);
+		//debug_log("%lf\n", tank->repairTimer);
 		// make tank flash
 		if ((int)(tank->repairTimer * 10) % 2 == 0) {
 			CP_Color fillCol = CP_Color_Create(255, 255, 255, 255);
@@ -225,7 +227,7 @@ void _damageTank(Tank* tank, double damage) {
 void _tankCollectPowerUp(int i) { //int i is which tank it is in the array tanks[i] 
 	//logic for collecting powerups draft will change once the actual code for the area of rect is there
 	//for (int i = 0; i < NUM_PLAYERS; i++) {
-	//	if (checkRectangleCollision(tanks[i].pos.x,tanks[i].pos.y, powerUps.pos.x,powerUps.pos.y)) {
+	//	if (colTankRect(&tanks[i],&powerUps.r,false)) {
 	//		for (int j = 0; j < POWERUPS_COUNT; j++) 
 	//		{
 	//			if (tanks[i].activePermPowers[i] == 0) 
@@ -235,7 +237,7 @@ void _tankCollectPowerUp(int i) { //int i is which tank it is in the array tanks
 
 	//		}
 	//	}
-	//}
+	//}	
 
 }
 
@@ -292,7 +294,7 @@ void _tankShoot(int i, enum AMMO_TYPES activePowerUp) { //int i is which tank it
 		bool firingSuccess = onFireCannonball(turretTip, unitVector, i, activePowerUp);
 		if (firingSuccess) {
 			CP_Sound_PlayAdvanced(tankFire, (float)sfxVolume, 1.f, false, SFX_GROUP);
-			puts("fired");
+			debug_log("fired");
 		}
 	}
 
@@ -337,9 +339,8 @@ Tank _findNoColTank(int player) {
 	int i = history.rear;
 	do {
 		i = (i - 1 + MAX_HISTORY) % MAX_HISTORY; // move backwards in the queue
-		// printf("%d\n", history.data[i][player].hasCollided);
+		// debug_log("%d\n", history.data[i][player].hasCollided);
 		if (!history.data[i][player].hasCollided) {
-			// puts("found");
 			return history.data[i][player];
 		}
 	} while (i != history.front);
@@ -351,7 +352,7 @@ void _collisionsTank(void) {
 
 	bool hasCollidedTank = areTanksColliding(&tanks[0], &tanks[1]);
 	if (hasCollidedTank) {
-		puts("col tank");
+		debug_log("col tank");
 	}
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
@@ -359,24 +360,22 @@ void _collisionsTank(void) {
 
 		bool hasCollidedWall = colTankWall(&tanks[i]);
 		if (hasCollidedWall) {
-			puts("col wall");
+			debug_log("tank %d has collided with wall\n", i+1);
 		}
 
 		double damageTaken = 0;
 		bool hasCollidedCb = colTankCb(&tanks[i], &damageTaken);
 		if (hasCollidedCb) {
-			//puts("BOOM");
+			debug_log("cannonball collided with tank %d\n", i+1);
 			_damageTank(&tanks[i], damageTaken);
-			//printf("health of tank: %lf\n", tanks[i].health);
 		}
 
 		bool hasCollidedTree = collisionTree(&tanks[i]);
 		if (hasCollidedTree) {
-			puts("col tree");
+			debug_log("tank %d has collided with tree\n", i+1);
 		}
 
 		if (hasCollidedWall || hasCollidedTank || hasCollidedTree) {
-			// puts("have ok\n");
 			tanks[i].hasCollided = true;
 		}
 		else {
@@ -390,6 +389,7 @@ void initTank(void) {
 	_createTank(WINDOW_SIZE.width / 6 * 5, WINDOW_SIZE.height / 2, 270.f, 255, 0, 0, 255);
 	initQueue(&history);
 	tankFire = CP_Sound_Load("Assets/audio/sfx/tank_fire.wav");
+	debug_log("loaded tank firing sfx\n");
 }
 
 void updateTank(void) {
@@ -403,15 +403,24 @@ void updateTank(void) {
 	// capture history
 	enqueue(&history, tanks[0], tanks[1]);
 
-	_debugTank();
+	if (DEBUG_MODE) {
+		// _debugTank();
+	}
 
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		if (tanks[i].hasCollided) {
-			printf("tank %d collided\n", i + 1);
+			debug_log("tank %d collided\n", i + 1);
 			tanks[i] = _findNoColTank(i);
 			// tanks[i].speed = 0;
 			tanks[i].repairTimer = REPAIR_TIME;
+		}
+	}
+
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		if (tanks[i].health==0) {
+			loser = i+1;
+			CP_Engine_SetNextGameState(winnerInit, winnerUpdate, winnerExit);
 		}
 	}
 }
@@ -422,4 +431,5 @@ void destroyTank(void) {
 		tanks[i] = tank;
 	}
 	CP_Sound_Free(&tankFire);
+	debug_log("freed tank fire sfx\n");
 }
