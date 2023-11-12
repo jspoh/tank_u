@@ -63,6 +63,7 @@ void gameInit(void) {
 	initTank();
 	initTree();
 	initHealthBar();
+	initDropbox();
 }
 void gameUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 150, 0, 255));

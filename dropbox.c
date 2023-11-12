@@ -7,6 +7,10 @@ CP_Image dropboxImg;
 
 
 
+void initDropbox(void)
+{
+	dropboxImg = CP_Image_Load("Assets/powerup/4.png");
+}
 void dropBox(void) {
 	// size of the dropbox
 	Size size = { 50, 50 };
@@ -17,7 +21,6 @@ void dropBox(void) {
 	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
 	// load img and draw image at pos and size of dropbox
-	dropboxImg = CP_Image_Load("Assets/powerup/4.png");
 	CP_Image_Draw(dropboxImg, dropbox.pos.x, dropbox.pos.y, dropbox.size.width, dropbox.size.height, 255);
 	/*drawRect(&dropbox, &fillCol, &strokeCol);*/
 }
