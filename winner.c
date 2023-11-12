@@ -11,14 +11,14 @@
 #define NUM_WINNER_BUTTONS 2
 
 //global assets initalisation
-CP_Image p1Win;
-CP_Image p2Win;
+CP_Image winnerImage[NUM_PLAYERS] = { 0 };
 
-CP_Font font;
+extern bool freezeGame;
 
-CP_Color buttonColor;
-CP_Color strokeColor;
-CP_Color blackColor;
+extern CP_Font font; //so that i dont have to keep loading stuff
+
+static CP_Color btnColor = {150,150,150,0};
+extern CP_Color white;
 
 CP_Sound winAudio;
 
@@ -48,9 +48,7 @@ double winnerTextSize = 50.0;
 char* winnerButton[NUM_WINNER_BUTTONS] = { "Restart","Exit" };
 Button winnerButtons[NUM_WINNER_BUTTONS] = { 0 };
 
-int nextState = 0;
-
-void buttonConstructor(void) {
+void _buttonConstructor(void) { //used to put the button into an array
 	firstButtonPos.x = WINDOW_SIZE.width / 2 - winnerButtonsize.width / 2;
 	firstButtonPos.y = WINDOW_SIZE.height / 4 + WINDOW_SIZE.height / 2;
 	for (int i = 0; i < NUM_WINNER_BUTTONS; i++) {
@@ -64,7 +62,7 @@ void buttonConstructor(void) {
 
 }
 
-void buttonSelection(void) {
+void _buttonSelection(void) { //works based on what the user defines
 	for (int i = 0; i < NUM_WINNER_BUTTONS; i++) {
 		if (mouseInRect(winnerButtons[i].rect, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
@@ -79,56 +77,77 @@ void buttonSelection(void) {
 	}
 }
 
-
-void winnerInit(void) {
-
-	//load assets
-	p1Win = CP_Image_Load("./Assets/game/winner/player1_winner.png");
-	debug_log("loaded p1 win image\n");
-	p2Win = CP_Image_Load("./Assets/game/winner/player2_winner.png");
-	debug_log("loaded p2 win image\n");
-	font = CP_Font_Load("Assets/Exo2-Regular.ttf");
-
-	CP_Font_Set(font);
-	CP_Settings_RectMode(CP_POSITION_CORNER); //set it to center for easier reference
-	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_TOP); //positioning of the text
-
+void initWinner(void) {
+		for (int i = 0; i < NUM_PLAYERS; i++) {
+		if (winnerImage[i] == NULL) {
+			char path[MAX] = "";
+			snprintf(path, MAX, "Assets/game/winner/winner_p%d.png", i + 1);
+			debug_log("Loaded winner img %d/%d from path %s\n", i + 1, NUM_PLAYERS, path);
+			winnerImage[i] = CP_Image_Load(path);
+		}
+	}
 	winAudio = CP_Sound_Load("./Assets/audio/sfx/winner.mp3");
 	debug_log("loaded winner audio\n");
-
-	buttonColor = CP_Color_Create(0, 0, 0, 220);
-	strokeColor = CP_Color_Create(0, 0, 0, 0);
-	blackColor = CP_Color_Create(0, 0, 0, 255);
 }
 
-void winnerUpdate(void) {
+void destroyWinner(void) {
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		CP_Image_Free(&winnerImage[i]);
+		debug_log("Freed winner img %d/%d\n", i + 1, NUM_PLAYERS);
+	}
+	CP_Sound_Free(&winAudio);
+	debug_log("freed win audio\n");
+	playing = false;
+}
+
+void renderWinner(void) {
 	if (!playing) {
 		CP_Sound_PlayAdvanced(winAudio, (float)sfxVolume, 1.f, false, SFX_GROUP);
 		playing = true;
 	}
-	buttonConstructor();
-	if (loser == 2) {
-		// renderBackdrop();
-		CP_Image_Draw(p1Win, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 50); // to draw the image in the middle
+	_buttonConstructor();
+	if (loser > 0) {
+		freezeGame = true;
+		renderBackdrop();
+		if (loser == 2) {
+			CP_Image_Draw(winnerImage[0], (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 255); // to draw the image in the middle
+		}
+		else if (loser == 1) {
+			CP_Image_Draw(winnerImage[1], (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 255); // to draw the image in the middle
+		}
 	}
-	else if (loser == 1) {
-		// renderBackdrop();
-		CP_Image_Draw(p2Win, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 50); // to draw the image in the middle
-	}
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE); //positioning of the text
 	for (int i = 0; i < NUM_WINNER_BUTTONS; i++) {
-		drawRect(&winnerButtons[i].rect, &strokeColor, &buttonColor);
-		drawText(winnerButtons[i].winnerButton, &winnerButtons[i].pos, winnerTextSize, &blackColor);
+		/*event listeners*/
+		double mouseX = CP_Input_GetMouseX();
+		double mouseY = CP_Input_GetMouseY();
+		Rect btnBorder = (Rect){ winnerButtons[i].rect.size, (Position){winnerButtons[i].rect.pos.x, winnerButtons[i].rect.pos.y - winnerButtons[i].rect.size.height / 2} };
+		if (mouseInRect(btnBorder, mouseX, mouseY)) {
+			// hover
+			btnColor.a = 255;
+
+			// click
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				switch (i) {
+					case 0:  // restart
+						CP_Engine_SetNextGameStateForced(gameInit, gameUpdate, gameExit);
+						break;
+					case 1:
+						CP_Engine_SetNextGameStateForced(menuInit, menuUpdate, menuExit);
+						break;
+					default:
+						fprintf(stderr, "Reached end of switch case in winner.c\n");
+						exit(10);
+				}
+	 		}
+		}
+		else {
+			btnColor.a = 0;
+		}
+
+
+		drawRect(&btnBorder, &btnColor, &white);
+		drawText(winnerButtons[i].winnerButton, &winnerButtons[i].pos, winnerTextSize, &white);
 	}
-	buttonSelection();
-
-}
-
-void winnerExit(void) {
-	CP_Image_Free(&p1Win);
-	debug_log("freed image p1 win\n");
-	CP_Image_Free(&p2Win);
-	debug_log("freed image p2 win\n");
-	CP_Sound_Free(&winAudio);
-	debug_log("freed win audio\n");
-	playing = false;
+	_buttonSelection();
 }

@@ -35,8 +35,6 @@ Size tankSize = { 75.f, 100.f };
 extern Keybinds keybindings[];
 extern Rect dropbox;
 
-int loser=0;
-
 void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
@@ -423,14 +421,7 @@ void updateTank(bool isPaused) {
 			tanks[i].repairTimer = REPAIR_TIME;
 		}
 	}
-
-	for (int i = 0; i < NUM_PLAYERS; i++) {
-		if (tanks[i].health==0) {
-			loser = i+1;
-			CP_Engine_SetNextGameState(winnerInit, winnerUpdate, winnerExit);
-		}
-	}
-}
+} 
 
 void destroyTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
