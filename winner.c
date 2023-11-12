@@ -100,7 +100,7 @@ void winnerInit(void) {
 
 void winnerUpdate(void) {
 	if (!playing) {
-		CP_Sound_PlayAdvanced(winAudio, (float)sfxVolume, 1.f, false, SFX_GROUP);
+		CP_Sound_PlayAdvanced(winAudio, (float)sfxVolume, 1.f, true, SFX_GROUP);
 		playing = true;
 	}
 	buttonConstructor();
@@ -122,4 +122,5 @@ void winnerExit(void) {
 	CP_Image_Free(&p1Win);
 	CP_Image_Free(&p2Win);
 	CP_Sound_Free(&winAudio);
+	playing = false;
 }
