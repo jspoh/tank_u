@@ -6,7 +6,6 @@
 #include "utils.h"
 #include "collision.h"
 #include "wall.h"
-#include "dropbox.h"
 
 
 Tree activeTrees[MAX_TREES] = { 0 };
@@ -21,6 +20,8 @@ extern Tank tanks[NUM_PLAYERS];
 
 extern CannonBall activeCbs[MAX];
 extern int numCbs;
+
+extern Rect dropbox;
 
 extern CP_Color red;
 extern CP_Color blue;
