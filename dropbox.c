@@ -7,8 +7,6 @@ CP_Image dropboxImg;
 
 // size of the dropbox
 static Size size = { 50.0, 50.0 };
-// position of the wall
-static Position pos = { (WINDOW_SIZE.width / 2), (WINDOW_SIZE.height / 2) };
 
 
 Rect dropbox = {0};
@@ -17,6 +15,9 @@ void initDropbox(void)
 	dropboxImg = CP_Image_Load("Assets/powerup/4.png");
 }
 void renderDropbox(void) {
+	// position of the wall
+	Position pos = { (WINDOW_SIZE.width / 2), (WINDOW_SIZE.height / 2) };
+
 	dropbox.size = size;
 	dropbox.pos = pos;
 	// so now instead of colour I load img of dropbox from asset
