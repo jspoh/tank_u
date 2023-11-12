@@ -10,6 +10,7 @@
 #include "collision.h"
 #include "queue.h"
 #include <time.h>
+#include "winner.h"
 
 
 #define MOVEMENT_SPEED 500
@@ -32,6 +33,7 @@ Size tankSize = { 75.f, 100.f };
 
 extern Keybinds keybindings[];
 
+int loser=0;
 
 void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
@@ -412,6 +414,13 @@ void updateTank(void) {
 			tanks[i] = _findNoColTank(i);
 			// tanks[i].speed = 0;
 			tanks[i].repairTimer = REPAIR_TIME;
+		}
+	}
+
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		if (tanks[i].health==0) {
+			loser = i+1;
+			CP_Engine_SetNextGameState(winnerInit, winnerUpdate, winnerExit);
 		}
 	}
 }

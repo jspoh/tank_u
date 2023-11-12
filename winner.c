@@ -5,14 +5,12 @@
 #include "gamecollision.h"
 #include "config.h"
 #include "utils.h"
-#include "tank.h"
 #include <stdio.h>
 #include "menu.h"
 
 #define NUM_WINNER_BUTTONS 2
 
 //global assets initalisation
-CP_Image winnerBackScreen;
 CP_Image p1Win;
 CP_Image p2Win;
 
@@ -35,6 +33,7 @@ typedef struct Button {
 
 extern Size WINDOW_SIZE;
 extern Tank tanks[NUM_PLAYERS];
+extern int loser;
 
 extern double sfxVolume;
 
@@ -84,7 +83,6 @@ void buttonSelection(void) {
 void winnerInit(void) {
 
 	//load assets
-	//winnerBackScreen = CP_Image_Load("./Assets/winner_screen.png");
 	p1Win = CP_Image_Load("./Assets/player1_winner.png");
 	p2Win = CP_Image_Load("./Assets/player2_winner.png");
 	font = CP_Font_Load("Assets/Exo2-Regular.ttf");
@@ -106,13 +104,12 @@ void winnerUpdate(void) {
 		playing = true;
 	}
 	buttonConstructor();
-	if (tanks[0].health > tanks[1].health) {
-		winnerBackScreen = p1Win; //draw player1 winning screen
+   	if (loser ==2) {
+		CP_Image_Draw(p1Win, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 50); // to draw the image in the middle
 	}
-	else {
-		winnerBackScreen = p2Win; //draw player 2 winning screen
+	else if (loser ==1) {
+		CP_Image_Draw(p2Win, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 50); // to draw the image in the middle
 	}
-	CP_Image_Draw(winnerBackScreen, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 50); // to draw the image in the middle
 	for (int i = 0; i < NUM_WINNER_BUTTONS; i++) {
 		drawRect(&winnerButtons[i].rect, &strokeColor, &buttonColor);
 		drawText(winnerButtons[i].winnerButton, &winnerButtons[i].pos, winnerTextSize, &blackColor);
@@ -122,7 +119,6 @@ void winnerUpdate(void) {
 }
 
 void winnerExit(void) {
-	CP_Image_Free(&winnerBackScreen);
 	CP_Image_Free(&p1Win);
 	CP_Image_Free(&p2Win);
 	CP_Sound_Free(&winAudio);
