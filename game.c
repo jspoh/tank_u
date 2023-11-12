@@ -61,7 +61,9 @@ void gameInit(void) {
 	// font = CP_Font_Load("Assets/fonts/Exo2-Regular.ttf");
 	font = CP_Font_Load("Assets/fonts/PixelifySans-Regular.ttf");
 	gameBg = CP_Image_Load("Assets/game/terrain.png");
+	debug_log("loaded game background img\n");
 	gameMusic = CP_Sound_LoadMusic("Assets/audio/music/game.wav");
+	debug_log("loaded game music\n");
 	CP_Font_Set(font);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
@@ -100,4 +102,5 @@ void gameExit(void) {
 	destroyTank();
 	destroyHealthBar();
 	CP_Sound_Free(&gameMusic);
+	debug_log("freed game music\n");
 }

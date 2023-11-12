@@ -13,6 +13,7 @@ extern int menuState;
 void destroyCredits(void) {
 	for (int i=0; i<numCreditsPages; i++) {
 		CP_Image_Free(&creditsImgs[i]);
+		debug_log("Freed credits img %d/%d\n", i+1, numCreditsPages);
 	}
 	creditsPage = PAGE_1;
 }
@@ -22,7 +23,7 @@ void renderCredits(void) {
 		if (creditsImgs[i] == NULL) {
 			char path[MAX] = "";
 			snprintf(path, MAX, "Assets/menu/credits/credits_%d.png", i+1);
-			debug_log("Loaded credits png %d from path %s\n", i+1, path);
+			debug_log("Loaded credits img %d/%d from path %s\n", i+1, numCreditsPages, path);
 			creditsImgs[i] = CP_Image_Load(path);
 		}
 	}

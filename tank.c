@@ -389,6 +389,7 @@ void initTank(void) {
 	_createTank(WINDOW_SIZE.width / 6 * 5, WINDOW_SIZE.height / 2, 270.f, 255, 0, 0, 255);
 	initQueue(&history);
 	tankFire = CP_Sound_Load("Assets/audio/sfx/tank_fire.wav");
+	debug_log("loaded tank firing sfx\n");
 }
 
 void updateTank(void) {
@@ -430,4 +431,5 @@ void destroyTank(void) {
 		tanks[i] = tank;
 	}
 	CP_Sound_Free(&tankFire);
+	debug_log("freed tank fire sfx\n");
 }

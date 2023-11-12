@@ -34,7 +34,10 @@ void debug_log(const char *format, ...) {
                 int i = va_arg(args, int);
                 printf("%d", i);
             }
-            // Handle other types...
+            else if (*format == 'f') {
+							double lf = va_arg(args, double);
+							printf("%lf", lf);
+						}
         } else {
             putchar(*format);
         }
