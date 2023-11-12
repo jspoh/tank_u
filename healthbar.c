@@ -14,6 +14,7 @@ extern Tank tanks[];
 void _drawHealthBar(Tank* tank, int playerIndex) {
 	CP_Color fillCol = CP_Color_Create(0, 255, 0, 255); // Green colour for health
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255); // Black colour for border
+	CP_Color transFill = CP_Color_Create(0, 0, 0, 0);
 
 	// Calculate percentage of health remaining
 	double healthPercentage = (tank->health / MAX_HEALTH) * 100.0;
@@ -33,6 +34,24 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 	}
 
 	yPos = 50;
+
+	//original length of the health bar
+	double originalBarWidth = 3 * (tank->size.width * (MAX_HEALTH / 100.0));
+	double originalBarHeight = 30.0;
+
+	double originalxPos; // only need the x pos as y pos is the same as the original
+
+	// Calculate position based on player index
+	if (playerIndex == 0) {
+		originalxPos = 10; // Adjust x-position for player 1
+	}
+	else {
+		originalxPos = WINDOW_SIZE.width - originalBarWidth - 10; // Adjust x position for player 2
+	}
+
+
+	Rect originalBarRect = { {originalBarWidth, originalBarHeight}, {originalxPos, yPos} };
+	drawRect(&originalBarRect,&transFill,&strokeCol);
 
 	Rect barRect = { {barWidth, barHeight}, {xPos, yPos} };
 	drawRect(&barRect, &fillCol, &strokeCol);
