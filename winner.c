@@ -122,4 +122,5 @@ void winnerExit(void) {
 	CP_Image_Free(&p1Win);
 	CP_Image_Free(&p2Win);
 	CP_Sound_Free(&winAudio);
+	playing = false;
 }
