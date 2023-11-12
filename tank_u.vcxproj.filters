@@ -42,6 +42,9 @@
     <ClCompile Include="cannonball.c">
       <Filter>components\cannonball</Filter>
     </ClCompile>
+    <ClCompile Include="tree.c">
+      <Filter>components\tree</Filter>
+    </ClCompile>
     <ClCompile Include="gamecollision.c">
       <Filter>util\game_collision</Filter>
     </ClCompile>
@@ -54,6 +57,9 @@
     <ClCompile Include="healthbar.c">
       <Filter>components\healthbar</Filter>
     </ClCompile>
+    <ClCompile Include="winner.c">
+      <Filter>components\game_end_screen</Filter>
+	</ClCompile>
     <ClCompile Include="powerup.c">
       <Filter>components\powerup</Filter>
     </ClCompile>
@@ -99,6 +105,9 @@
     <ClInclude Include="cannonball.h">
       <Filter>components\cannonball</Filter>
     </ClInclude>
+    <ClInclude Include="tree.h">
+      <Filter>components\tree</Filter>
+    </ClInclude>
     <ClInclude Include="gamecollision.h">
       <Filter>util\game_collision</Filter>
     </ClInclude>
@@ -111,6 +120,9 @@
     <ClInclude Include="healthbar.h">
       <Filter>components\healthbar</Filter>
     </ClInclude>
+    <ClInclude Include="winner.h">
+      <Filter>components\game_end_screen</Filter>
+	</ClInclude>
     <ClInclude Include="powerup.h">
       <Filter>components\powerup</Filter>
     </ClInclude>
@@ -161,6 +173,9 @@
     <Filter Include="components\cannonball">
       <UniqueIdentifier>{35d623de-1266-4c44-a40c-f3992c3d8083}</UniqueIdentifier>
     </Filter>
+    <Filter Include="components\tree">
+      <UniqueIdentifier>{68d4405d-dae9-4b46-bc01-cefb1744384b}</UniqueIdentifier>
+    </Filter>
     <Filter Include="util\game_collision">
       <UniqueIdentifier>{3dab3375-b184-43d5-9a6c-44da00a159cb}</UniqueIdentifier>
     </Filter>
@@ -172,6 +187,9 @@
     </Filter>
     <Filter Include="components\healthbar">
       <UniqueIdentifier>{3e31fae1-002c-4cb3-a6d6-2d00c3be37ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\game_end_screen">
+      <UniqueIdentifier>{cce9d6e7-81cc-4f4b-aaae-d971e54a7517}</UniqueIdentifier>
     </Filter>
     <Filter Include="components\powerup">
       <UniqueIdentifier>{72454c7c-85c1-4554-b0c0-df2840c76f5d}</UniqueIdentifier>
