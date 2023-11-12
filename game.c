@@ -90,7 +90,7 @@ void gameUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 150, 0, 255));
 	CP_Image_Draw(gameBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 255);
 
-	if (CP_Input_KeyTriggered(KEY_Q)) {
+	if (CP_Input_KeyTriggered(KEY_Q) && DEBUG_MODE) {
 		CP_Engine_SetNextGameState(menuInit, menuUpdate, menuExit);
 	}
 
