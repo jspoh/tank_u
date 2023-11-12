@@ -53,7 +53,7 @@ void _moveCannonball(CannonBall* cb) {
 	cb->pos.y += v.y;
 }
 
-void updateCannonball(void) {
+void updateCannonball(bool isPaused) {
 	const float dt = CP_System_GetDt();
 	timeSinceFireP1 += dt;
 	timeSinceFireP2 += dt;
@@ -61,9 +61,12 @@ void updateCannonball(void) {
 	for (int i = 0; i < numCbs; i++) {
 		CannonBall* cb = &activeCbs[i]; 
 
-		_moveCannonball(cb);
-		CP_Settings_Fill((CP_Color){0,0,0,255});
-		CP_Graphics_DrawCircle((float)cb->pos.x, (float)cb->pos.y, (float)cb->radius);
+		if (!isPaused) {
+			_moveCannonball(cb);
+		}
+
+			CP_Settings_Fill((CP_Color){0,0,0,255});
+			CP_Graphics_DrawCircle((float)cb->pos.x, (float)cb->pos.y, (float)cb->radius);
 	}
 }
 

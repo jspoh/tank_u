@@ -59,9 +59,12 @@
     </ClCompile>
     <ClCompile Include="winner.c">
       <Filter>components\game_end_screen</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="powerup.c">
       <Filter>components\powerup</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.c">
+      <Filter>components\menu\subpages\pause</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -122,9 +125,12 @@
     </ClInclude>
     <ClInclude Include="winner.h">
       <Filter>components\game_end_screen</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="powerup.h">
       <Filter>components\powerup</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>components\menu\subpages\pause</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +199,9 @@
     </Filter>
     <Filter Include="components\powerup">
       <UniqueIdentifier>{72454c7c-85c1-4554-b0c0-df2840c76f5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\subpages\pause">
+      <UniqueIdentifier>{48fc42af-9ec2-4091-9f06-cf8e0e0f50bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

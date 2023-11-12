@@ -10,6 +10,7 @@
 #include "tree.h"
 #include "winner.h"
 #include <stdio.h>
+#include "pause.h"
 #include "dropbox.h"
 
 CP_Font font;
@@ -17,6 +18,7 @@ CP_Image gameBg;
 CP_Sound gameMusic;
 
 bool gameMusicPlaying = false;
+bool isPaused = false;
 
 extern CP_Color red;
 extern double musicVolume;
@@ -87,13 +89,17 @@ void gameUpdate(void) {
 		CP_Engine_SetNextGameState(menuInit, menuUpdate, menuExit);
 	}
 
+	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
+		isPaused = !isPaused;
+	}
+
+	dropBox();
 	drawWall();
 	updateTree();
-	updateTank();
-	updateCannonball();
+	updateTank(isPaused);
+	updateCannonball(isPaused);
 	updateHealthBar();
 	colCbWall();
-	dropBox();
 
 	if (DEBUG_MODE) {
 		// _debugGame();
@@ -107,4 +113,6 @@ void gameExit(void) {
 	destroyDropbox();
 	CP_Sound_Free(&gameMusic);
 	debug_log("freed game music\n");
+
+	isPaused = false;
 }
