@@ -13,8 +13,15 @@
 
 CP_Font font;
 CP_Image gameBg;
+CP_Sound gameMusic;
+
+bool gameMusicPlaying = false;
 
 extern CP_Color red;
+extern double musicVolume;
+extern double sfxVolume;
+extern int MUSIC_GROUP;
+extern int SFX_GROUP;
 
 // !TODO make dynamic (let user set)
 Keybinds P1_KEYBINDS = {
@@ -55,6 +62,7 @@ void gameInit(void) {
 	// font = CP_Font_Load("Assets/fonts/Exo2-Regular.ttf");
 	font = CP_Font_Load("Assets/fonts/PixelifySans-Regular.ttf");
 	gameBg = CP_Image_Load("Assets/game/terrain.png");
+	gameMusic = CP_Sound_LoadMusic("Assets/audio/music/game.wav");
 	CP_Font_Set(font);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
@@ -65,6 +73,8 @@ void gameInit(void) {
 	initTank();
 	initTree();
 	initHealthBar();
+
+	CP_Sound_PlayAdvanced(gameMusic, (float)musicVolume, 1.f, true, MUSIC_GROUP);
 }
 void gameUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 150, 0, 255));
@@ -88,4 +98,5 @@ void gameExit(void) {
 	destroyTree();
 	destroyTank();
 	destroyHealthBar();
+	CP_Sound_Free(&gameMusic);
 }

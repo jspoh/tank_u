@@ -47,7 +47,7 @@ bool _removeTree(int index) {
 	}
 	numTrees--;
 
-	printf("trees left: %d\n", numTrees);
+	// printf("trees left: %d\n", numTrees);
 
 	return true;
 }
@@ -78,11 +78,13 @@ void initTree(void) {
 			randY = randY < 0 ? 0 : randY;
 			activeTrees[i].rect.pos = (Position){ randX, randY };
 
+			Rect treeHitbox = (Rect){ activeTrees[i].rect.size, (Position) { activeTrees[i].rect.pos.x - activeTrees[i].rect.size.width/2, activeTrees[i].rect.pos.y - activeTrees[i].rect.size.height/2 } };
+
 			/*ensure position on screen is valid*/
 			// iterate through walls and check if tree is colliding with any of them
 			bool collidedWall = false;
 			for (int j=0; j<numWalls; j++) {
-				if (colRects(&activeTrees[i].rect, &activeWalls[j], (Vector){0,-1}, (Vector){0,-1}, false, false)) {  // collided with wall
+				if (colRects(&treeHitbox, &activeWalls[j], (Vector){0,-1}, (Vector){0,-1}, false, false)) {  // collided with wall
 					collidedWall = true;
 					break;
 				}
