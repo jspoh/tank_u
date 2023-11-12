@@ -29,9 +29,9 @@ BYTE oAlpha = 255;
 double textSize = 50.0;
 
 CP_Color btnColor;
-CP_Color invisColor;
-CP_Color black;
-CP_Color white;
+CP_Color invisColor = {0,0,0,0};
+CP_Color black = {0,0,0,255};
+CP_Color white = {255,255,255,255};
 CP_Color whiteHighlighted;
 CP_Color red = {255,0,0,255};
 CP_Color oColor;
