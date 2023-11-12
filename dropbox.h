@@ -5,6 +5,6 @@
 
 typedef Rect Dropbox;
 
-void dropBox(void);
+void renderDropBox(void);
 void destroyDropbox(void);
 void initDropbox(void);

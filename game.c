@@ -100,7 +100,7 @@ void gameUpdate(void) {
 
 	switch (gameState) {
 	case GAME:
-		dropBox();
+		renderDropBox();
 		drawWall();
 		updateTree();
 		updateTank(isPaused);

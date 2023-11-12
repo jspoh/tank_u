@@ -11,6 +11,7 @@
 #include "queue.h"
 #include <time.h>
 #include "winner.h"
+#include "dropbox.h"
 
 
 #define MOVEMENT_SPEED 500
@@ -227,12 +228,12 @@ void _damageTank(Tank* tank, double damage) {
 void _tankCollectPowerUp(int i) { //int i is which tank it is in the array tanks[i] 
 	//logic for collecting powerups draft will change once the actual code for the area of rect is there
 	//for (int i = 0; i < NUM_PLAYERS; i++) {
-	//	if (colTankRect(&tanks[i],&powerUps.r,false)) {
+	//	if (colTankRect(&tanks[i],&dropBox,false)) {
 	//		for (int j = 0; j < POWERUPS_COUNT; j++) 
 	//		{
 	//			if (tanks[i].activePermPowers[i] == 0) 
 	//			{
-	//				tanks[i].activePermPowers[i] += powerUps.num;// for the tank to take in which powerup is 
+	//				tanks[i].activePermPowers[i] += 1;// for the tank to take in which powerup is 
 	//			}
 
 	//		}
