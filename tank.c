@@ -238,7 +238,7 @@ void _tankCollectPowerUp(int i) { //int i is which tank it is in the array tanks
 		//		}
 
 		//	}
-		//}
+		}
 	}	
 
 }
