@@ -96,6 +96,7 @@ void initHealthBar(void)
 	rapidFire = CP_Image_Load("./Assets/powerup/powerup_3.png");
 	bigBullet = CP_Image_Load("./Assets/powerup/powerup_2.png");
 	shotGun = CP_Image_Load("./Assets/powerup/powerup_1.png");
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE); //positioning of the text
 }
 void _renderHealthBar(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
