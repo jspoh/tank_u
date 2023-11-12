@@ -121,6 +121,8 @@ void initTree(void) {
 			if (collidedTank) {
 				continue;  // bro you were so close.. but you just had to spawn on top of the tank HUH
 			}
+			
+			
 
 			isPosValid = true;  // hooray!!
 			numTrees++;
