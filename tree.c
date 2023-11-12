@@ -21,6 +21,8 @@ extern Tank tanks[NUM_PLAYERS];
 extern CannonBall activeCbs[MAX];
 extern int numCbs;
 
+extern Rect dropbox;
+
 extern CP_Color red;
 extern CP_Color blue;
 
@@ -51,7 +53,6 @@ bool _removeTree(int index) {
 
 	return true;
 }
-
 
 bool _destroyTree(int index) {
 	return _removeTree(index);
@@ -86,6 +87,7 @@ void initTree(void) {
 
 			/*ensure position on screen is valid*/
 			// iterate through walls and check if tree is colliding with any of them
+			// WORKS 
 			bool collidedWall = false;
 			for (int j=0; j<numWalls; j++) {
 				if (colRects(&treeHitbox, &activeWalls[j], (Vector){0,-1}, (Vector){0,-1}, false, false)) {  // collided with wall
@@ -119,13 +121,25 @@ void initTree(void) {
 				// 	collidedTank = true;
 				// 	break;
 				// }
-				if (colTankRect(&tanks[j], &activeTrees[i].rect, false)) {
+				if (colTankRect(&tanks[j], &treeHitbox, false)) {
 					collidedTank = true;
 					break;
 				}
 			}
 			if (collidedTank) {
 				continue;  // bro you were so close.. but you just had to spawn on top of the tank HUH
+			}
+
+			
+			/*Rect treeHitbox = (Rect){ activeTrees[i].rect.size, (Position) { activeTrees[i].rect.pos.x - activeTrees[i].rect.size.width / 2, activeTrees[i].rect.pos.y - activeTrees[i].rect.size.height / 2 } };*/
+
+			bool collidedDropbox = false;
+			if (colRects(&dropbox, &treeHitbox, (Vector) { 0, -1 }, (Vector) { 0, -1 }, false, false)) {
+				collidedDropbox = true;
+			}
+
+			if (collidedDropbox) {
+				continue; // once collide skip....
 			}
 
 			isPosValid = true;  // hooray!!
