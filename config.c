@@ -1,5 +1,7 @@
 #include "config.h"
 #include <time.h>
+#include <stdarg.h>
+#include <stdio.h>
 
 Size WINDOW_SIZE = { 1600.f,900.f };
 
@@ -14,4 +16,33 @@ int init(void) {
 
 int getRand(int min, int max) {
 	return rand()%(max-min)+min;
+}
+
+
+void debug_log(const char *format, ...) {
+	if (!DEBUG_MODE) {
+		return;
+	}
+
+    va_list args;
+    va_start(args, format);
+
+    while (*format != '\0') {
+        if (*format == '%') {
+            format++;
+            if (*format == 'd') {
+                int i = va_arg(args, int);
+                printf("%d", i);
+            }
+            else if (*format == 'f') {
+							double lf = va_arg(args, double);
+							printf("%lf", lf);
+						}
+        } else {
+            putchar(*format);
+        }
+        format++;
+    }
+
+    va_end(args);
 }
