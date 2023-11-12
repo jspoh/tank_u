@@ -1,6 +1,6 @@
 #include "backdrop.h"
 #include "config.h"
-#include "back_btn.h"
+#include "action_btn.h"
 #include "menu.h"
 #include "utils.h"
 #include "collision.h"
@@ -129,7 +129,7 @@ void _render(void) {
 
 			/*adjust volume*/
 			musicVolume = (musicKnob.pos.x - musicDial.pos.x) / musicDial.size.width;
-			// printf("music volume: %lf\n", musicVolume);
+			debug_log("music volume: %f\n", musicVolume);
 			break;
 		case SFX:
 			/*move knob visually*/
@@ -143,7 +143,8 @@ void _render(void) {
 
 			/*adjust volume*/
 			sfxVolume = (sfxKnob.pos.x - sfxDial.pos.x) / sfxDial.size.width;
-			// printf("sfx volume: %lf\n", sfxVolume);
+			debug_log("sfx volume: %f\n", sfxVolume);
+			printf("sfx volume: %f\n", sfxVolume);
 			break;
 	}
 

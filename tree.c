@@ -47,7 +47,7 @@ bool _removeTree(int index) {
 	}
 	numTrees--;
 
-	printf("trees left: %d\n", numTrees);
+	debug_log("1 tree destroyed. trees left: %d\n", numTrees);
 
 	return true;
 }
@@ -60,8 +60,12 @@ bool _destroyTree(int index) {
 
 
 void initTree(void) {
-	treeImgs[numTreeImgs++] = CP_Image_Load("Assets/trees/tree_0.png"); // image setup
-	treeImgs[numTreeImgs++] = CP_Image_Load("Assets/trees/tree_1.png"); // image setup
+	for (int i=0; i<NUM_TREE_STYLES; i++) {
+		char path[MAX] = "";
+		snprintf(path, MAX, "Assets/game/trees/tree_%d.png", i);
+		treeImgs[numTreeImgs++] = CP_Image_Load(path); // image setup
+		debug_log("loaded tree img %d/%d\n", i+1, NUM_TREE_STYLES);
+	}
 
 	// initailise trees
 	for (int i = 0; i < MAX_TREES; i++) {
@@ -78,11 +82,13 @@ void initTree(void) {
 			randY = randY < 0 ? 0 : randY;
 			activeTrees[i].rect.pos = (Position){ randX, randY };
 
+			Rect treeHitbox = (Rect){ activeTrees[i].rect.size, (Position) { activeTrees[i].rect.pos.x - activeTrees[i].rect.size.width/2, activeTrees[i].rect.pos.y - activeTrees[i].rect.size.height/2 } };
+
 			/*ensure position on screen is valid*/
 			// iterate through walls and check if tree is colliding with any of them
 			bool collidedWall = false;
 			for (int j=0; j<numWalls; j++) {
-				if (colRects(&activeTrees[i].rect, &activeWalls[j], (Vector){0,-1}, (Vector){0,-1}, false, false)) {  // collided with wall
+				if (colRects(&treeHitbox, &activeWalls[j], (Vector){0,-1}, (Vector){0,-1}, false, false)) {  // collided with wall
 					collidedWall = true;
 					break;
 				}
@@ -134,11 +140,9 @@ void updateTree(void) {
 
 void destroyTree(void) {
 	for (int i = 0; i < numTreeImgs; i++) {
-		// puts("clear");
 		CP_Image_Free(&treeImgs[i]);
+		debug_log("freed tree img %d/%d\n", i+1, NUM_TREE_STYLES);
 	}
-	// CP_Image_Free(&treeImgs[0]);
-	// CP_Image_Free(&treeImgs[1]);
 
 	numTrees = 0;
 	numTreeImgs = 0;

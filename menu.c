@@ -10,8 +10,7 @@
 #include "menu.h"
 #include <stdio.h>
 
-CP_Sound titleSong;
-bool isPlayingMusic = false;
+CP_Sound titleMusic;
 int SFX_GROUP = CP_SOUND_GROUP_0;
 int MUSIC_GROUP = CP_SOUND_GROUP_1;
 
@@ -103,9 +102,11 @@ void _menuFadeToGame(void) {
 }
 
 void _initVars(void) {
-	titleSong = CP_Sound_Load("Assets/audio/title.wav");
+	titleMusic = CP_Sound_LoadMusic("Assets/audio/music/title.wav");
+	debug_log("loaded menu title music\n");
 
 	menuBg = CP_Image_Load("Assets/menu/menu_bg.png");
+	debug_log("loaded menu background image\n");
 
 	/* colors */
 	btnColor = CP_Color_Create(0, 0, 0, 220);
@@ -158,6 +159,7 @@ void menuInit(void) {
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	
 	_initVars();
+	CP_Sound_PlayAdvanced(titleMusic, (float)musicVolume, 1.f, true, MUSIC_GROUP);
 }
 
 void _renderLaunchPage(void) {
@@ -236,13 +238,10 @@ void _renderMenuPage(void) {
 
 void _destroySubpages(void) {
 	destroyCredits();
+	destroyHelp();
 }
 
 void menuUpdate(void) {
-	if (!isPlayingMusic) {
-		isPlayingMusic = true;
-		CP_Sound_PlayAdvanced(titleSong, (float)musicVolume, 1.f, true, MUSIC_GROUP);
-	}
 	CP_Graphics_ClearBackground(CP_Color_Create(150, 150, 150, 255));
 	CP_Image_Draw(menuBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), oAlpha);
 
@@ -277,6 +276,7 @@ void menuExit(void) {
 	// why doesnt this work? wow suddenly it worked when i was about to open issue on github
 	_destroySubpages();
 	CP_Image_Free(&menuBg);
-	CP_Sound_Free(&titleSong);
-	isPlayingMusic = false;
+	debug_log("freed menu background img\n");
+	CP_Sound_Free(&titleMusic);
+	debug_log("freed menu title music\n");
 }
