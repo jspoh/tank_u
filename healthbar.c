@@ -60,7 +60,7 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 	CP_Settings_TextSize(25);
 	CP_Settings_Fill(fillCol);
 
-	char hpText[50];
+	//char hpText[50];
 
 	// REMEMBER TO CP_Image_Free
 	/*shotgun = CP_Image_Load("./Assets/powerup/powerup_1.png");
