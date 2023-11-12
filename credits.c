@@ -5,20 +5,29 @@
 #include <stdio.h>
 
 
-CP_Image creditsPng;
+#define numCreditsPngs 2
+CP_Image creditsPngs[numCreditsPngs] = { 0 };
+enum PAGE_NUMS page = PAGE_1;
 extern int menuState;
 
 void destroyCredits(void) {
-	CP_Image_Free(&creditsPng);
+	for (int i=0; i<numCreditsPngs; i++) {
+		CP_Image_Free(&creditsPngs[i]);
+	}
 }
 
 void renderCredits(void) {
-	if (creditsPng == NULL) {
-		creditsPng = CP_Image_Load("Assets/menu/credits.png");
+	for (int i=0; i<numCreditsPngs; i++) {
+		if (creditsPngs[i] == NULL) {
+			char path[MAX] = "";
+			snprintf(path, MAX, "Assets/menu/credits/credits_%d.png", i+1);
+			// puts(path);
+			creditsPngs[i] = CP_Image_Load(path);
+		}
 	}
 
 	renderBackdrop();
-	CP_Image_Draw(creditsPng, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)CP_Image_GetWidth(creditsPng), (float)CP_Image_GetHeight(creditsPng), 255);
+	CP_Image_Draw(creditsPngs[page], (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)CP_Image_GetWidth(creditsPngs[page]), (float)CP_Image_GetHeight(creditsPngs[page]), 255);
 
 	bool isBackClicked = renderBackButton();
 	if (isBackClicked) {
