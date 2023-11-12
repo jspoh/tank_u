@@ -13,7 +13,7 @@ void initDropbox(void)
 }
 void dropBox(void) {
 	// size of the dropbox
-	Size size = { 200, 200 };
+	Size size = { 50, 50 };
 	// position of the wall
 	Position pos = { (WINDOW_SIZE.width / 2), (WINDOW_SIZE.height / 2) };
 	Dropbox dropbox = { size, pos };

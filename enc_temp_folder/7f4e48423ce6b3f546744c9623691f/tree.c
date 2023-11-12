@@ -6,7 +6,7 @@
 #include "utils.h"
 #include "collision.h"
 #include "wall.h"
-#include "dropbox.h"
+//#include "dropbox.h"
 
 
 Tree activeTrees[MAX_TREES] = { 0 };
@@ -128,15 +128,15 @@ void initTree(void) {
 				continue;  // bro you were so close.. but you just had to spawn on top of the tank HUH
 			}
 			
-			bool collidedDropbox = false;
-			if (colRects(&dropbox, &activeTrees[i].rect, (Vector) { 0, -1 }, (Vector) { 0, -1 }, false, false)) {
-				collidedDropbox = true;
-				break;
-			}
+			//bool collidedDropbox = false;
+			//if (colRects(&dropBox, &activeTrees[i].rect, (Vector) { 0, -1 }, (Vector) { 0, -1 }, false, false)) {
+			//	collidedDropbox = true;
+			//	break;
+			//}
 
-			if (collidedDropbox) {
-				continue; // once collide skip....
-			}
+			//if (collidedDropbox) {
+			//	continue; // once collide skip....
+			//}
 
 			isPosValid = true;  // hooray!!
 			numTrees++;
