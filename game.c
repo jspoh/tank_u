@@ -10,6 +10,7 @@
 #include "tree.h"
 #include "winner.h"
 #include <stdio.h>
+#include "dropbox.h"
 
 CP_Font font;
 CP_Image gameBg;
@@ -103,6 +104,7 @@ void gameExit(void) {
 	destroyTree();
 	destroyTank();
 	destroyHealthBar();
+	destroyDropbox();
 	CP_Sound_Free(&gameMusic);
 	debug_log("freed game music\n");
 }

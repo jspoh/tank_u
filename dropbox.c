@@ -18,9 +18,14 @@ void dropBox(void) {
 	Position pos = { (WINDOW_SIZE.width / 2), (WINDOW_SIZE.height / 2) };
 	Dropbox dropbox = { size, pos };
 	// so now instead of colour I load img of dropbox from asset
-	CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
+	/*CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
+	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);*/
 	// load img and draw image at pos and size of dropbox
-	CP_Image_Draw(dropboxImg, dropbox.pos.x, dropbox.pos.y, dropbox.size.width, dropbox.size.height, 255);
+	CP_Image_Draw(dropboxImg, (float)dropbox.pos.x, (float)dropbox.pos.y, (float)dropbox.size.width, (float)dropbox.size.height, 255);
 	/*drawRect(&dropbox, &fillCol, &strokeCol);*/
 }
+
+
+void destroyDropbox(void) {
+		CP_Image_Free(&dropboxImg);
+	}
