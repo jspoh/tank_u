@@ -10,6 +10,7 @@
 #include "tree.h"
 #include "winner.h"
 #include <stdio.h>
+#include "pause.h"
 
 CP_Font font;
 
@@ -69,6 +70,10 @@ void gameUpdate(void) {
 
 	if (CP_Input_KeyTriggered(KEY_Q)) {
 		CP_Engine_SetNextGameState(menuInit, menuUpdate, menuExit);
+	}
+
+	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
+		CP_Engine_SetNextGameState(pauseInit, pauseUpdate, pauseExit);
 	}
 
 	drawWall();
