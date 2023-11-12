@@ -83,6 +83,7 @@ void initTree(void) {
 			randY = randY < 0 ? 0 : randY;
 			activeTrees[i].rect.pos = (Position){ randX, randY };
 
+			// since all images are center rendered, we need a new rect to give us position according to draw fn required by colRects fn
 			Rect treeHitbox = (Rect){ activeTrees[i].rect.size, (Position) { activeTrees[i].rect.pos.x - activeTrees[i].rect.size.width/2, activeTrees[i].rect.pos.y - activeTrees[i].rect.size.height/2 } };
 
 			/*ensure position on screen is valid*/
@@ -130,11 +131,11 @@ void initTree(void) {
 				continue;  // bro you were so close.. but you just had to spawn on top of the tank HUH
 			}
 
-			
-			/*Rect treeHitbox = (Rect){ activeTrees[i].rect.size, (Position) { activeTrees[i].rect.pos.x - activeTrees[i].rect.size.width / 2, activeTrees[i].rect.pos.y - activeTrees[i].rect.size.height / 2 } };*/
+			// 
+			Rect dropHitbox = (Rect){ dropbox.size, (Position) { dropbox.pos.x - dropbox.size.width / 2, dropbox.pos.y - dropbox.size.height / 2 } };
 
 			bool collidedDropbox = false;
-			if (colRects(&dropbox, &treeHitbox, (Vector) { 0, -1 }, (Vector) { 0, -1 }, false, false)) {
+			if (colRects(&dropHitbox, &treeHitbox, (Vector) { 0, -1 }, (Vector) { 0, -1 }, false, false)) {
 				collidedDropbox = true;
 			}
 
