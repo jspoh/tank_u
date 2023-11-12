@@ -22,7 +22,7 @@ double sfxVolume = 1.0;
 CP_Font font;
 CP_Image menuBg;
 
-int menuState = FADE_IN;
+enum MENU_STATES menuState = FADE_IN;
 
 BYTE oAlpha = 255;
 

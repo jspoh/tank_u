@@ -15,6 +15,7 @@
 #include "options.h"
 #include "help.h"
 #include "game.h"
+#include "winner.h"
 
 enum GAME_STATES gameState = GAME;
 
@@ -24,12 +25,17 @@ CP_Sound gameMusic;
 
 bool gameMusicPlaying = false;
 bool isPaused = false;
+bool freezeGame = false;
 
 extern CP_Color red;
 extern double musicVolume;
 extern double sfxVolume;
 extern int MUSIC_GROUP;
 extern int SFX_GROUP;
+
+extern Tank tanks[NUM_PLAYERS];
+
+int loser=0;
 
 // !TODO make dynamic (let user set)
 Keybinds P1_KEYBINDS = {
@@ -64,6 +70,16 @@ void _debugGame(void) {
 	}
 }
 
+void _getWinner(void) {
+		for (int i = 0; i < NUM_PLAYERS; i++) {
+		if (tanks[i].health == 0) {
+			loser = i + 1;
+			//CP_Engine_SetNextGameState(winnerInit, winnerUpdate, winnerExit);
+			renderWinner();
+		}
+	}
+}
+
 
 void gameInit(void) {
 	// font = CP_Font_Load("Assets/fonts/Exo2-Regular.ttf");
@@ -83,6 +99,7 @@ void gameInit(void) {
 	initTree();
 	initHealthBar();
 	initDropbox();
+	initWinner();
 
 	CP_Sound_PlayAdvanced(gameMusic, (float)musicVolume, 1.f, true, MUSIC_GROUP);
 }
@@ -96,6 +113,7 @@ void gameUpdate(void) {
 
 	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
 		isPaused = !isPaused;
+		freezeGame = !freezeGame;
 	}
 
 	switch (gameState) {
@@ -103,8 +121,8 @@ void gameUpdate(void) {
 		dropBox();
 		drawWall();
 		updateTree();
-		updateTank(isPaused);
-		updateCannonball(isPaused);
+		updateTank(freezeGame);
+		updateCannonball(freezeGame);
 		updateHealthBar();
 		colCbWall();
 
@@ -122,6 +140,8 @@ void gameUpdate(void) {
 		break;
 	}
 
+	_getWinner();
+
 
 	if (DEBUG_MODE) {
 		// _debugGame();
@@ -137,4 +157,5 @@ void gameExit(void) {
 	debug_log("freed game music\n");
 	destroyWinner();
 	isPaused = false;
+	freezeGame = false;
 }
