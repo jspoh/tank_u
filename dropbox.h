@@ -3,8 +3,8 @@
 #include "config.h"
 #include "utils.h"
 
-typedef Rect Dropbox;
+//typedef Rect Dropbox;
 
-void dropBox(void);
+void renderDropbox(void);
 void destroyDropbox(void);
 void initDropbox(void);
