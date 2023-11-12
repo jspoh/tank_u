@@ -150,6 +150,7 @@ void gameUpdate(void) {
 }
 
 void gameExit(void) {
+	clearCannonballs();
 	destroyTree();
 	destroyTank();
 	destroyHealthBar();

@@ -80,6 +80,10 @@ CannonBall _cannonballConstructor(Position pos, Vector d, double damage, double 
 	return cb;
 }
 
+void clearCannonballs(void) {
+	numCbs = 0;
+}
+
 /**
  * @param ammoType enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
  * 
