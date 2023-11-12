@@ -15,9 +15,9 @@ int SFX_GROUP = CP_SOUND_GROUP_0;
 int MUSIC_GROUP = CP_SOUND_GROUP_1;
 
 /*audio between 0 and 1*/
-double musicVolume = 1.0;
+extern double musicVolume;
 /*audio between 0 and 1*/
-double sfxVolume = 1.0;
+extern double sfxVolume;
 
 CP_Font font;
 CP_Image menuBg;

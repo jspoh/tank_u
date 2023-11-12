@@ -3,6 +3,7 @@
 *.db
 *.pdb
 *.exe
+*.out
 *.ilk
 .vs
 .vscode
@@ -14,6 +15,7 @@
 *.exp
 *.iobj
 *.ipdb
+config.json
 bin
 Debug
 Release

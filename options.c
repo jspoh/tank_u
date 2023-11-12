@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "collision.h"
 #include "game.h"
+#include "data.h"
 #include <stdio.h>
 
 extern int menuState;
@@ -132,6 +133,7 @@ void _render(void) {
 			/*adjust volume*/
 			musicVolume = (musicKnob.pos.x - musicDial.pos.x) / musicDial.size.width;
 			debug_log("music volume: %f\n", musicVolume);
+
 			break;
 		case SFX:
 			/*move knob visually*/
@@ -146,7 +148,7 @@ void _render(void) {
 			/*adjust volume*/
 			sfxVolume = (sfxKnob.pos.x - sfxDial.pos.x) / sfxDial.size.width;
 			debug_log("sfx volume: %f\n", sfxVolume);
-			printf("sfx volume: %f\n", sfxVolume);
+
 			break;
 	}
 
@@ -163,5 +165,9 @@ void renderOptions(void) {
 	if (isBackClicked) {
 		menuState = MENU_PAGE;
 		gameState = GAME;
+
+		/*update json file*/
+		updateDataNum("sfxVolume", sfxVolume);
+		updateDataNum("musicVolume", musicVolume);
 	}
 }
