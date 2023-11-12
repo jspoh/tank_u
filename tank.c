@@ -30,7 +30,7 @@ Queue history;
 
 enum { PLAYER_1, PLAYER_2 };
 Tank tanks[NUM_PLAYERS] = { 0 };
-Size tankSize = { 75.f/2, 100.f/2 };
+Size tankSize = { 75.f/3*2, 100.f/3*2 };
 
 extern Keybinds keybindings[];
 extern Rect dropbox;
