@@ -405,7 +405,7 @@ void updateTank(void) {
 	// capture history
 	enqueue(&history, tanks[0], tanks[1]);
 
-	_debugTank();
+	// _debugTank();
 
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {

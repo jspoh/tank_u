@@ -12,6 +12,7 @@
 #include <stdio.h>
 
 CP_Font font;
+CP_Image gameBg;
 
 extern CP_Color red;
 
@@ -53,6 +54,7 @@ void _debugGame(void) {
 void gameInit(void) {
 	// font = CP_Font_Load("Assets/fonts/Exo2-Regular.ttf");
 	font = CP_Font_Load("Assets/fonts/PixelifySans-Regular.ttf");
+	gameBg = CP_Image_Load("Assets/game/terrain.png");
 	CP_Font_Set(font);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
@@ -66,6 +68,7 @@ void gameInit(void) {
 }
 void gameUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 150, 0, 255));
+	CP_Image_Draw(gameBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), 255);
 
 	if (CP_Input_KeyTriggered(KEY_Q)) {
 		CP_Engine_SetNextGameState(menuInit, menuUpdate, menuExit);
