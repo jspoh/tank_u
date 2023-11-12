@@ -66,6 +66,9 @@
     <ClCompile Include="pause.c">
       <Filter>components\menu\subpages\pause</Filter>
     </ClCompile>
+    <ClCompile Include="dropbox.c">
+      <Filter>components\dropbox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="menu.h">
@@ -131,6 +134,9 @@
     </ClInclude>
     <ClInclude Include="pause.h">
       <Filter>components\menu\subpages\pause</Filter>
+    </ClInclude>
+    <ClInclude Include="dropbox.h">
+      <Filter>components\dropbox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +208,9 @@
     </Filter>
     <Filter Include="components\menu\subpages\pause">
       <UniqueIdentifier>{48fc42af-9ec2-4091-9f06-cf8e0e0f50bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\dropbox">
+      <UniqueIdentifier>{866c774a-d1ef-47a4-b23b-00ef7e5c312a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -4,9 +4,11 @@
 #include "menu.h"
 #include "utils.h"
 #include "collision.h"
+#include "game.h"
 #include <stdio.h>
 
 extern int menuState;
+extern enum GAME_STATES gameState;
 extern CP_Font font;
 extern CP_Color grey1;
 extern CP_Color grey2;
@@ -160,5 +162,6 @@ void renderOptions(void) {
 
 	if (isBackClicked) {
 		menuState = MENU_PAGE;
+		gameState = GAME;
 	}
 }

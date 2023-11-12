@@ -22,19 +22,19 @@ double sfxVolume = 1.0;
 CP_Font font;
 CP_Image menuBg;
 
-int menuState = FADE_IN;
+enum MENU_STATES menuState = FADE_IN;
 
 BYTE oAlpha = 255;
 
 double textSize = 50.0;
 
-CP_Color btnColor;
-CP_Color invisColor;
-CP_Color black;
-CP_Color white;
-CP_Color whiteHighlighted;
+CP_Color btnColor = {0,0,0,220};
+CP_Color invisColor = {0,0,0,0};
+CP_Color black = {0,0,0,255};
+CP_Color white = {255,255,255,255};
+CP_Color whiteHighlighted = {200, 200, 200, 225};
 CP_Color red = {255,0,0,255};
-CP_Color oColor;
+CP_Color oColor = {0, 0, 0, 200};
 CP_Color grey1 = { 200, 200, 200, 255 };
 CP_Color grey2 = { 150, 150, 150, 255 };
 CP_Color yellow = { 245, 245, 66, 255 };
@@ -107,15 +107,6 @@ void _initVars(void) {
 
 	menuBg = CP_Image_Load("Assets/menu/menu_bg.png");
 	debug_log("loaded menu background image\n");
-
-	/* colors */
-	btnColor = CP_Color_Create(0, 0, 0, 220);
-	invisColor = CP_Color_Create(0, 0, 0, 0);
-	black = CP_Color_Create(0, 0, 0, 255);
-	white = CP_Color_Create(255, 255, 255, 255);
-	whiteHighlighted = CP_Color_Create(200, 200, 200, 225);
-	oColor = CP_Color_Create(0, 0, 0, 200);
-	red = CP_Color_Create(255, 0, 0, 255);
 
 	/* structs */
 	startBtn.a = a;

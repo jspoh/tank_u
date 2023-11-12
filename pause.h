@@ -1,4 +1,3 @@
 #pragma once
 
-void pauseUpdate(void);
-void pauseExit(void);
+void renderPause(void);

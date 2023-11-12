@@ -1,4 +1,3 @@
-#include "cprocessing.h"
 #include "config.h"
 #include "game.h"
 #include "backdrop.h"
@@ -11,92 +10,109 @@
 #include <stdio.h>
 
 typedef struct {
-	char* pauseButton;
-	Rect rect;
+	char* text;
+	Rect border;
 	Position pos;
 } Button;
 
 #define NUM_PAUSE_BUTTONS 5
-char* pauseButtonTexts[NUM_PAUSE_BUTTONS] = { "Resume", "Restart", "Options", "Help", "Exit" };
-Button pauseButtons[NUM_PAUSE_BUTTONS] = { 0 };
+enum { RESUME, RESTART, OPTIONS, HELP, EXIT } PAUSE_BTNS;
+char* pauseBtnTexts[NUM_PAUSE_BUTTONS] = { "Resume", "Restart", "Options", "Help", "Exit" };
+Button pauseBtns[NUM_PAUSE_BUTTONS] = { 0 };
 
+extern bool isPaused;
+extern bool freezeGame;
+extern enum GAME_STATES gameState;
+extern CP_Font font;
+extern CP_Color black;
+extern CP_Color white;
+extern CP_Color invisColor;
+extern CP_Color red;
+extern double spaceBetweenBtns;
 
-CP_Font font;
-
-CP_Color pauseButtonColor;
-CP_Color pauseStrokeColor;
-CP_Color blackColor;
-
-Size pauseButtonSize = { 200.0, 75.0 };
+Size pauseBtnSize = { 200.0, 75.0 };
 Position firstBtnPos = { 0 };
-double pauseTextSize = 50.0;
+const double pauseTextSize = 50.0;
+
+CP_Color pBtnBg = { 150,150,150,0 };
+
+bool afterInit = false;
 
 
-
-
-void pauseButtonConstructor(void)
+void initPause(void)
 {
-	firstBtnPos.x = WINDOW_SIZE.width / 2 - pauseButtonSize.width / 2;
-	firstBtnPos.y = WINDOW_SIZE.height / 5 + WINDOW_SIZE.height / 5;
+	firstBtnPos.x = (WINDOW_SIZE.width / 2) - (pauseBtnSize.width / 2);
+	firstBtnPos.y = (WINDOW_SIZE.height - (NUM_PAUSE_BUTTONS * pauseBtnSize.height + (NUM_PAUSE_BUTTONS - 1) * spaceBetweenBtns)) / 2;
+	debug_log("first pause button y pos: %lf\n", firstBtnPos.y);
 	for (int i = 0; i < NUM_PAUSE_BUTTONS; i++)
 	{
-		pauseButtons[i].pauseButton = pauseButtonTexts[i];
-		pauseButtons[i].rect.size = pauseButtonSize;
-		pauseButtons[i].rect.pos.x = firstBtnPos.x;
-		pauseButtons[i].rect.pos.y = firstBtnPos.y + (i * 3 * (pauseButtonSize.height) / 2);
-		pauseButtons[i].pos.x = pauseButtons[i].rect.pos.x + pauseButtonSize.width / 2;
-		pauseButtons[i].pos.y = pauseButtons[i].rect.pos.y;
+		pauseBtns[i].text = pauseBtnTexts[i];
+		pauseBtns[i].border.size = pauseBtnSize;
+		pauseBtns[i].border.pos = (Position){ firstBtnPos.x, firstBtnPos.y + (i * (spaceBetweenBtns + pauseBtnSize.height)) };
+		pauseBtns[i].pos.x = pauseBtns[i].border.pos.x + pauseBtnSize.width / 2;
+		pauseBtns[i].pos.y = pauseBtns[i].border.pos.y + pauseBtnSize.height / 2;
 	}
-}
-
-void pauseButtonSelection(void)
-{
-	for (int i = 0; i < NUM_PAUSE_BUTTONS; i++) {
-		if (mouseInRect(pauseButtons[i].rect, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				if (!strcmp(pauseButtons[i].pauseButton, "Continue")) {
-					CP_Engine_SetNextGameState(NULL, gameUpdate, gameExit);
-				}
-				else if (!strcmp(pauseButtons[i].pauseButton, "Restart")) {
-					CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
-				}
-				else if (!strcmp(pauseButtons[i].pauseButton, "Options")) {
-					renderOptions();
-				}
-				else if (!strcmp(pauseButtons[i].pauseButton, "Help")) {
-					renderHelp();
-				}
-				else if (!strcmp(pauseButtons[i].pauseButton, "Exit")) {
-					CP_Engine_SetNextGameState(menuInit, menuUpdate, menuExit);
-				}
-			}
-		}
-	}
-}
-
-void pauseInit(void)
-{
-	renderBackdrop();
-	font = CP_Font_Load("Assets/fonts/PixelifySans-Regular.ttf");
-	CP_Font_Set(font);
-	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
-	CP_System_SetFrameRate(FRAMERATE);
-	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_TOP);
-
-	pauseButtonColor = CP_Color_Create(0, 0, 0, 220);
-	pauseStrokeColor = CP_Color_Create(0, 0, 0, 0);
-	blackColor = CP_Color_Create(0, 0, 0, 255);
 }
 
 void renderPause(void)
 {
-	pauseButtonConstructor();
-	for (int i = 0; i < NUM_PAUSE_BUTTONS; i++) {
-		drawRect(&pauseButtons[i].rect, &pauseStrokeColor, &pauseButtonColor);
-		drawText(pauseButtons[i].pauseButton, &pauseButtons[i].pos, pauseTextSize, &blackColor);
+	if (!afterInit) {
+		initPause();
+		afterInit = true;
 	}
-	pauseButtonSelection();
+
+	renderBackdrop();
+
+	// CP_Settings_Fill(red);
+	// CP_Graphics_DrawRect(firstBtnPos.x, firstBtnPos.y, pauseBtnSize.width, pauseBtnSize.height);
+	// printf("%lf\n", firstBtnPos.y);
+
+
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
+	for (int i = 0; i < NUM_PAUSE_BUTTONS; i++) {
+		/*event listeners*/
+		/*hover event*/
+		double mouseX = CP_Input_GetMouseX();
+		double mouseY = CP_Input_GetMouseY();
+		if (mouseInRect(pauseBtns[i].border, mouseX, mouseY)) {
+			pBtnBg.a = 255;
+
+			/*click event*/
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				switch (i) {
+				case RESUME:
+					isPaused = false;
+					freezeGame = false;
+					break;
+				case RESTART:
+					CP_Engine_SetNextGameStateForced(gameInit, gameUpdate, gameExit);
+					break;
+				case OPTIONS:
+					gameState = GAME_OPTIONS;
+					break;
+				case HELP:
+					gameState = GAME_HELP;
+					break;
+				case EXIT:
+					CP_Engine_SetNextGameStateForced(menuInit, menuUpdate, menuExit);
+					break;
+				default:
+					fprintf(stderr, "Pause menu switch case reached end of options\n");
+					exit(9);
+				}
+			}
+		}
+		else {
+			pBtnBg.a = 0;
+		}
+
+		/*render*/
+		drawRect(&pauseBtns[i].border, &pBtnBg, &white);
+		drawText(pauseBtns[i].text, &pauseBtns[i].pos, pauseTextSize, &white);
+		// debug_log("%f %f\n", pauseBtns[i].pos.x, pauseBtns[i].pos.y);
+		// debug_log("%d %d %d %d\n", white.r, white.g, white.b, white.a);
+	}
+
 }
 void pauseExit(void)
 {
