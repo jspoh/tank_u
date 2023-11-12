@@ -10,8 +10,7 @@
 #include "menu.h"
 #include <stdio.h>
 
-CP_Sound titleSong;
-bool isPlayingMusic = false;
+CP_Sound titleMusic;
 int SFX_GROUP = CP_SOUND_GROUP_0;
 int MUSIC_GROUP = CP_SOUND_GROUP_1;
 
@@ -29,13 +28,13 @@ BYTE oAlpha = 255;
 
 double textSize = 50.0;
 
-CP_Color btnColor;
-CP_Color invisColor;
-CP_Color black;
-CP_Color white;
-CP_Color whiteHighlighted;
+CP_Color btnColor = {0,0,0,220};
+CP_Color invisColor = {0,0,0,0};
+CP_Color black = {0,0,0,255};
+CP_Color white = {255,255,255,255};
+CP_Color whiteHighlighted = {200, 200, 200, 225};
 CP_Color red = {255,0,0,255};
-CP_Color oColor;
+CP_Color oColor = {0, 0, 0, 200};
 CP_Color grey1 = { 200, 200, 200, 255 };
 CP_Color grey2 = { 150, 150, 150, 255 };
 CP_Color yellow = { 245, 245, 66, 255 };
@@ -103,18 +102,11 @@ void _menuFadeToGame(void) {
 }
 
 void _initVars(void) {
-	titleSong = CP_Sound_Load("Assets/audio/title.wav");
+	titleMusic = CP_Sound_LoadMusic("Assets/audio/music/title.wav");
+	debug_log("loaded menu title music\n");
 
 	menuBg = CP_Image_Load("Assets/menu/menu_bg.png");
-
-	/* colors */
-	btnColor = CP_Color_Create(0, 0, 0, 220);
-	invisColor = CP_Color_Create(0, 0, 0, 0);
-	black = CP_Color_Create(0, 0, 0, 255);
-	white = CP_Color_Create(255, 255, 255, 255);
-	whiteHighlighted = CP_Color_Create(200, 200, 200, 225);
-	oColor = CP_Color_Create(0, 0, 0, 200);
-	red = CP_Color_Create(255, 0, 0, 255);
+	debug_log("loaded menu background image\n");
 
 	/* structs */
 	startBtn.a = a;
@@ -158,6 +150,7 @@ void menuInit(void) {
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	
 	_initVars();
+	CP_Sound_PlayAdvanced(titleMusic, (float)musicVolume, 1.f, true, MUSIC_GROUP);
 }
 
 void _renderLaunchPage(void) {
@@ -236,13 +229,10 @@ void _renderMenuPage(void) {
 
 void _destroySubpages(void) {
 	destroyCredits();
+	destroyHelp();
 }
 
 void menuUpdate(void) {
-	if (!isPlayingMusic) {
-		isPlayingMusic = true;
-		CP_Sound_PlayAdvanced(titleSong, (float)musicVolume, 1.f, true, MUSIC_GROUP);
-	}
 	CP_Graphics_ClearBackground(CP_Color_Create(150, 150, 150, 255));
 	CP_Image_Draw(menuBg, (float)(WINDOW_SIZE.width / 2), (float)(WINDOW_SIZE.height / 2), (float)(WINDOW_SIZE.width), (float)(WINDOW_SIZE.height), oAlpha);
 
@@ -277,6 +267,7 @@ void menuExit(void) {
 	// why doesnt this work? wow suddenly it worked when i was about to open issue on github
 	_destroySubpages();
 	CP_Image_Free(&menuBg);
-	CP_Sound_Free(&titleSong);
-	isPlayingMusic = false;
+	debug_log("freed menu background img\n");
+	CP_Sound_Free(&titleMusic);
+	debug_log("freed menu title music\n");
 }

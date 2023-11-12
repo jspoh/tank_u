@@ -33,8 +33,8 @@
     <ClCompile Include="splash.c">
       <Filter>components\menu\splash</Filter>
     </ClCompile>
-    <ClCompile Include="back_btn.c">
-      <Filter>components\menu\back_button</Filter>
+    <ClCompile Include="action_btn.c">
+      <Filter>components\menu\action_button</Filter>
     </ClCompile>
     <ClCompile Include="config.c">
       <Filter>config</Filter>
@@ -59,9 +59,15 @@
     </ClCompile>
     <ClCompile Include="winner.c">
       <Filter>components\game_end_screen</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="powerup.c">
       <Filter>components\powerup</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.c">
+      <Filter>components\menu\subpages\pause</Filter>
+    </ClCompile>
+    <ClCompile Include="dropbox.c">
+      <Filter>components\dropbox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -96,8 +102,8 @@
     <ClInclude Include="splash.h">
       <Filter>components\menu\splash</Filter>
     </ClInclude>
-    <ClInclude Include="back_btn.h">
-      <Filter>components\menu\back_button</Filter>
+    <ClInclude Include="action_btn.h">
+      <Filter>components\menu\action_button</Filter>
     </ClInclude>
     <ClInclude Include="config.h">
       <Filter>config</Filter>
@@ -122,9 +128,15 @@
     </ClInclude>
     <ClInclude Include="winner.h">
       <Filter>components\game_end_screen</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="powerup.h">
       <Filter>components\powerup</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>components\menu\subpages\pause</Filter>
+    </ClInclude>
+    <ClInclude Include="dropbox.h">
+      <Filter>components\dropbox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -164,7 +176,7 @@
     <Filter Include="components\menu\splash">
       <UniqueIdentifier>{8982ad8c-939f-47c0-86d0-1602228905ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="components\menu\back_button">
+    <Filter Include="components\menu\action_button">
       <UniqueIdentifier>{8b343abd-f77e-43dd-8ad6-78b0828e3c05}</UniqueIdentifier>
     </Filter>
     <Filter Include="config">
@@ -193,6 +205,12 @@
     </Filter>
     <Filter Include="components\powerup">
       <UniqueIdentifier>{72454c7c-85c1-4554-b0c0-df2840c76f5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\subpages\pause">
+      <UniqueIdentifier>{48fc42af-9ec2-4091-9f06-cf8e0e0f50bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\dropbox">
+      <UniqueIdentifier>{866c774a-d1ef-47a4-b23b-00ef7e5c312a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -13,8 +13,6 @@ typedef uint8_t BYTE;
 
 typedef uint8_t bool;
 
-
-
 typedef struct {
 	double width, height, diameter;
 } Size;
@@ -60,3 +58,9 @@ int init(void);
 
 
 int getRand(int min, int max);
+
+
+// debugging
+#define DEBUG_MODE true
+
+void debug_log(const char *format, ...);
