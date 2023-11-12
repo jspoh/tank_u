@@ -14,7 +14,7 @@ void destroyCredits(void) {
 
 void renderCredits(void) {
 	if (creditsPng == NULL) {
-		creditsPng = CP_Image_Load("Assets/credits.png");
+		creditsPng = CP_Image_Load("Assets/menu/credits.png");
 	}
 
 	renderBackdrop();

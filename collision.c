@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "wall.h"
 #include "cannonball.h"
+#include "tree.h"
 #include <stdio.h>
 
 
@@ -12,10 +13,16 @@ extern Wall activeWalls[MAX_WALLS];
 extern int numWalls;
 extern CannonBall activeCbs[MAX];
 extern int numCbs;
+extern Tree activeTrees[MAX_TREES];
+extern int numTrees;
 
 
 bool mouseInRect(Rect r, double mouseX, double mouseY) {
     return (mouseX >= r.pos.x && mouseX <= r.pos.x + r.size.width && mouseY >= r.pos.y && mouseY <= r.pos.y + r.size.height);
+}
+
+bool mouseInCircle(Circle c, double mouseX, double mouseY) {
+    return getDistance(c.pos.x, c.pos.y, mouseX, mouseY) <= c.radius;
 }
 
 /**
@@ -279,7 +286,7 @@ int _circleRectAABB(Rect* r, Circle* c, bool usingCenter) {
  * @return true
  * @return false
  */
-bool colTankCb(Tank* t) {
+bool colTankCb(Tank* t, double* damageTaken) {
     Rect r = { t->size, t->pos };
     Position tCorners[4] = { 0 };
     _getRectCorners(&r, &t->pos.d, tCorners, true);
@@ -293,6 +300,7 @@ bool colTankCb(Tank* t) {
 
         Circle c = { activeCbs[i].radius, activeCbs[i].pos };
         if (_circleRectSAT(&r, &c, &t->pos.d, true)) {
+            *damageTaken = activeCbs[i].damage;
             destroyCannonball(i);
             return true;
         }
@@ -401,11 +409,91 @@ void colCbWall(void) {
  */
 bool colTankRect(Tank* t, Rect* r, bool rectUsingCenter) {
     Position tCorners[4] = { 0 };
-    _getRectCorners(r, &t->pos.d, tCorners, true);
+    Rect tRect = (Rect){ t->size, t->pos };
+    _getRectCorners(&tRect, &t->pos.d, tCorners, true);
 
     Position rCorners[4] = { 0 };
     Vector rVector = { 0, -1 };
     _getRectCorners(r, &rVector, rCorners, rectUsingCenter);
 
     return _rectSAT(tCorners, rCorners);
+}
+
+/**
+ * @brief uses separation axis theorem
+ * 
+ * @param r1 
+ * @param r2 
+ * @param d1 directional vector of r1 (use `(Vector){0, -1}` if you didnt rotate the rectangle)
+ * @param d2 directional vector of r2 (use `(Vector){0, -1}` if you didnt rotate the rectangle)
+ * @param r1UsingCenter rendered using CP_RECT_CENTER. set to `false` if you dont know what this means
+ * @param r2UsingCenter rendered using CP_RECT_CENTER. set to `false` if you dont know what this means
+ * @return true 
+ * @return false 
+ */
+bool colRects(Rect* r1, Rect* r2, Vector d1, Vector d2, bool r1UsingCenter, bool r2UsingCenter) {
+    Position r1Corners[4] = { 0 };
+    _getRectCorners(r1, &d1, r1Corners, r1UsingCenter);
+
+    Position r2Corners[4] = { 0 };
+    _getRectCorners(r2, &d2, r2Corners, r2UsingCenter);
+
+    return _rectSAT(r1Corners, r2Corners);
+}
+
+/**
+ * @brief handle collisions between trees and cannonballs and trees and tanks
+ * 
+ * @param tank 
+ * @return true 
+ * @return false 
+ */
+bool collisionTree(Tank* tank) {
+    bool tankCol = false;
+	int toRemove[MAX_TREES] = { 0 };
+	int sizeTR = 0;
+
+	// iterate through active trees
+	for (int i=0; i<numTrees; i++) {
+		bool treeRemoved = false;
+		Tree tree = activeTrees[i];  // declare variable for clearer code (altho uses more memory but negligible la)
+		Rect treeHitbox = (Rect){ tree.rect.size, (Position) { tree.rect.pos.x - tree.rect.size.width/2, tree.rect.pos.y - tree.rect.size.height/2 } };
+		//drawRect(&treeHitbox, &blue, &blue);  // draw tree hitbox
+		
+		// iterate through active cannonballs
+		for (int j=0; j<numCbs; j++) {
+			CannonBall cb = activeCbs[j];
+			Rect cbHitbox = (Rect){ (Size){ cb.radius*2, cb.radius*2 }, (Position){cb.pos.x - cb.radius, cb.pos.y - cb.radius} };
+			//drawRect(&cbHitbox, &red, &red);  // draw cb hitbox
+			if (colRects(&treeHitbox, &cbHitbox, (Vector){0, -1}, (Vector){0, -1}, false, false)) {
+				//puts("ok fine u hit me");  //test first ok 
+				destroyCannonball(j);
+				toRemove[sizeTR++] = i;
+				treeRemoved = true;
+				break;
+			}
+		}
+
+		if (treeRemoved) {  // optimization. no need to check if tree and tank collides because tree has been destroyed
+			continue;
+		}
+
+		// iterate through tanks
+			if (colTankRect(tank, &treeHitbox, false)) {
+				//puts("wow tank stupid ah");
+				//tanks[j].pos.x = 0;
+				// tank->hasCollided = true;
+                tankCol = true;
+			}
+	}
+
+	for (int i = 0; i < sizeTR; i++) {
+		//puts("hm");
+		_destroyTree(toRemove[i]);
+	}
+
+    if (tankCol) {
+        return true;
+    }
+    return false;
 }

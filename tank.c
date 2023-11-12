@@ -19,6 +19,11 @@
 #define REPAIR_TIME 1  // seconds
 #define POWERUP_DURATION 10
 
+CP_Sound tankFire;
+
+extern double sfxVolume;
+extern int SFX_GROUP;
+
 Queue history;
 
 enum { PLAYER_1, PLAYER_2 };
@@ -27,45 +32,6 @@ Size tankSize = { 75.f, 100.f };
 
 extern Keybinds keybindings[];
 
-//// HARD CODING CERTAIN STUFF FOR NOW!!!!
-//void drawHealthBar(Tank* tank, int playerIndex) {
-//	CP_Color fillCol = CP_Color_Create(0, 255, 0, 255); // Green colour for health
-//	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255); // Black colour for border
-//
-//	// Calculate percentage of health remaining
-//	double healthPercentage = (tank->health / MAX_HEALTH) * 100.0;
-//
-//	// Calculate width of the health bar based on the tank's health
-//	double barWidth = 2*(tank->size.width * (healthPercentage / 100.0));
-//	double barHeight = 30;
-//	//Size size = { barWidth, barHeight };
-//	double xPos, yPos;
-//	// Calculate position based on player index
-//	if (playerIndex == 0)
-//	{
-//		xPos = 10; // Adjust x-position for player 1
-//	}
-//	else
-//	{
-//		xPos = WINDOW_SIZE.width - barWidth - 10; // Adjust x position for player 2
-//	}
-//
-//	yPos = 50;
-//
-//	//Position barPos = { xPos, yPos };
-//	//drawRect(&barPos, &size, &fillCol, &strokeCol);
-//	CP_Settings_Fill(fillCol);
-//	CP_Settings_Stroke(strokeCol);
-//	CP_Graphics_DrawRect(xPos, yPos, barWidth, barHeight);
-//
-//	// Display HP value
-//	CP_Settings_TextSize(25);
-//	CP_Settings_Fill(fillCol);
-//
-//	char hpText[50];
-//	snprintf(hpText, 50, "HP: %.0f", tank->health); // Convert HP value to string
-//	CP_Font_DrawText(hpText, xPos + barWidth / 2, yPos - 20); // Draw HP text above health bar
-//}
 
 void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
@@ -89,7 +55,6 @@ void _setTankColor(Tank* tank, BYTE r, BYTE g, BYTE b, BYTE a) {
 	tank->color.b = b;
 	tank->color.a = a;
 }
-
 
 void _moveTanks(void) {
 	const double dt = CP_System_GetDt();
@@ -122,10 +87,10 @@ void _moveTanks(void) {
 				t->speed = 0;
 			}
 
-		if (t->repairTimer > 0) {
-			t->speed = 0;
-			// dDegrees = 0;	
-		}
+			if (t->repairTimer > 0) {
+				t->speed = 0;
+				// dDegrees = 0;	
+			}
 
 			const double distance = dt * abs((int)t->speed);  // i have absolutely no idea why i cannot use other methods to ensure this isnt negative
 
@@ -206,7 +171,6 @@ void _moveTanks(void) {
 	}
 }
 
-
 Tank _tankConstructor(Position pos, Color color) {
 	Tank tank = { 0 };
 	tank.pos = pos;
@@ -215,7 +179,7 @@ Tank _tankConstructor(Position pos, Color color) {
 	tank.size = tankSize;
 	// change to different kinds of ammo for debugging
 	// enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
-	tank.activePowerUps = SHOTGUN;
+	tank.activePowerUps = NORMAL;
 
 	/* add tank to tanks array */
 	bool valid = false;
@@ -278,25 +242,25 @@ void _tankCollectPowerUp(int i) { //int i is which tank it is in the array tanks
 
 void _tankUsePowerUp(int i) { //int i is which tank it is in the array tanks[i] 
 	static clock_t powerUpStartTime = 0;
-		if (CP_Input_KeyDown(keybindings[i].usePower)) {
-			for (int j = 0; j < POWERUPS_COUNT; j++)
-			{
-				//takes in the tank that have the power up
-				if (tanks[i].activePermPowers[j] != 0) {
-					tanks[i].activePowerUps = tanks[i].activePermPowers[j];
-					powerUpStartTime = clock(); //takes in the time that the function is being called
-				}
+	if (CP_Input_KeyDown(keybindings[i].usePower)) {
+		for (int j = 0; j < POWERUPS_COUNT; j++)
+		{
+			//takes in the tank that have the power up
+			if (tanks[i].activePermPowers[j] != 0) {
+				tanks[i].activePowerUps = tanks[i].activePermPowers[j];
+				powerUpStartTime = clock(); //takes in the time that the function is being called
 			}
 		}
-		if (tanks[i].activePowerUps != 0) {
-			clock_t currentTime = clock();
-			double elapsedTime = (double)(currentTime - powerUpStartTime) / CLOCKS_PER_SEC;
+	}
+	if (tanks[i].activePowerUps != 0) {
+		clock_t currentTime = clock();
+		double elapsedTime = (double)(currentTime - powerUpStartTime) / CLOCKS_PER_SEC;
 
-			if (elapsedTime >= POWERUP_DURATION) {
-				// Power-up duration has elapsed, reset activePowerUps to 0
-				tanks[i].activePowerUps = NORMAL;
-			}
+		if (elapsedTime >= POWERUP_DURATION) {
+			// Power-up duration has elapsed, reset activePowerUps to 0
+			tanks[i].activePowerUps = NORMAL;
 		}
+	}
 
 }
 
@@ -313,7 +277,7 @@ Position _getTurretCenter(Tank* t, Size turretSize) {
 
 
 
-void _tankShoot(int i, enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE } activePowerUp) { //int i is which tank it is in the array tanks[i] 
+void _tankShoot(int i, enum AMMO_TYPES activePowerUp) { //int i is which tank it is in the array tanks[i] 
 	if (CP_Input_KeyDown(keybindings[i].shoot))
 	{
 		//using the exact address to find the directional vector 
@@ -325,8 +289,11 @@ void _tankShoot(int i, enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE } activePo
 
 		Position turretTip = _getTurretCenter(&tanks[i], size);
 
-		onFireCannonball(turretTip, unitVector, i, activePowerUp);
-
+		bool firingSuccess = onFireCannonball(turretTip, unitVector, i, activePowerUp);
+		if (firingSuccess) {
+			CP_Sound_PlayAdvanced(tankFire, (float)sfxVolume, 1.f, false, SFX_GROUP);
+			puts("fired");
+		}
 	}
 
 }
@@ -346,7 +313,7 @@ void _tankRefillHealth(void) {
 void _actionTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		_tankCollectPowerUp(i);
-		_tankShoot(i,tanks[i].activePowerUps);
+		_tankShoot(i, tanks[i].activePowerUps);
 		_tankUsePowerUp(i);
 
 	}
@@ -395,12 +362,20 @@ void _collisionsTank(void) {
 			puts("col wall");
 		}
 
-		bool hasCollidedCb = colTankCb(&tanks[i]);
+		double damageTaken = 0;
+		bool hasCollidedCb = colTankCb(&tanks[i], &damageTaken);
 		if (hasCollidedCb) {
-			puts("BOOM");
+			//puts("BOOM");
+			_damageTank(&tanks[i], damageTaken);
+			//printf("health of tank: %lf\n", tanks[i].health);
 		}
 
-		if (hasCollidedWall || hasCollidedTank) {
+		bool hasCollidedTree = collisionTree(&tanks[i]);
+		if (hasCollidedTree) {
+			puts("col tree");
+		}
+
+		if (hasCollidedWall || hasCollidedTank || hasCollidedTree) {
 			// puts("have ok\n");
 			tanks[i].hasCollided = true;
 		}
@@ -414,6 +389,7 @@ void initTank(void) {
 	_createTank(WINDOW_SIZE.width / 6, WINDOW_SIZE.height / 2, 90.f, 0, 255, 0, 255);
 	_createTank(WINDOW_SIZE.width / 6 * 5, WINDOW_SIZE.height / 2, 270.f, 255, 0, 0, 255);
 	initQueue(&history);
+	tankFire = CP_Sound_Load("Assets/audio/sfx/tank_fire.wav");
 }
 
 void updateTank(void) {
@@ -432,6 +408,7 @@ void updateTank(void) {
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		if (tanks[i].hasCollided) {
+			printf("tank %d collided\n", i + 1);
 			tanks[i] = _findNoColTank(i);
 			// tanks[i].speed = 0;
 			tanks[i].repairTimer = REPAIR_TIME;
@@ -444,4 +421,5 @@ void destroyTank(void) {
 		Tank tank = { 0 };
 		tanks[i] = tank;
 	}
+	CP_Sound_Free(&tankFire);
 }
