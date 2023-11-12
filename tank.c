@@ -418,12 +418,13 @@ void updateTank(void) {
 	}
 
 	for (int i = 0; i < NUM_PLAYERS; i++) {
-		if (tanks[i].health==0) {
-			loser = i+1;
+		if (tanks[i].health == 0) {
+			loser = i + 1;
 			CP_Engine_SetNextGameState(winnerInit, winnerUpdate, winnerExit);
+			//callwinner();
 		}
 	}
-}
+} 
 
 void destroyTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {

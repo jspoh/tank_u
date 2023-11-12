@@ -124,3 +124,9 @@ void winnerExit(void) {
 	CP_Sound_Free(&winAudio);
 	playing = false;
 }
+
+void callwinner(void) {
+	winnerInit();
+	winnerUpdate();
+	//winnerExit();
+}

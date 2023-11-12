@@ -6,3 +6,5 @@ void winnerInit(void);
 void winnerUpdate(void);
 
 void winnerExit(void);
+
+void callwinner(void);
