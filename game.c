@@ -113,4 +113,6 @@ void gameExit(void) {
 	destroyDropbox();
 	CP_Sound_Free(&gameMusic);
 	debug_log("freed game music\n");
+
+	isPaused = false;
 }

@@ -167,7 +167,6 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     <ClCompile Include="menu.c" />
     <ClCompile Include="options.c" />
     <ClCompile Include="pause.c" />
-    <ClCompile Include="queue.c" />
     <ClCompile Include="powerup.c" />
     <ClCompile Include="queue.c" />
     <ClCompile Include="dropbox.c" />
@@ -193,7 +192,6 @@ xcopy "$(SolutionDir)extern\CProcessing\lib\x64\fmod.dll" "$(OutDir)" /s /r /y /
     <ClInclude Include="menu.h" />
     <ClInclude Include="options.h" />
     <ClInclude Include="pause.h" />
-    <ClInclude Include="queue.h" />
     <ClInclude Include="powerup.h" />
     <ClInclude Include="queue.h" />
     <ClInclude Include="dropbox.h" />

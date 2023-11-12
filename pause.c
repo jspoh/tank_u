@@ -88,7 +88,8 @@ void pauseInit(void)
 	pauseStrokeColor = CP_Color_Create(0, 0, 0, 0);
 	blackColor = CP_Color_Create(0, 0, 0, 255);
 }
-void pauseUpdate(void)
+
+void renderPause(void)
 {
 	pauseButtonConstructor();
 	for (int i = 0; i < NUM_PAUSE_BUTTONS; i++) {
