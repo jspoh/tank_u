@@ -8,6 +8,8 @@
 // now that drop box has been drawn with its image
 // create function that randomizes between the 3 powerups from cannonball.c using extern(?)
 
+// now that drop box has been drawn with its image
+// create function that randomizes between the 3 powerups from cannonball.c using extern(?)
 
 
 //void randPowerup(void)
@@ -15,4 +17,4 @@
 //	// randomize between the 3 powerups
 //	
 //}
-//
+

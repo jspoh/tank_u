@@ -21,6 +21,8 @@ extern Tank tanks[NUM_PLAYERS];
 extern CannonBall activeCbs[MAX];
 extern int numCbs;
 
+extern Rect dropbox;
+
 extern CP_Color red;
 extern CP_Color blue;
 
@@ -52,7 +54,6 @@ bool _removeTree(int index) {
 	return true;
 }
 
-
 bool _destroyTree(int index) {
 	return _removeTree(index);
 	// !TODO: animation for tree destroy if time allows it (prob not)
@@ -82,10 +83,12 @@ void initTree(void) {
 			randY = randY < 0 ? 0 : randY;
 			activeTrees[i].rect.pos = (Position){ randX, randY };
 
+			// since all images are center rendered, we need a new rect to give us position according to draw fn required by colRects fn
 			Rect treeHitbox = (Rect){ activeTrees[i].rect.size, (Position) { activeTrees[i].rect.pos.x - activeTrees[i].rect.size.width/2, activeTrees[i].rect.pos.y - activeTrees[i].rect.size.height/2 } };
 
 			/*ensure position on screen is valid*/
 			// iterate through walls and check if tree is colliding with any of them
+			// WORKS 
 			bool collidedWall = false;
 			for (int j=0; j<numWalls; j++) {
 				if (colRects(&treeHitbox, &activeWalls[j], (Vector){0,-1}, (Vector){0,-1}, false, false)) {  // collided with wall
@@ -119,13 +122,24 @@ void initTree(void) {
 				// 	collidedTank = true;
 				// 	break;
 				// }
-				if (colTankRect(&tanks[j], &activeTrees[i].rect, false)) {
+				if (colTankRect(&tanks[j], &treeHitbox, false)) {
 					collidedTank = true;
 					break;
 				}
 			}
 			if (collidedTank) {
 				continue;  // bro you were so close.. but you just had to spawn on top of the tank HUH
+			}
+
+			Rect dropHitbox = (Rect){ dropbox.size, (Position) { dropbox.pos.x - dropbox.size.width / 2, dropbox.pos.y - dropbox.size.height / 2 } };
+
+			bool collidedDropbox = false;
+			if (colRects(&dropHitbox, &treeHitbox, (Vector) { 0, -1 }, (Vector) { 0, -1 }, false, false)) {
+				collidedDropbox = true;
+			}
+
+			if (collidedDropbox) {
+				continue; // once collide skip....
 			}
 
 			isPosValid = true;  // hooray!!
@@ -140,6 +154,9 @@ void updateTree(void) {
 
 void destroyTree(void) {
 	for (int i = 0; i < numTreeImgs; i++) {
+		if (treeImgs[i] == NULL) {
+			continue;
+		}
 		CP_Image_Free(&treeImgs[i]);
 		debug_log("freed tree img %d/%d\n", i+1, NUM_TREE_STYLES);
 	}

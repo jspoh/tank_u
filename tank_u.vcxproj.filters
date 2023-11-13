@@ -69,6 +69,15 @@
     <ClCompile Include="dropbox.c">
       <Filter>components\dropbox</Filter>
     </ClCompile>
+    <ClCompile Include="debug.c">
+      <Filter>util\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="cJSON.c">
+      <Filter>extern</Filter>
+    </ClCompile>
+    <ClCompile Include="data.c">
+      <Filter>util\data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="menu.h">
@@ -137,6 +146,12 @@
     </ClInclude>
     <ClInclude Include="dropbox.h">
       <Filter>components\dropbox</Filter>
+    </ClInclude>
+    <ClInclude Include="cJSON.h">
+      <Filter>extern</Filter>
+    </ClInclude>
+    <ClInclude Include="data.h">
+      <Filter>util\data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +226,15 @@
     </Filter>
     <Filter Include="components\dropbox">
       <UniqueIdentifier>{866c774a-d1ef-47a4-b23b-00ef7e5c312a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extern">
+      <UniqueIdentifier>{9fe97b47-25db-43eb-b5cc-22a61f2e4d34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util\debug">
+      <UniqueIdentifier>{2a73ff3d-bf0d-4f5c-a537-90d371c72842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util\data">
+      <UniqueIdentifier>{7b6ad133-c206-4195-a65c-a102e7661e7d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

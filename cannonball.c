@@ -4,6 +4,7 @@
 #define CANNONBALL_SPEED 750
 #define CANNONBALL_RADIUS 10
 #define DEFAULT_DAMAGE 5
+//#define DEFAULT_DAMAGE 100
 #define DEFAULT_FIRERATE 0.5  // seconds per shot
 
 extern CP_Color black;
@@ -79,12 +80,16 @@ CannonBall _cannonballConstructor(Position pos, Vector d, double damage, double 
 	return cb;
 }
 
+void clearCannonballs(void) {
+	numCbs = 0;
+}
+
 /**
  * @param ammoType enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
  * 
 */
 bool onFireCannonball(Position startPos, Vector d, int player, enum AMMO_TYPES ammoType) {
-	if (ammoType == RAPID_FIRE) {
+	if (ammoType == RAPID_FIRE) {  // js got a free drink here
 		firerates[player] = DEFAULT_FIRERATE / 2;
 	}
 	else {

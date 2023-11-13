@@ -11,13 +11,14 @@
 #include "queue.h"
 #include <time.h>
 #include "winner.h"
+#include "dropbox.h"
 
 
 #define MOVEMENT_SPEED 500
 #define ACCELERATION 200
 #define DECELERATION (ACCELERATION * 3)
 #define TURN_SPEED 100
-#define REPAIR_TIME 1  // seconds
+#define REPAIR_TIME 0.1  // seconds
 #define POWERUP_DURATION 10
 
 CP_Sound tankFire;
@@ -29,11 +30,10 @@ Queue history;
 
 enum { PLAYER_1, PLAYER_2 };
 Tank tanks[NUM_PLAYERS] = { 0 };
-Size tankSize = { 75.f, 100.f };
+Size tankSize = { 75.f/3*2, 100.f/3*2 };
 
 extern Keybinds keybindings[];
-
-int loser=0;
+extern Rect dropbox;
 
 void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
@@ -226,18 +226,19 @@ void _damageTank(Tank* tank, double damage) {
 
 void _tankCollectPowerUp(int i) { //int i is which tank it is in the array tanks[i] 
 	//logic for collecting powerups draft will change once the actual code for the area of rect is there
-	//for (int i = 0; i < NUM_PLAYERS; i++) {
-	//	if (colTankRect(&tanks[i],&powerUps.r,false)) {
-	//		for (int j = 0; j < POWERUPS_COUNT; j++) 
-	//		{
-	//			if (tanks[i].activePermPowers[i] == 0) 
-	//			{
-	//				tanks[i].activePermPowers[i] += powerUps.num;// for the tank to take in which powerup is 
-	//			}
+	Rect dbHitbox = (Rect){ dropbox.size, (Position) { dropbox.pos.x - dropbox.size.width / 2, dropbox.pos.y - dropbox.size.height / 2 } };
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		if (colTankRect(&tanks[i],&dbHitbox,false)) {
+			printf("tank %d collide with dropbox\n", i+1);
+			//for (int j = 0; j < POWERUPS_COUNT; j++) {
+			//	if (tanks[i].activePermPowers[i] == 0) {
+			//	tanks[i].activePermPowers[i] += 1; // will change back to the other variable as soon as dropbox is ready for the tank to take in which powerup is 
+			//
+			//	}
 
-	//		}
-	//	}
-	//}	
+			//}
+		}
+	}	
 
 }
 
@@ -267,7 +268,7 @@ void _tankUsePowerUp(int i) { //int i is which tank it is in the array tanks[i]
 }
 
 Position _getTurretCenter(Tank* t, Size turretSize) {
-	double scalar = sqrt(pow(t->size.width / 2.0, 2.0) + pow(t->size.height / 2.0, 2.0)); //the distance between the point
+	double scalar = sqrt(pow(t->size.width / 2.0, 2.0) + pow(t->size.height / 2.0, 2.0)) * 2; //the distance between the point
 
 	Position O = { 0 };
 	O.x = t->pos.x + scalar * t->pos.d.x;
@@ -420,20 +421,15 @@ void updateTank(bool isPaused) {
 			tanks[i].repairTimer = REPAIR_TIME;
 		}
 	}
-
-	for (int i = 0; i < NUM_PLAYERS; i++) {
-		if (tanks[i].health==0) {
-			loser = i+1;
-			CP_Engine_SetNextGameState(winnerInit, winnerUpdate, winnerExit);
-		}
-	}
-}
+} 
 
 void destroyTank(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		Tank tank = { 0 };
 		tanks[i] = tank;
 	}
-	CP_Sound_Free(&tankFire);
+	if (tankFire != NULL) {
+		CP_Sound_Free(&tankFire);
+	}
 	debug_log("freed tank fire sfx\n");
 }

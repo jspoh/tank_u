@@ -17,4 +17,5 @@ typedef struct {
 void updateCannonball(bool isPaused);
 bool onFireCannonball(Position startPos, Vector d, int player, enum AMMO_TYPES ammoType);
 void destroyCannonball(int index);
+void clearCannonballs(void);
 

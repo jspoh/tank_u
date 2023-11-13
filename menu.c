@@ -15,14 +15,14 @@ int SFX_GROUP = CP_SOUND_GROUP_0;
 int MUSIC_GROUP = CP_SOUND_GROUP_1;
 
 /*audio between 0 and 1*/
-double musicVolume = 1.0;
+extern double musicVolume;
 /*audio between 0 and 1*/
-double sfxVolume = 1.0;
+extern double sfxVolume;
 
 CP_Font font;
 CP_Image menuBg;
 
-int menuState = FADE_IN;
+enum MENU_STATES menuState = FADE_IN;
 
 BYTE oAlpha = 255;
 
@@ -266,8 +266,18 @@ void menuUpdate(void) {
 void menuExit(void) {
 	// why doesnt this work? wow suddenly it worked when i was about to open issue on github
 	_destroySubpages();
-	CP_Image_Free(&menuBg);
-	debug_log("freed menu background img\n");
-	CP_Sound_Free(&titleMusic);
-	debug_log("freed menu title music\n");
+	if (menuBg != NULL) {
+		debug_log("BEFORE freeing menu background img. menuBg is null: %d\n", menuBg == NULL);
+		CP_Image_Free(&menuBg);
+		debug_log("freed menu background img. menuBg is null: %d\n", menuBg == NULL);
+	}
+	if (titleMusic != NULL) {
+		CP_Sound_Free(&titleMusic);
+		debug_log("freed menu title music\n");
+	}
+
+	if (DEBUG_MODE) {
+		void checkMem(void);
+		checkMem();
+	}
 }

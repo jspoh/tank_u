@@ -5,18 +5,21 @@
 #include "dropbox.h"
 CP_Image dropboxImg;
 
+// size of the dropbox
+static Size size = { 50.0, 50.0 };
 
 
+Rect dropbox = {0};
 void initDropbox(void)
 {
 	dropboxImg = CP_Image_Load("Assets/powerup/4.png");
 }
-void dropBox(void) {
-	// size of the dropbox
-	Size size = { 50, 50 };
+void renderDropbox(void) {
 	// position of the wall
 	Position pos = { (WINDOW_SIZE.width / 2), (WINDOW_SIZE.height / 2) };
-	Dropbox dropbox = { size, pos };
+
+	dropbox.size = size;
+	dropbox.pos = pos;
 	// so now instead of colour I load img of dropbox from asset
 	/*CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);*/
@@ -25,7 +28,9 @@ void dropBox(void) {
 	/*drawRect(&dropbox, &fillCol, &strokeCol);*/
 }
 
-
 void destroyDropbox(void) {
-		CP_Image_Free(&dropboxImg);
+	if (dropboxImg == NULL) {
+		return;
 	}
+	CP_Image_Free(&dropboxImg);
+}

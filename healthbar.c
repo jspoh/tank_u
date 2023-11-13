@@ -111,10 +111,16 @@ void updateHealthBar(void)
 
 void destroyHealthBar(void)
 {
-	CP_Image_Free(&rapidFire);
-	debug_log("freed rapid fire img\n");
-	CP_Image_Free(&bigBullet);
-	debug_log("freed big bullet img\n");
-	CP_Image_Free(&shotGun);
-	debug_log("freed shotgun img\n");
+	if (rapidFire != NULL) {
+		CP_Image_Free(&rapidFire);
+		debug_log("freed rapid fire img\n");
+	}
+	if (bigBullet != NULL) {
+		CP_Image_Free(&bigBullet);
+		debug_log("freed big bullet img\n");
+	}
+	if (shotGun != NULL) {
+		CP_Image_Free(&shotGun);
+		debug_log("freed shotgun img\n");
+	}
 }

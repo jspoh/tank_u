@@ -21,6 +21,7 @@ char* pauseBtnTexts[NUM_PAUSE_BUTTONS] = { "Resume", "Restart", "Options", "Help
 Button pauseBtns[NUM_PAUSE_BUTTONS] = { 0 };
 
 extern bool isPaused;
+extern bool freezeGame;
 extern enum GAME_STATES gameState;
 extern CP_Font font;
 extern CP_Color black;
@@ -81,6 +82,7 @@ void renderPause(void)
 				switch (i) {
 				case RESUME:
 					isPaused = false;
+					freezeGame = false;
 					break;
 				case RESTART:
 					CP_Engine_SetNextGameStateForced(gameInit, gameUpdate, gameExit);
