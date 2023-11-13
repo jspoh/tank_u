@@ -12,6 +12,9 @@ double musicVolume = 1.0;
 /*audio between 0 and 1*/
 double sfxVolume = 1.0;
 
+extern int SFX_GROUP;
+extern int MUSIC_GROUP;
+
 int init(void) {
 	/* init rand seed */
 	const unsigned long seed = (unsigned long)time(NULL);  // good practice to const everything you dont change
@@ -21,6 +24,9 @@ int init(void) {
     cJSON* data = getDataObj();
     sfxVolume = cJSON_GetObjectItem(data, "sfxVolume")->valuedouble;
     musicVolume = cJSON_GetObjectItem(data, "musicVolume")->valuedouble;
+
+    CP_Sound_SetGroupVolume(SFX_GROUP, (float)sfxVolume);
+	CP_Sound_SetGroupVolume(MUSIC_GROUP, (float)musicVolume);
 
 	/* return 1 to specify no errors */
 	return 1;
