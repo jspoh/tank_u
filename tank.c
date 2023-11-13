@@ -27,6 +27,7 @@ CP_Sound memeTankFire[NUM_MEME_FIRE_SOUNDS] = { 0 };
 
 extern double sfxVolume;
 extern int SFX_GROUP;
+extern int MEME_SFX_GROUP;
 
 Queue history;
 
@@ -310,7 +311,7 @@ Position _getTurretCenter(Tank *t, Size turretSize)
 	return O;
 }
 
-void playMemeFire(void) {
+void _playMemeFire(void) {
 	int fire = getRand(0, 5);
 	CP_Sound_PlayAdvanced(memeTankFire[fire], (float)sfxVolume, 1.f, false, MEME_SFX_GROUP);
 	debug_log("played fire %d/%d", fire + 1, NUM_MEME_FIRE_SOUNDS);
@@ -333,6 +334,7 @@ void _tankShoot(int i, enum AMMO_TYPES activeAmmo) { //int i is which tank it is
 		{
 			CP_Sound_PlayAdvanced(tankFire, (float)sfxVolume, 1.f, false, SFX_GROUP);
 			debug_log("fired");
+			_playMemeFire();
 		}
 	}
 }
