@@ -24,7 +24,7 @@ enum AMMO_TYPES getPowerup(void) {
 Rect dropbox = {0};
 void initDropbox(void)
 {
-	dropboxImg = CP_Image_Load("Assets/powerup/4.png");
+	dropboxImg = CP_Image_Load("Assets/powerup/crate.png");
 }
 
 void renderDropbox(void) {
