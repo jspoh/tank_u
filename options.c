@@ -6,6 +6,7 @@
 #include "collision.h"
 #include "game.h"
 #include "data.h"
+#include "checkbox.h"
 #include <stdio.h>
 
 extern int menuState;
@@ -16,6 +17,8 @@ extern CP_Color grey2;
 extern CP_Color red;
 extern CP_Color black;
 extern CP_Color yellow;
+extern CP_Color invisColor;
+extern CP_Color white;
 
 
 Circle musicKnob = { 0 };
@@ -156,17 +159,22 @@ static void _renderP1(void) {
 
 
 static void _renderP2(void) {
-	
+	Size size = {100,100};
+	Position pos = {WINDOW_SIZE.width/2,WINDOW_SIZE.height/2};
+	Rect border = {size,pos};
+
+	renderCheckbox(border, true, grey2, white);
 }
 
 
 void _render(void) {
 	renderBackdrop();
 
-	if (optionsPage < numOptionsPages) {
+	if (optionsPage < numOptionsPages - 1) {
 		bool isNextClicked = renderNextButton();
 		if (isNextClicked) {
 			optionsPage++;
+			debug_log("Accessing page %d of options\n", optionsPage+1);
 		}
 	}
 
@@ -183,8 +191,6 @@ void _render(void) {
 			break;
 	}
 
-	_renderP1();
-
 
 	CP_Sound_SetGroupVolume(SFX_GROUP, (float)sfxVolume);
 	CP_Sound_SetGroupVolume(MUSIC_GROUP, (float)musicVolume);
@@ -198,6 +204,7 @@ void renderOptions(void) {
 	if (isBackClicked) {
 		menuState = MENU_PAGE;
 		gameState = GAME;
+		optionsPage	= PAGE_1;
 
 		/*update json file*/
 		updateDataNum("sfxVolume", sfxVolume);
