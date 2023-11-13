@@ -51,7 +51,7 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 
 
 	Rect originalBarRect = { {originalBarWidth, originalBarHeight}, {originalxPos, yPos} };
-	drawRect(&originalBarRect,&transFill,&strokeCol);
+	drawRect(&originalBarRect, &transFill, &strokeCol);
 
 	Rect barRect = { {barWidth, barHeight}, {xPos, yPos} };
 	drawRect(&barRect, &fillCol, &strokeCol);
@@ -72,19 +72,39 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 		break;
 	case RAPID_FIRE:
 		printf("rapid fire not loaded %d\n", rapidFire == NULL);
-		CP_Image_Draw(rapidFire, (float)originalxPos + (float)originalBarWidth / 2, (float)yPos + 70, 60, 60, 255);
+		if (playerIndex == 0)
+		{
+			CP_Image_Draw(rapidFire, (float)originalxPos + 30, (float)yPos + 70, 60, 60, 255);
+		}
+		else
+		{
+			CP_Image_Draw(rapidFire, (float)originalxPos + (float)originalBarWidth / 2+45, (float)yPos + 70, 60, 60, 255);
+		}
 		break;
 
 	case BIG_BULLET:
 		printf("bigBullet not loaded %d\n", bigBullet == NULL);
-		CP_Image_Draw(bigBullet, (float)originalxPos + (float)originalBarWidth / 2, (float)yPos + 70, 60, 60, 255);
+		if (playerIndex == 0)
+		{
+			CP_Image_Draw(bigBullet, (float)originalxPos + 30, (float)yPos + 70, 60, 60, 255);
+		}
+		else
+		{
+			CP_Image_Draw(bigBullet, (float)originalxPos + (float)originalBarWidth / 2 + 45, (float)yPos + 70, 60, 60, 255);
+		}
 		break;
 
 	case SHOTGUN:
 		printf("shotGun not loaded %d\n", shotGun == NULL);
-		CP_Image_Draw(shotGun, (float)originalxPos + (float)originalBarWidth / 2, (float)yPos + 70, 60, 60, 255);
+		if (playerIndex == 0)
+		{
+			CP_Image_Draw(shotGun, (float)originalxPos + 30, (float)yPos + 70, 60, 60, 255);
+		}
+		else
+		{
+			CP_Image_Draw(shotGun, (float)originalxPos + (float)originalBarWidth / 2 + 45, (float)yPos + 70, 60, 60, 255);
+		}
 		break;
-
 
 	default:
 		break;
