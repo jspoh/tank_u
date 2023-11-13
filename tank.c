@@ -12,6 +12,7 @@
 #include <time.h>
 #include "winner.h"
 #include "dropbox.h"
+#include "powerup.h"
 
 #define MOVEMENT_SPEED 500
 #define ACCELERATION 200
@@ -38,8 +39,8 @@ Size tankSize = {75.f / 3 * 2, 100.f / 3 * 2};
 extern Keybinds keybindings[];
 extern Rect dropbox;
 
-void _drawTank(Tank *tank)
-{
+
+void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
 	drawTankAdvanced(tank, &fillCol, &strokeCol);
@@ -330,8 +331,9 @@ Position _getTurretCenter(Tank *t, Size turretSize)
 	return O;
 }
 
-void _tankShoot(int i, enum AMMO_TYPES activePowerUp)
-{ // int i is which tank it is in the array tanks[i]
+
+
+void _tankShoot(int i, enum AMMO_TYPES activePowerUp) { //int i is which tank it is in the array tanks[i] 
 	if (CP_Input_KeyDown(keybindings[i].shoot) && tanks[i].repairTimer == 0)
 	{
 		// using the exact address to find the directional vector
