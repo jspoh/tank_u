@@ -67,19 +67,21 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 	CP_Image_Draw(shotgun, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);*/
 
 	//tank->activePowerUps = BIG_BULLET;
-	switch (tank->activePowerUps) {
+	switch (tank->availPowerup) {
 	case NORMAL:
 		break;
 	case RAPID_FIRE:
-
+		printf("rapid fire not loaded %d\n", rapidFire == NULL);
 		CP_Image_Draw(rapidFire, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
 		break;
 
 	case BIG_BULLET:
+		printf("bigBullet not loaded %d\n", bigBullet == NULL);
 		CP_Image_Draw(bigBullet, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
 		break;
 
 	case SHOTGUN:
+		printf("shotGun not loaded %d\n", shotGun == NULL);
 		CP_Image_Draw(shotGun, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
 		break;
 
@@ -92,11 +94,11 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 void initHealthBar(void)
 {
 	rapidFire = CP_Image_Load("./Assets/powerup/powerup_3.png");
-	debug_log("loaded rapid fire powerup img\n");
+	// debug_log("loaded rapid fire powerup img\n");
 	bigBullet = CP_Image_Load("./Assets/powerup/powerup_2.png");
-	debug_log("loaded big bullet powerup img\n");
+	// debug_log("loaded big bullet powerup img\n");
 	shotGun = CP_Image_Load("./Assets/powerup/powerup_1.png");
-	debug_log("loaded shotgun powerup img\n");
+	// debug_log("loaded shotgun powerup img\n");
 }
 void _renderHealthBar(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {

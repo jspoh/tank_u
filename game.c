@@ -53,7 +53,7 @@ Keybinds P2_KEYBINDS = {
 	KEY_LEFT,
 	KEY_RIGHT,
 	KEY_ENTER,
-	KEY_SLASH
+	KEY_BACKSLASH
 };
 Keybinds keybindings[2];
 
@@ -97,9 +97,9 @@ void gameInit(void) {
 
 	initWall();
 	initTank();
-	initTree();
 	initHealthBar();
 	initDropbox();
+	initTree();
 	initWinner();
 
 	CP_Sound_PlayAdvanced(gameMusic, (float)musicVolume, 1.f, true, MUSIC_GROUP);

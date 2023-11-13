@@ -3,7 +3,7 @@
 #include "config.h"
 #include "utils.h"
 
-typedef enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE } AMMO_TYPES;
+typedef enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE, NUM_POWERUPS } AMMO_TYPES;
 
 typedef struct {
 	Position pos;
