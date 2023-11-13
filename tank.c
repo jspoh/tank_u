@@ -23,6 +23,8 @@
 
 CP_Sound tankFire;
 CP_Sound collectPower;
+CP_Sound usePower;
+CP_Sound powerEnd;
 CP_Sound memeTankFire[NUM_MEME_FIRE_SOUNDS] = { 0 };
 
 extern double sfxVolume;
@@ -280,6 +282,7 @@ void _tankUsePowerUp(int i)
 			tanks[i].activeAmmo = tanks[i].availPowerup;
 			tanks[i].availPowerup = NORMAL; // no powerups available. reset state.
 			tanks[i].powerElapsedTime = 0;
+			CP_Sound_PlayAdvanced(usePower, (float)sfxVolume, 1.f, false, SFX_GROUP);
 
 			debug_log("tank %d used powerups %d\n", i+1, tanks[i].activeAmmo);
 		}
@@ -295,6 +298,7 @@ void _tankUsePowerUp(int i)
 		{
 			// Power-up duration has elapsed, reset activeAmmo to 0
 			tanks[i].activeAmmo = NORMAL;
+			CP_Sound_PlayAdvanced(powerEnd, (float)sfxVolume, 1.f, false, SFX_GROUP);
 			debug_log("tank %d powerup finished\n", i+1);
 		}
 	}
@@ -455,6 +459,7 @@ void _collisionsTank(void)
 		if (colTankRect(&tanks[i], &dbHitbox, false) && !powerupPickedUp)
 		{
 			tanks[i].availPowerup = getPowerup();
+			CP_Sound_PlayAdvanced(collectPower, (float)sfxVolume, 1.f, false, SFX_GROUP);
 			debug_log("tank %d picked up powerup %d\n", i + 1, tanks[i].availPowerup);
 		}
 	}
@@ -469,6 +474,10 @@ void initTank(void)
 	debug_log("loaded tank firing sfx\n");
 	collectPower = CP_Sound_Load("Assets/audio/sfx/collect_power_up.mp3");
 	debug_log("loaded collect power up sfx\n");
+	usePower = CP_Sound_Load("Assets/audio/sfx/using_power_up.mp3");
+	debug_log("loaded using power up sfx\n");
+	powerEnd = CP_Sound_Load("Assets/audio/sfx/powerup_end.mp3");
+	debug_log("loaded end power up sfx\n");
 	for (int i = 0; i < NUM_MEME_FIRE_SOUNDS; i++) {
 		char path[MAX] = "";
 		snprintf(path, MAX, "Assets/audio/meme/sfx/tank_shoot/bang_%d.mp3", i + 1);
@@ -511,6 +520,7 @@ void updateTank(bool isPaused)
 	}
 
 	// debug_log("%f\n", tanks[1].health);
+	//_tankRefillHealth();
 }
 
 void destroyTank(void)
@@ -533,4 +543,17 @@ void destroyTank(void)
 		}
 
 	}
+	if (collectPower != NULL)
+	{
+		CP_Sound_Free(&collectPower);
+	}
+	if (usePower != NULL)
+	{
+		CP_Sound_Free(&usePower);
+	}
+	if (powerEnd != NULL)
+	{
+		CP_Sound_Free(&powerEnd);
+	}
+
 }
