@@ -9,7 +9,6 @@
 #include "cannonball.h"
 #include "collision.h"
 #include "queue.h"
-#include <time.h>
 #include "winner.h"
 #include "dropbox.h"
 #include "powerup.h"
@@ -218,7 +217,7 @@ Tank _tankConstructor(Position pos, Color color)
 	tank.size = tankSize;
 	// change to different kinds of ammo for debugging
 	// enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
-	tank.activePowerUp = NORMAL;
+	tank.activeAmmo = NORMAL;
 
 	/* add tank to tanks array */
 	bool valid = false;
@@ -269,30 +268,29 @@ void _damageTank(Tank *tank, double damage)
 
 void _tankUsePowerUp(int i)
 { // int i is which tank it is in the array tanks[i]
-	static clock_t powerUpStartTime = 0;
 	if (CP_Input_KeyDown(keybindings[i].usePower))
 	{
 		// takes in the tank that have the power up
 		if (tanks[i].availPowerup != NORMAL)
 		{
-			tanks[i].activePowerUp = tanks[i].availPowerup;
+			tanks[i].activeAmmo = tanks[i].availPowerup;
 			tanks[i].availPowerup = NORMAL; // no powerups available. reset state.
-			powerUpStartTime = clock();		// takes in the time that the function is being called.
+			tanks[i].powerElapsedTime = 0;
 
-			debug_log("tank %d used powerups %d\n", i+1, tanks[i].activePowerUp);
+			debug_log("tank %d used powerups %d\n", i+1, tanks[i].activeAmmo);
 		}
 	}
 
 	/*cancel powerup after time is up*/
-	if (tanks[i].activePowerUp != 0)  
+	if (tanks[i].activeAmmo != NORMAL)  
 	{
-		clock_t currentTime = clock();
-		double elapsedTime = (double)(currentTime - powerUpStartTime) / CLOCKS_PER_SEC;
+		const double dt = CP_System_GetDt();
+		tanks[i].powerElapsedTime += dt;
 
-		if (elapsedTime >= POWERUP_DURATION)
+		if (tanks[i].powerElapsedTime >= POWERUP_DURATION)
 		{
-			// Power-up duration has elapsed, reset activePowerUp to 0
-			tanks[i].activePowerUp = NORMAL;
+			// Power-up duration has elapsed, reset activeAmmo to 0
+			tanks[i].activeAmmo = NORMAL;
 			debug_log("tank %d powerup finished\n", i+1);
 		}
 	}
@@ -311,7 +309,7 @@ Position _getTurretCenter(Tank *t, Size turretSize)
 
 
 
-void _tankShoot(int i, enum AMMO_TYPES activePowerUp) { //int i is which tank it is in the array tanks[i] 
+void _tankShoot(int i, enum AMMO_TYPES activeAmmo) { //int i is which tank it is in the array tanks[i] 
 	if (CP_Input_KeyDown(keybindings[i].shoot) && tanks[i].repairTimer == 0)
 	{
 		// using the exact address to find the directional vector
@@ -323,7 +321,7 @@ void _tankShoot(int i, enum AMMO_TYPES activePowerUp) { //int i is which tank it
 
 		Position turretTip = _getTurretCenter(&tanks[i], size);
 
-		bool firingSuccess = onFireCannonball(turretTip, unitVector, i, activePowerUp);
+		bool firingSuccess = onFireCannonball(turretTip, unitVector, i, activeAmmo);
 		if (firingSuccess)
 		{
 			CP_Sound_PlayAdvanced(tankFire, (float)sfxVolume, 1.f, false, SFX_GROUP);
@@ -350,7 +348,7 @@ void _actionTank(void)
 {
 	for (int i = 0; i < NUM_PLAYERS; i++)
 	{
-		_tankShoot(i, tanks[i].activePowerUp);
+		_tankShoot(i, tanks[i].activeAmmo);
 		_tankUsePowerUp(i);
 	}
 }

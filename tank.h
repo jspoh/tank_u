@@ -19,10 +19,11 @@ typedef struct _tank {
 	double health;
 	double speed;
 	BYTE currentDir;
-	enum AMMO_TYPE activePowerUp;
+	enum AMMO_TYPE activeAmmo;
 	enum AMMO_TYPE availPowerup;
 	int hasCollided;
 	double repairTimer;
+	double powerElapsedTime;
 } Tank;
 
 
