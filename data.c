@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "cJSON.h"
+#include "config.h"
 
 static  cJSON* data;
 
@@ -80,6 +81,23 @@ int _writeJson(const char* filename, const char* jsonStr) {
 }
 
 /**
+ * @brief commits data by writing to file
+ * 
+ */
+void commit(void) {
+  char* jsonStr = cJSON_Print(data);
+  int success = _writeJson(configFile, jsonStr);
+  if (!success) {
+    fprintf(stderr, "failed to update value of config.json in updateDataBool\n");
+    exit(16);
+  }
+  debug_log("updated json file with values:\n");
+  debug_log(jsonStr);
+  debug_log("\n");
+  free(jsonStr);
+}
+
+/**
  * @brief updates a number value of config.json
  * 
  * @param key 
@@ -102,10 +120,6 @@ void updateDataNum(const char* key, double value) {
     fprintf(stderr, "attempted to update value of a field that does not exist. key: %s | value: %lf\n", key, value);
     exit(12);
   }
-
-  char* json_string = cJSON_Print(data);
-  int success = _writeJson(configFile, json_string);
-  free(json_string);
 }
 
 /**
@@ -115,6 +129,9 @@ void updateDataNum(const char* key, double value) {
  * @param value 
  */
 void updateDataBool(const char* key, int value) {
+
+  printf("%s, %d\n", key, value);
+
   cJSON* item = cJSON_GetObjectItem(data, key);
   if (item != NULL) {
     cJSON_SetBoolValue(item, value);
@@ -123,12 +140,12 @@ void updateDataBool(const char* key, int value) {
     fprintf(stderr, "attempted to update value of a field that does not exist. key: %s | value: %s\n", key, value ? "true" : "false");
     exit(15);
   }
+}
 
+void outputData(void) {
   char* jsonStr = cJSON_Print(data);
-  int success = _writeJson(configFile, jsonStr);
-  if (!success) {
-    fprintf(stderr, "failed to update value of config.json in updateDataBool\n");
-    exit(16);
-  }
+  debug_log("json file values:\n");
+  debug_log(jsonStr);
+  debug_log("\n");
   free(jsonStr);
 }
