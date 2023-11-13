@@ -109,6 +109,8 @@ void gameInit(void) {
 
 	CP_Sound_PlayAdvanced(gameMusic, (float)musicVolume, 1.f, true, MUSIC_GROUP);
 	CP_Sound_PlayAdvanced(memeGameMusic, (float)musicVolume, 1.f, true, MEME_MUSIC_GROUP);
+
+	initAudio();
 }
 void gameUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 150, 0, 255));

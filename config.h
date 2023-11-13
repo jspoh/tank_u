@@ -61,6 +61,8 @@ int getRand(int min, int max);
 
 
 // debugging
-#define DEBUG_MODE true
+#define DEBUG_MODE false
 
 void debug_log(const char *format, ...);
+
+void initAudio(void);
