@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include "data.h"
+#include "cprocessing.h"
 
 
 Size WINDOW_SIZE = { 1600.f,900.f };
@@ -14,6 +15,8 @@ double sfxVolume = 1.0;
 
 extern int SFX_GROUP;
 extern int MUSIC_GROUP;
+
+bool MEME_MODE = false;
 
 int init(void) {
 	/* init rand seed */

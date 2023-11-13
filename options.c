@@ -36,6 +36,8 @@ extern double sfxVolume;
 extern int SFX_GROUP;
 extern int MUSIC_GROUP;
 
+extern bool MEME_MODE;
+
 #define numOptionsPages 2
 static enum PAGE_NUMS optionsPage = PAGE_1;
 
@@ -160,10 +162,15 @@ static void _renderP1(void) {
 
 static void _renderP2(void) {
 	Size size = {100,100};
-	Position pos = {WINDOW_SIZE.width/2,WINDOW_SIZE.height/2};
+	Position pos = {400 ,WINDOW_SIZE.height/2 - size.height / 2};
 	Rect border = {size,pos};
 
-	renderCheckbox(border, true, grey2, white);
+	MEME_MODE = renderCheckbox(border, MEME_MODE, grey2, white);
+
+	Position textPos = {WINDOW_SIZE.width / 2 + border.size.width + 25, WINDOW_SIZE.height / 2};
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
+	double textSize = 100;
+	drawText("ENABLE MEME MODE", &textPos, textSize, &white);
 }
 
 

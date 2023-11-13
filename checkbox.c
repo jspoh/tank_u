@@ -31,7 +31,7 @@ bool renderCheckbox(Rect border, bool checked, CP_Color fillColor, CP_Color stro
     }
 
     // mouse released
-    if (CP_Input_MouseReleased(MOUSE_BUTTON_RIGHT)) {
+    if (CP_Input_MouseReleased(MOUSE_BUTTON_LEFT)) {
       checked = !checked;
     }
   }
