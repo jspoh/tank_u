@@ -164,33 +164,17 @@ static void _renderP1(void) {
 
 
 static void _renderP2(void) {
-	Size size = {100,100};
-	Position pos = {400 ,WINDOW_SIZE.height/2 - size.height / 2};
-	Rect border = {size,pos};
+	Size size = { 100,100 };
+	Position pos = { 400 ,WINDOW_SIZE.height / 2 - size.height / 2 };
+	Rect border = { size,pos };
 
 	bool histMeme = MEME_MODE;
 	MEME_MODE = renderCheckbox(border, MEME_MODE, grey2, white);
 
-	Position textPos = {WINDOW_SIZE.width / 2 + border.size.width + 25, WINDOW_SIZE.height / 2};
+	Position textPos = { WINDOW_SIZE.width / 2 + border.size.width + 25, WINDOW_SIZE.height / 2 };
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 	double textSize = 100;
 	drawText("ENABLE MEME MODE", &textPos, textSize, &white);
-
-	/*if meme mode was changed*/
-	if (MEME_MODE != histMeme) {
-		if (MEME_MODE) {
-				CP_Sound_SetGroupVolume(MEME_SFX_GROUP, (float)sfxVolume);
-				CP_Sound_SetGroupVolume(MEME_MUSIC_GROUP, (float)musicVolume);
-				CP_Sound_SetGroupVolume(SFX_GROUP, 0);
-				CP_Sound_SetGroupVolume(MUSIC_GROUP, 0);
-		}
-		else {
-				CP_Sound_SetGroupVolume(MEME_SFX_GROUP, 0);
-				CP_Sound_SetGroupVolume(MEME_MUSIC_GROUP, 0);
-				CP_Sound_SetGroupVolume(SFX_GROUP, (float)sfxVolume);
-				CP_Sound_SetGroupVolume(MUSIC_GROUP, (float)musicVolume);
-		}
-	}
 }
 
 
@@ -201,26 +185,36 @@ void _render(void) {
 		bool isNextClicked = renderNextButton();
 		if (isNextClicked) {
 			optionsPage++;
-			debug_log("Accessing page %d of options\n", optionsPage+1);
+			debug_log("Accessing page %d of options\n", optionsPage + 1);
 		}
 	}
 
 	switch (optionsPage) {
-		case PAGE_1:
-			_renderP1();
-			break;
-		case PAGE_2:
-			_renderP2();
-			break;
-		default:
-			fprintf(stderr, "Reached end of render options switch case\n");
-			exit(14);
-			break;
+	case PAGE_1:
+		_renderP1();
+		break;
+	case PAGE_2:
+		_renderP2();
+		break;
+	default:
+		fprintf(stderr, "Reached end of render options switch case\n");
+		exit(14);
+		break;
 	}
 
 
-	CP_Sound_SetGroupVolume(SFX_GROUP, (float)sfxVolume);
-	CP_Sound_SetGroupVolume(MUSIC_GROUP, (float)musicVolume);
+	if (MEME_MODE) {
+		CP_Sound_SetGroupVolume(MEME_SFX_GROUP, (float)sfxVolume);
+		CP_Sound_SetGroupVolume(MEME_MUSIC_GROUP, (float)musicVolume);
+		CP_Sound_SetGroupVolume(SFX_GROUP, 0);
+		CP_Sound_SetGroupVolume(MUSIC_GROUP, 0);
+	}
+	else {
+		CP_Sound_SetGroupVolume(MEME_SFX_GROUP, 0);
+		CP_Sound_SetGroupVolume(MEME_MUSIC_GROUP, 0);
+		CP_Sound_SetGroupVolume(SFX_GROUP, (float)sfxVolume);
+		CP_Sound_SetGroupVolume(MUSIC_GROUP, (float)musicVolume);
+	}
 }
 
 void renderOptions(void) {
@@ -231,7 +225,7 @@ void renderOptions(void) {
 	if (isBackClicked) {
 		menuState = MENU_PAGE;
 		gameState = GAME;
-		optionsPage	= PAGE_1;
+		optionsPage = PAGE_1;
 
 		/*update json file*/
 		updateDataNum("sfxVolume", sfxVolume);

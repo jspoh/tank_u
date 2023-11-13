@@ -20,6 +20,21 @@ extern int MEME_MUSIC_GROUP;
 
 bool MEME_MODE = false;
 
+void initAudio() {
+    if (MEME_MODE) {
+		CP_Sound_SetGroupVolume(MEME_SFX_GROUP, (float)sfxVolume);
+		CP_Sound_SetGroupVolume(MEME_MUSIC_GROUP, (float)musicVolume);
+		CP_Sound_SetGroupVolume(SFX_GROUP, 0);
+		CP_Sound_SetGroupVolume(MUSIC_GROUP, 0);
+	}
+	else {
+		CP_Sound_SetGroupVolume(MEME_SFX_GROUP, 0);
+		CP_Sound_SetGroupVolume(MEME_MUSIC_GROUP, 0);
+		CP_Sound_SetGroupVolume(SFX_GROUP, (float)sfxVolume);
+		CP_Sound_SetGroupVolume(MUSIC_GROUP, (float)musicVolume);
+	}
+}
+
 int init(void) {
 	/* init rand seed */
 	const unsigned long seed = (unsigned long)time(NULL);  // good practice to const everything you dont change
@@ -31,18 +46,7 @@ int init(void) {
     musicVolume = cJSON_GetObjectItem(data, "musicVolume")->valuedouble;
     MEME_MODE = cJSON_GetObjectItem(data, "memeMode")->valueint;
 
-    if (MEME_MODE) {
-        CP_Sound_SetGroupVolume(MEME_SFX_GROUP, (float)sfxVolume);
-        CP_Sound_SetGroupVolume(MEME_MUSIC_GROUP, (float)musicVolume);
-        CP_Sound_SetGroupVolume(SFX_GROUP, 0);
-        CP_Sound_SetGroupVolume(MUSIC_GROUP, 0);
-    }
-    else {
-        CP_Sound_SetGroupVolume(MEME_SFX_GROUP, 0);
-        CP_Sound_SetGroupVolume(MEME_MUSIC_GROUP, 0);
-        CP_Sound_SetGroupVolume(SFX_GROUP, (float)sfxVolume);
-        CP_Sound_SetGroupVolume(MUSIC_GROUP, (float)musicVolume);
-    }
+	initAudio();
 
 	/* return 1 to specify no errors */
 	return 1;

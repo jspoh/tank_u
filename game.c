@@ -23,6 +23,7 @@ enum GAME_STATES gameState = GAME;
 CP_Font font;
 CP_Image gameBg;
 CP_Sound gameMusic;
+CP_Sound memeGameMusic;
 
 bool gameMusicPlaying = false;
 bool isPaused = false;
@@ -32,7 +33,9 @@ extern CP_Color red;
 extern double musicVolume;
 extern double sfxVolume;
 extern int MUSIC_GROUP;
+extern int MEME_MUSIC_GROUP;
 extern int SFX_GROUP;
+extern int MEME_SFX_GROUP;
 
 extern Tank tanks[NUM_PLAYERS];
 
@@ -87,8 +90,10 @@ void gameInit(void) {
 	font = CP_Font_Load("Assets/fonts/PixelifySans-Regular.ttf");
 	gameBg = CP_Image_Load("Assets/game/terrain.png");
 	debug_log("loaded game background img\n");
-	gameMusic = CP_Sound_LoadMusic("Assets/audio/music/game.wav");
+	gameMusic = CP_Sound_LoadMusic("Assets/audio/music/game.mp3");
 	debug_log("loaded game music\n");
+	memeGameMusic = CP_Sound_LoadMusic("Assets/audio/meme/music/game.mp3");
+	debug_log("loaded meme game music\n");
 	CP_Font_Set(font);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
@@ -103,6 +108,9 @@ void gameInit(void) {
 	initWinner();
 
 	CP_Sound_PlayAdvanced(gameMusic, (float)musicVolume, 1.f, true, MUSIC_GROUP);
+	CP_Sound_PlayAdvanced(memeGameMusic, (float)musicVolume, 1.f, true, MEME_MUSIC_GROUP);
+
+	initAudio();
 }
 void gameUpdate(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 150, 0, 255));
@@ -161,6 +169,10 @@ void gameExit(void) {
 	if (gameMusic != NULL) {
 		CP_Sound_Free(&gameMusic);
 		debug_log("freed game music\n");
+	}
+	if (memeGameMusic != NULL) {
+		CP_Sound_Free(&memeGameMusic);
+		debug_log("freed meme game music\n");
 	}
 	if (gameBg != NULL) {
 		CP_Image_Free(&gameBg);

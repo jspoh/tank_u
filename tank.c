@@ -19,11 +19,15 @@
 #define TURN_SPEED 100
 #define REPAIR_TIME 0.1 // seconds
 #define POWERUP_DURATION 10
+#define NUM_MEME_FIRE_SOUNDS 6
 
 CP_Sound tankFire;
+CP_Sound collectPower;
+CP_Sound memeTankFire[NUM_MEME_FIRE_SOUNDS] = { 0 };
 
 extern double sfxVolume;
 extern int SFX_GROUP;
+extern int MEME_SFX_GROUP;
 
 Queue history;
 
@@ -307,7 +311,11 @@ Position _getTurretCenter(Tank *t, Size turretSize)
 	return O;
 }
 
-
+void _playMemeFire(void) {
+	int fire = getRand(0, 5);
+	CP_Sound_PlayAdvanced(memeTankFire[fire], (float)sfxVolume, 1.f, false, MEME_SFX_GROUP);
+	debug_log("played fire %d/%d", fire + 1, NUM_MEME_FIRE_SOUNDS);
+}
 
 void _tankShoot(int i, enum AMMO_TYPES activeAmmo) { //int i is which tank it is in the array tanks[i] 
 	if (CP_Input_KeyDown(keybindings[i].shoot) && tanks[i].repairTimer == 0)
@@ -326,6 +334,7 @@ void _tankShoot(int i, enum AMMO_TYPES activeAmmo) { //int i is which tank it is
 		{
 			CP_Sound_PlayAdvanced(tankFire, (float)sfxVolume, 1.f, false, SFX_GROUP);
 			debug_log("fired");
+			_playMemeFire();
 		}
 	}
 }
@@ -456,8 +465,16 @@ void initTank(void)
 	_createTank(WINDOW_SIZE.width / 6, WINDOW_SIZE.height / 2, 90.f, 0, 255, 0, 255);
 	_createTank(WINDOW_SIZE.width / 6 * 5, WINDOW_SIZE.height / 2, 270.f, 255, 0, 0, 255);
 	initQueue(&history);
-	tankFire = CP_Sound_Load("Assets/audio/sfx/tank_fire.wav");
+	tankFire = CP_Sound_Load("Assets/audio/sfx/tank_fire.mp3");
 	debug_log("loaded tank firing sfx\n");
+	collectPower = CP_Sound_Load("Assets/audio/sfx/collect_power_up.mp3");
+	debug_log("loaded collect power up sfx\n");
+	for (int i = 0; i < NUM_MEME_FIRE_SOUNDS; i++) {
+		char path[MAX] = "";
+		snprintf(path, MAX, "Assets/audio/meme/sfx/tank_shoot/bang_%d.mp3", i + 1);
+		debug_log("Loaded meme fire Sound %d/%d from path %s\n", i + 1, NUM_MEME_FIRE_SOUNDS, path);
+		memeTankFire[i] = CP_Sound_Load(path);
+	}
 }
 
 void updateTank(bool isPaused)
@@ -508,4 +525,12 @@ void destroyTank(void)
 		CP_Sound_Free(&tankFire);
 	}
 	debug_log("freed tank fire sfx\n");
+	for (int i = 0; i < NUM_MEME_FIRE_SOUNDS; i++) {
+		if (memeTankFire[i] != NULL)
+		{
+			CP_Sound_Free(&memeTankFire[i]);
+			debug_log("freed meme tank fire %d/%d sfx\n", i + 1, NUM_MEME_FIRE_SOUNDS);
+		}
+
+	}
 }
