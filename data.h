@@ -26,3 +26,20 @@ void destroyData(void);
  * @param value 
  */
 void updateDataNum(const char* key, double value);
+
+/**
+ * @brief updates a boolean value of config.json
+ * 
+ * @param key 
+ * @param value 
+ */
+void updateDataBool(const char* key, int value);
+
+
+void outputData(void);
+
+/**
+ * @brief commits data by writing to file
+ * 
+ */
+void commit(void);

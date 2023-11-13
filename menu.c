@@ -14,6 +14,8 @@ CP_Sound titleMusic;
 CP_Sound memeTitleMusic;
 int SFX_GROUP = CP_SOUND_GROUP_0;
 int MUSIC_GROUP = CP_SOUND_GROUP_1;
+int MEME_SFX_GROUP = CP_SOUND_GROUP_2;
+int MEME_MUSIC_GROUP = CP_SOUND_GROUP_3;
 
 /*audio between 0 and 1*/
 extern double musicVolume;
