@@ -87,7 +87,7 @@ void gameInit(void) {
 	font = CP_Font_Load("Assets/fonts/PixelifySans-Regular.ttf");
 	gameBg = CP_Image_Load("Assets/game/terrain.png");
 	debug_log("loaded game background img\n");
-	gameMusic = CP_Sound_LoadMusic("Assets/audio/music/game.wav");
+	gameMusic = CP_Sound_LoadMusic("Assets/audio/music/game.mp3");
 	debug_log("loaded game music\n");
 	CP_Font_Set(font);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);

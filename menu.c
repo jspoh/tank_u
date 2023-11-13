@@ -102,7 +102,7 @@ void _menuFadeToGame(void) {
 }
 
 void _initVars(void) {
-	titleMusic = CP_Sound_LoadMusic("Assets/audio/music/title.wav");
+	titleMusic = CP_Sound_LoadMusic("Assets/audio/music/title.mp3");
 	debug_log("loaded menu title music\n");
 
 	menuBg = CP_Image_Load("Assets/menu/menu_bg.png");
