@@ -15,8 +15,12 @@ int main(void)
 		fprintf(stderr, "App config failed to initialize\n");
 		return 1;
 	}
-	//CP_Engine_SetNextGameState(splashInit, splashUpdate, splashExit);  // for production
-	CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);  // for development
+	if (DEBUG_MODE) {
+		CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);  // for development
+	}
+	else {
+		CP_Engine_SetNextGameState(splashInit, splashUpdate, splashExit);  // for production
+	}
 	CP_Engine_Run();
 
 	return 0;
