@@ -16,3 +16,8 @@
 //	
 //}
 
+
+// get rand powerup
+enum AMMO_TYPES getPowerup(void) {
+	return (enum AMMO_TYPES)getRand(1, NUM_POWERUPS);
+}
