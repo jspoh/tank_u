@@ -12,6 +12,7 @@
 #include <time.h>
 #include "winner.h"
 #include "dropbox.h"
+#include "powerup.h"
 
 #define MOVEMENT_SPEED 500
 #define ACCELERATION 200
