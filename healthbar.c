@@ -72,17 +72,17 @@ void _drawHealthBar(Tank* tank, int playerIndex) {
 		break;
 	case RAPID_FIRE:
 		printf("rapid fire not loaded %d\n", rapidFire == NULL);
-		CP_Image_Draw(rapidFire, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
+		CP_Image_Draw(rapidFire, (float)originalxPos + (float)originalBarWidth / 2, (float)yPos + 70, 60, 60, 255);
 		break;
 
 	case BIG_BULLET:
 		printf("bigBullet not loaded %d\n", bigBullet == NULL);
-		CP_Image_Draw(bigBullet, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
+		CP_Image_Draw(bigBullet, (float)originalxPos + (float)originalBarWidth / 2, (float)yPos + 70, 60, 60, 255);
 		break;
 
 	case SHOTGUN:
 		printf("shotGun not loaded %d\n", shotGun == NULL);
-		CP_Image_Draw(shotGun, (float)xPos + (float)barWidth / 2, (float)yPos + 70, 60, 60, 255);
+		CP_Image_Draw(shotGun, (float)originalxPos + (float)originalBarWidth / 2, (float)yPos + 70, 60, 60, 255);
 		break;
 
 
