@@ -105,10 +105,10 @@ void _menuFadeToGame(void) {
 }
 
 void _initVars(void) {
-	titleMusic = CP_Sound_LoadMusic("Assets/audio/music/title.mp3");
+	titleMusic = CP_Sound_LoadMusic("Assets/audio/music/title.ogg");
 	debug_log("loaded menu title music\n");
 
-	memeTitleMusic = CP_Sound_LoadMusic("Assets/audio/meme/music/title.mp3");
+	memeTitleMusic = CP_Sound_LoadMusic("Assets/audio/meme/music/title.ogg");
 	debug_log("loaded meme menu title music\n");
 
 	menuBg = CP_Image_Load("Assets/menu/menu_bg.png");
