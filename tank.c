@@ -19,7 +19,8 @@
 #define DECELERATION (ACCELERATION * 3)
 #define TURN_SPEED 100
 #define REPAIR_TIME 0.1  // seconds
-#define POWERUP_DURATION 10
+// FOR JUN TESTING CHANGE POWERUP_DURATION BACK TO 10
+#define POWERUP_DURATION 100
 
 CP_Sound tankFire;
 
@@ -34,6 +35,7 @@ Size tankSize = { 75.f/3*2, 100.f/3*2 };
 
 extern Keybinds keybindings[];
 extern Rect dropbox;
+
 
 void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
@@ -181,7 +183,7 @@ Tank _tankConstructor(Position pos, Color color) {
 	tank.size = tankSize;
 	// change to different kinds of ammo for debugging
 	// enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
-	tank.activePowerUps = NORMAL;
+	tank.activePowerUps = RAPID_FIRE;
 
 	/* add tank to tanks array */
 	bool valid = false;
@@ -276,7 +278,6 @@ Position _getTurretCenter(Tank* t, Size turretSize) {
 
 	return O;
 }
-
 
 
 

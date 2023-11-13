@@ -1,5 +1,7 @@
 #include "cannonball.h"
 #include <stdio.h>
+#include <math.h>
+#include "utils.h"
 
 #define CANNONBALL_SPEED 750
 #define CANNONBALL_RADIUS 10
@@ -8,6 +10,8 @@
 #define DEFAULT_FIRERATE 0.5  // seconds per shot
 
 extern CP_Color black;
+extern Tank tanks[];
+
 
 double firerates[NUM_PLAYERS] = { DEFAULT_FIRERATE, DEFAULT_FIRERATE };
 
@@ -25,6 +29,7 @@ bool _removeCannonball(int index) {
 	}
 
 	// less efficient way but preserves array order
+	// removing cannonball and shifting remaining cannonballs to the left 
 	for (int i = index; i < numCbs; i++) {
 		activeCbs[i] = activeCbs[i + 1];
 	}
@@ -88,8 +93,24 @@ void clearCannonballs(void) {
  * @param ammoType enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
  * 
 */
+
+Vector rotateVector(Vector v, float angle, int direction) // for direction 1 is clockwise, 0 is counterclockwise
+{
+	double radian = degreesToRadians(angle);
+	Vector vNew = { 0 };
+	if (direction == 0) { //find anticlockwise 
+		vNew.x = v.x * cos(radian) - v.y * sin(radian);
+		vNew.y = v.x * sin(radian) + v.y * cos(radian);
+	}
+	else if (direction == 1) {
+		vNew.x = v.x * cos(-radian) - v.y * sin(-radian);
+		vNew.y = v.x * sin(-radian) + v.y * cos(-radian);
+	}
+	return vNew;
+}
+
 bool onFireCannonball(Position startPos, Vector d, int player, enum AMMO_TYPES ammoType) {
-	if (ammoType == RAPID_FIRE) {  // js got a free drink here
+	if (ammoType == RAPID_FIRE) {  
 		firerates[player] = DEFAULT_FIRERATE / 2;
 	}
 	else {
@@ -133,23 +154,19 @@ bool onFireCannonball(Position startPos, Vector d, int player, enum AMMO_TYPES a
 		break;
 	case SHOTGUN:
 		// !TODO: shotgun left and right cannonballs have issues
+		// so currently when tank facing up and down shotgun works normally
 		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE, CANNONBALL_RADIUS);
 		activeCbs[numCbs++] = cb;
-
-		Vector l = rotateVectorCounterClockwise(d, 45);
-		startPos.x += l.x * CANNONBALL_RADIUS;
-		startPos.y += l.y * CANNONBALL_RADIUS;
+		
+		Vector l = rotateVector(d, 15, 0); // add tank's current direction to the 45 degrees
 		cb = _cannonballConstructor(startPos, l, DEFAULT_DAMAGE, CANNONBALL_RADIUS);
 		activeCbs[numCbs++] = cb;
-
-		Vector r = rotateVectorClockwise(d, 45);
-		startPos.x += r.x * CANNONBALL_RADIUS;
-		startPos.y += r.y * CANNONBALL_RADIUS;
+		
+		Vector r = rotateVector(d, 15, 1); // add tank's current direction to the 45 degrees
 		cb = _cannonballConstructor(startPos, r, DEFAULT_DAMAGE, CANNONBALL_RADIUS);
 		activeCbs[numCbs++] = cb;
 		return true;  // DO NOT REMOVE OR PUT BREAK ON TOP
 		//break;
-
 
 	default:  // else
 		fprintf(stderr, "Cannonball switch case reached default statement\n");
