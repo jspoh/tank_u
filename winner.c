@@ -1,4 +1,4 @@
-#include"tank.h"
+#include "tank.h"
 #include "game.h"
 #include "cprocessing.h"
 #include "collision.h"
@@ -92,11 +92,16 @@ void initWinner(void) {
 
 void destroyWinner(void) {
 	for (int i = 0; i < NUM_PLAYERS; i++) {
+		if (winnerImage[i] == NULL) {
+			continue;
+		}
 		CP_Image_Free(&winnerImage[i]);
 		debug_log("Freed winner img %d/%d\n", i + 1, NUM_PLAYERS);
 	}
-	CP_Sound_Free(&winAudio);
-	debug_log("freed win audio\n");
+	if (&winAudio != NULL) {
+		CP_Sound_Free(&winAudio);
+		debug_log("freed win audio\n");
+	}
 	playing = false;
 }
 
