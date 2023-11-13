@@ -5,7 +5,7 @@
 
 #define MAX_TREES 12
 
-enum { treeStyle1, treeStyle2, NUM_TREE_STYLES } TREE_STYLES;
+enum { treeStyle1, treeStyle2, treeStyle3, treeStyle4, treeStyle5, NUM_TREE_STYLES } TREE_STYLES;
 
 typedef struct {
 	Rect rect; 
