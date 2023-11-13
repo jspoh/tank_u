@@ -6,6 +6,7 @@
 #include "collision.h"
 #include "game.h"
 #include "data.h"
+#include "checkbox.h"
 #include <stdio.h>
 
 extern int menuState;
@@ -16,6 +17,8 @@ extern CP_Color grey2;
 extern CP_Color red;
 extern CP_Color black;
 extern CP_Color yellow;
+extern CP_Color invisColor;
+extern CP_Color white;
 
 
 Circle musicKnob = { 0 };
@@ -24,6 +27,7 @@ Circle sfxKnob = { 0 };
 Rect sfxDial = { 0 };
 #define knobRadius 50
 
+extern cJSON* data;
 
 /*audio between 0 and 1*/
 extern double musicVolume;
@@ -32,6 +36,13 @@ extern double sfxVolume;
 
 extern int SFX_GROUP;
 extern int MUSIC_GROUP;
+extern int MEME_SFX_GROUP;
+extern int MEME_MUSIC_GROUP;
+
+extern bool MEME_MODE;
+
+#define numOptionsPages 2
+static enum PAGE_NUMS optionsPage = PAGE_1;
 
 bool mouseHeldDown = false;
 enum { NOT_EDITING, MUSIC, SFX } editing = NOT_EDITING;
@@ -62,9 +73,9 @@ void _renderSfxDial(Position pos, double volumePercentage) {
 }
 
 /**
- * @brief 
- * 
- * @param pos 
+ * @brief
+ *
+ * @param pos
  * @param volumePercentage between 0 and 1 (inclusive)
  */
 void _renderMusicDial(Position pos, double volumePercentage) {
@@ -79,10 +90,7 @@ void _renderMusicDial(Position pos, double volumePercentage) {
 	_drawKnob(&musicKnob);
 }
 
-
-void _render(void) {
-	renderBackdrop();
-
+static void _renderP1(void) {
 	/*render shapes*/
 	Position sfxDialPos = { (WINDOW_SIZE.width - sfxDial.size.width) / 2, (WINDOW_SIZE.height - (sfxDial.size.height + musicDial.size.height)) / 3 };
 	Position musicDialPos = { (WINDOW_SIZE.width - musicDial.size.width) / 2, (WINDOW_SIZE.height - (musicDial.size.height + musicDial.size.height)) / 3 * 2 };
@@ -120,37 +128,96 @@ void _render(void) {
 	}
 
 	switch (editing) {
-		case MUSIC:
+	case MUSIC:
 		/*move knob visually*/
-			musicKnob.pos.x = mouseX;
-			if (musicKnob.pos.x < musicDial.pos.x) {
-				musicKnob.pos.x = musicDial.pos.x;
-			}
-			else if (musicKnob.pos.x > musicDial.pos.x + musicDial.size.width) {
-				musicKnob.pos.x = musicDial.pos.x + musicDial.size.width;
-			}
+		musicKnob.pos.x = mouseX;
+		if (musicKnob.pos.x < musicDial.pos.x) {
+			musicKnob.pos.x = musicDial.pos.x;
+		}
+		else if (musicKnob.pos.x > musicDial.pos.x + musicDial.size.width) {
+			musicKnob.pos.x = musicDial.pos.x + musicDial.size.width;
+		}
 
-			/*adjust volume*/
-			musicVolume = (musicKnob.pos.x - musicDial.pos.x) / musicDial.size.width;
-			debug_log("music volume: %f\n", musicVolume);
+		/*adjust volume*/
+		musicVolume = (musicKnob.pos.x - musicDial.pos.x) / musicDial.size.width;
+		debug_log("music volume: %f\n", musicVolume);
 
+		break;
+	case SFX:
+		/*move knob visually*/
+		sfxKnob.pos.x = mouseX;
+		if (sfxKnob.pos.x < sfxDial.pos.x) {
+			sfxKnob.pos.x = sfxDial.pos.x;
+		}
+		else if (sfxKnob.pos.x > sfxDial.pos.x + sfxDial.size.width) {
+			sfxKnob.pos.x = sfxDial.pos.x + sfxDial.size.width;
+		}
+
+		/*adjust volume*/
+		sfxVolume = (sfxKnob.pos.x - sfxDial.pos.x) / sfxDial.size.width;
+		debug_log("sfx volume: %f\n", sfxVolume);
+
+		break;
+	}
+}
+
+
+
+static void _renderP2(void) {
+	Size size = {100,100};
+	Position pos = {400 ,WINDOW_SIZE.height/2 - size.height / 2};
+	Rect border = {size,pos};
+
+	bool histMeme = MEME_MODE;
+	MEME_MODE = renderCheckbox(border, MEME_MODE, grey2, white);
+
+	Position textPos = {WINDOW_SIZE.width / 2 + border.size.width + 25, WINDOW_SIZE.height / 2};
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
+	double textSize = 100;
+	drawText("ENABLE MEME MODE", &textPos, textSize, &white);
+
+	/*if meme mode was changed*/
+	if (MEME_MODE != histMeme) {
+		if (MEME_MODE) {
+				CP_Sound_SetGroupVolume(MEME_SFX_GROUP, (float)sfxVolume);
+				CP_Sound_SetGroupVolume(MEME_MUSIC_GROUP, (float)musicVolume);
+				CP_Sound_SetGroupVolume(SFX_GROUP, 0);
+				CP_Sound_SetGroupVolume(MUSIC_GROUP, 0);
+		}
+		else {
+				CP_Sound_SetGroupVolume(MEME_SFX_GROUP, 0);
+				CP_Sound_SetGroupVolume(MEME_MUSIC_GROUP, 0);
+				CP_Sound_SetGroupVolume(SFX_GROUP, (float)sfxVolume);
+				CP_Sound_SetGroupVolume(MUSIC_GROUP, (float)musicVolume);
+		}
+	}
+}
+
+
+void _render(void) {
+	renderBackdrop();
+
+	if (optionsPage < numOptionsPages - 1) {
+		bool isNextClicked = renderNextButton();
+		if (isNextClicked) {
+			optionsPage++;
+			debug_log("Accessing page %d of options\n", optionsPage+1);
+		}
+	}
+
+	switch (optionsPage) {
+		case PAGE_1:
+			_renderP1();
 			break;
-		case SFX:
-			/*move knob visually*/
-			sfxKnob.pos.x = mouseX;
-			if (sfxKnob.pos.x < sfxDial.pos.x) {
-				sfxKnob.pos.x = sfxDial.pos.x;
-			}
-			else if (sfxKnob.pos.x > sfxDial.pos.x + sfxDial.size.width) {
-				sfxKnob.pos.x = sfxDial.pos.x + sfxDial.size.width;
-			}
-
-			/*adjust volume*/
-			sfxVolume = (sfxKnob.pos.x - sfxDial.pos.x) / sfxDial.size.width;
-			debug_log("sfx volume: %f\n", sfxVolume);
-
+		case PAGE_2:
+			_renderP2();
+			break;
+		default:
+			fprintf(stderr, "Reached end of render options switch case\n");
+			exit(14);
 			break;
 	}
+
 
 	CP_Sound_SetGroupVolume(SFX_GROUP, (float)sfxVolume);
 	CP_Sound_SetGroupVolume(MUSIC_GROUP, (float)musicVolume);
@@ -158,16 +225,18 @@ void _render(void) {
 
 void renderOptions(void) {
 	_render();
-	
 
 	bool isBackClicked = renderBackButton();
 
 	if (isBackClicked) {
 		menuState = MENU_PAGE;
 		gameState = GAME;
+		optionsPage	= PAGE_1;
 
 		/*update json file*/
 		updateDataNum("sfxVolume", sfxVolume);
 		updateDataNum("musicVolume", musicVolume);
+		updateDataBool("memeMode", MEME_MODE);
+		commit();
 	}
 }

@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include "data.h"
+#include "cprocessing.h"
 
 
 Size WINDOW_SIZE = { 1600.f,900.f };
@@ -11,6 +12,13 @@ Size WINDOW_SIZE = { 1600.f,900.f };
 double musicVolume = 1.0;
 /*audio between 0 and 1*/
 double sfxVolume = 1.0;
+
+extern int SFX_GROUP;
+extern int MUSIC_GROUP;
+extern int MEME_SFX_GROUP;
+extern int MEME_MUSIC_GROUP;
+
+bool MEME_MODE = false;
 
 int init(void) {
 	/* init rand seed */
@@ -21,6 +29,20 @@ int init(void) {
     cJSON* data = getDataObj();
     sfxVolume = cJSON_GetObjectItem(data, "sfxVolume")->valuedouble;
     musicVolume = cJSON_GetObjectItem(data, "musicVolume")->valuedouble;
+    MEME_MODE = cJSON_GetObjectItem(data, "memeMode")->valueint;
+
+    if (MEME_MODE) {
+        CP_Sound_SetGroupVolume(MEME_SFX_GROUP, (float)sfxVolume);
+        CP_Sound_SetGroupVolume(MEME_MUSIC_GROUP, (float)musicVolume);
+        CP_Sound_SetGroupVolume(SFX_GROUP, 0);
+        CP_Sound_SetGroupVolume(MUSIC_GROUP, 0);
+    }
+    else {
+        CP_Sound_SetGroupVolume(MEME_SFX_GROUP, 0);
+        CP_Sound_SetGroupVolume(MEME_MUSIC_GROUP, 0);
+        CP_Sound_SetGroupVolume(SFX_GROUP, (float)sfxVolume);
+        CP_Sound_SetGroupVolume(MUSIC_GROUP, (float)musicVolume);
+    }
 
 	/* return 1 to specify no errors */
 	return 1;
@@ -47,9 +69,9 @@ void debug_log(const char *format, ...) {
                 printf("%d", i);
             }
             else if (*format == 'f') {
-							double lf = va_arg(args, double);
-							printf("%lf", lf);
-						}
+                double lf = va_arg(args, double);
+                printf("%lf", lf);
+            }
         } else {
             putchar(*format);
         }

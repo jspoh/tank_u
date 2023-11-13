@@ -9,7 +9,6 @@
 #include "cannonball.h"
 #include "collision.h"
 #include "queue.h"
-#include <time.h>
 #include "winner.h"
 #include "dropbox.h"
 #include "powerup.h"
@@ -39,13 +38,15 @@ Size tankSize = {75.f / 3 * 2, 100.f / 3 * 2};
 extern Keybinds keybindings[];
 extern Rect dropbox;
 
+extern bool powerupPickedUp;
+
 
 void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
 	drawTankAdvanced(tank, &fillCol, &strokeCol);
 
-	if (tank->repairTimer > 0)
+	if (tank->repairTimer > 0 || tank->hasCollided)
 	{
 		// debug_log("%lf\n", tank->repairTimer);
 		//  make tank flash
@@ -216,7 +217,7 @@ Tank _tankConstructor(Position pos, Color color)
 	tank.size = tankSize;
 	// change to different kinds of ammo for debugging
 	// enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
-	tank.activePowerUp = NORMAL;
+	tank.activeAmmo = NORMAL;
 
 	/* add tank to tanks array */
 	bool valid = false;
@@ -265,56 +266,31 @@ void _damageTank(Tank *tank, double damage)
 	tank->health -= damage;
 }
 
-void _tankCollectPowerUp(int i)
-{ // int i is which tank it is in the array tanks[i]
-	return;
-
-	// logic for collecting powerups draft will change once the actual code for the area of rect is there
-	Rect dbHitbox = (Rect){dropbox.size, (Position){dropbox.pos.x - dropbox.size.width / 2, dropbox.pos.y - dropbox.size.height / 2}};
-	for (int i = 0; i < NUM_PLAYERS; i++)
-	{
-		if (colTankRect(&tanks[i], &dbHitbox, false))
-		{
-			// printf("tank %d collide with dropbox\n", i+1);
-			for (int j = 0; j < POWERUPS_COUNT; j++)
-			{
-				if (tanks[i].availPowerup == 0)
-				{
-					tanks[i].availPowerup += 1; // will change back to the other variable as soon as dropbox is ready for the tank to take in which powerup is
-					// what is this logic for ^?
-					// very confused nvm
-				}
-			}
-		}
-	}
-}
-
 void _tankUsePowerUp(int i)
 { // int i is which tank it is in the array tanks[i]
-	static clock_t powerUpStartTime = 0;
 	if (CP_Input_KeyDown(keybindings[i].usePower))
 	{
 		// takes in the tank that have the power up
 		if (tanks[i].availPowerup != NORMAL)
 		{
-			tanks[i].activePowerUp = tanks[i].availPowerup;
+			tanks[i].activeAmmo = tanks[i].availPowerup;
 			tanks[i].availPowerup = NORMAL; // no powerups available. reset state.
-			powerUpStartTime = clock();		// takes in the time that the function is being called.
+			tanks[i].powerElapsedTime = 0;
 
-			debug_log("tank %d used powerups %d\n", i+1, tanks[i].activePowerUp);
+			debug_log("tank %d used powerups %d\n", i+1, tanks[i].activeAmmo);
 		}
 	}
 
 	/*cancel powerup after time is up*/
-	if (tanks[i].activePowerUp != 0)  
+	if (tanks[i].activeAmmo != NORMAL)  
 	{
-		clock_t currentTime = clock();
-		double elapsedTime = (double)(currentTime - powerUpStartTime) / CLOCKS_PER_SEC;
+		const double dt = CP_System_GetDt();
+		tanks[i].powerElapsedTime += dt;
 
-		if (elapsedTime >= POWERUP_DURATION)
+		if (tanks[i].powerElapsedTime >= POWERUP_DURATION)
 		{
-			// Power-up duration has elapsed, reset activePowerUp to 0
-			tanks[i].activePowerUp = NORMAL;
+			// Power-up duration has elapsed, reset activeAmmo to 0
+			tanks[i].activeAmmo = NORMAL;
 			debug_log("tank %d powerup finished\n", i+1);
 		}
 	}
@@ -322,7 +298,7 @@ void _tankUsePowerUp(int i)
 
 Position _getTurretCenter(Tank *t, Size turretSize)
 {
-	double scalar = sqrt(pow(t->size.width / 2.0, 2.0) + pow(t->size.height / 2.0, 2.0)) * 2; // the distance between the point
+	double scalar = sqrt(pow(t->size.width / 2.0, 2.0) + pow(t->size.height / 2.0, 2.0)) * 1.1; // the distance between the point
 
 	Position O = {0};
 	O.x = t->pos.x + scalar * t->pos.d.x;
@@ -333,7 +309,7 @@ Position _getTurretCenter(Tank *t, Size turretSize)
 
 
 
-void _tankShoot(int i, enum AMMO_TYPES activePowerUp) { //int i is which tank it is in the array tanks[i] 
+void _tankShoot(int i, enum AMMO_TYPES activeAmmo) { //int i is which tank it is in the array tanks[i] 
 	if (CP_Input_KeyDown(keybindings[i].shoot) && tanks[i].repairTimer == 0)
 	{
 		// using the exact address to find the directional vector
@@ -345,7 +321,7 @@ void _tankShoot(int i, enum AMMO_TYPES activePowerUp) { //int i is which tank it
 
 		Position turretTip = _getTurretCenter(&tanks[i], size);
 
-		bool firingSuccess = onFireCannonball(turretTip, unitVector, i, activePowerUp);
+		bool firingSuccess = onFireCannonball(turretTip, unitVector, i, activeAmmo);
 		if (firingSuccess)
 		{
 			CP_Sound_PlayAdvanced(tankFire, (float)sfxVolume, 1.f, false, SFX_GROUP);
@@ -372,8 +348,7 @@ void _actionTank(void)
 {
 	for (int i = 0; i < NUM_PLAYERS; i++)
 	{
-		_tankCollectPowerUp(i);
-		_tankShoot(i, tanks[i].activePowerUp);
+		_tankShoot(i, tanks[i].activeAmmo);
 		_tankUsePowerUp(i);
 	}
 }
@@ -394,6 +369,15 @@ void _debugTank(void)
 	}
 }
 
+/**
+ * @brief looks through the past `MAX`(256) frames and finds an instance of tank that did not collide
+ * 
+ * 		  basically, if the user collides with a wall, to prevent tunneling, teleport user to last nocollision position
+ *		  so smart right
+ *  
+ * @param player 
+ * @return Tank 
+ */
 Tank _findNoColTank(int player)
 {
 	int i = history.rear;
@@ -403,7 +387,11 @@ Tank _findNoColTank(int player)
 		// debug_log("%d\n", history.data[i][player].hasCollided);
 		if (!history.data[i][player].hasCollided)
 		{
-			return history.data[i][player];
+			Tank validTank = history.data[i][player];  // no collision
+			Tank tank = tanks[player];
+			tank.pos = validTank.pos;
+			tank.speed = validTank.speed;
+			return tank;
 		}
 	} while (i != history.front);
 	return history.data[history.front][player];
@@ -455,7 +443,7 @@ void _collisionsTank(void)
 
 		/*dropbox logic*/
 		Rect dbHitbox = (Rect){dropbox.size, (Position){dropbox.pos.x - dropbox.size.width / 2, dropbox.pos.y - dropbox.size.height / 2}};
-		if (colTankRect(&tanks[i], &dbHitbox, false))
+		if (colTankRect(&tanks[i], &dbHitbox, false) && !powerupPickedUp)
 		{
 			tanks[i].availPowerup = getPowerup();
 			debug_log("tank %d picked up powerup %d\n", i + 1, tanks[i].availPowerup);
@@ -504,6 +492,8 @@ void updateTank(bool isPaused)
 			tanks[i].repairTimer = REPAIR_TIME;
 		}
 	}
+
+	// debug_log("%f\n", tanks[1].health);
 }
 
 void destroyTank(void)
