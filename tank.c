@@ -39,13 +39,15 @@ Size tankSize = {75.f / 3 * 2, 100.f / 3 * 2};
 extern Keybinds keybindings[];
 extern Rect dropbox;
 
+extern bool powerupPickedUp;
+
 
 void _drawTank(Tank* tank) {
 	CP_Color fillCol = CP_Color_Create(tank->color.r, tank->color.g, tank->color.b, tank->color.a);
 	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);
 	drawTankAdvanced(tank, &fillCol, &strokeCol);
 
-	if (tank->repairTimer > 0)
+	if (tank->repairTimer > 0 || tank->hasCollided)
 	{
 		// debug_log("%lf\n", tank->repairTimer);
 		//  make tank flash
@@ -443,7 +445,7 @@ void _collisionsTank(void)
 
 		/*dropbox logic*/
 		Rect dbHitbox = (Rect){dropbox.size, (Position){dropbox.pos.x - dropbox.size.width / 2, dropbox.pos.y - dropbox.size.height / 2}};
-		if (colTankRect(&tanks[i], &dbHitbox, false))
+		if (colTankRect(&tanks[i], &dbHitbox, false) && !powerupPickedUp)
 		{
 			tanks[i].availPowerup = getPowerup();
 			debug_log("tank %d picked up powerup %d\n", i + 1, tanks[i].availPowerup);
