@@ -20,6 +20,8 @@ extern CP_Font font; //so that i dont have to keep loading stuff
 static CP_Color btnColor = {150,150,150,0};
 extern CP_Color white;
 
+extern CP_Sound clickSound;
+
 CP_Sound winAudio;
 
 bool playing = false;
@@ -66,6 +68,7 @@ void _buttonSelection(void) { //works based on what the user defines
 	for (int i = 0; i < NUM_WINNER_BUTTONS; i++) {
 		if (mouseInRect(winnerButtons[i].rect, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(clickSound, (float)sfxVolume, 1.f, false, SFX_GROUP);
 				if (!strcmp(winnerButtons[i].winnerButton, "Restart")) {
 					CP_Engine_SetNextGameState(gameInit, gameUpdate, gameExit);
 				}
