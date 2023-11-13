@@ -1,10 +1,16 @@
 #include "queue.h"
-#include <stdio.h>  
+#include <stdio.h>
 
 void initQueue(Queue *q) {
     q->front = 0;
     q->rear = -1;
     q->size = 0;
+
+    /*initialize memory*/
+    // Tank base = { 0 };
+    // for (int i=0; i<MAX_HISTORY; i++) {
+    //     enqueue(q, base, base);
+    // }
 }
 
 int qEmpty(Queue *q) {
