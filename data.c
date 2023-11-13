@@ -5,6 +5,7 @@
 
 static  cJSON* data;
 
+const char* configFile = "config.json";
 
 /**
  * @brief Get the Data json object of `config.json`
@@ -29,6 +30,7 @@ cJSON* getDataObj(void) {
     cJSON* root = cJSON_CreateObject();
     cJSON_AddNumberToObject(root, "sfxVolume", 1);
     cJSON_AddNumberToObject(root, "musicVolume", 1);
+    cJSON_AddBoolToObject(root, "memeMode", 0);
 
     char* jsonStr = cJSON_Print(root);
     fprintf(file, "%s", jsonStr);
@@ -65,6 +67,18 @@ void destroyData(void) {
   cJSON_Delete(data);  // basically free
 }
 
+int _writeJson(const char* filename, const char* jsonStr) {
+  FILE* file = { 0 };
+  fopen_s(&file, filename, "w");
+  if (file == NULL) {
+    return 0;
+  }
+
+  fprintf(file, jsonStr);
+  fclose(file);
+  return 1;
+}
+
 /**
  * @brief updates a number value of config.json
  * 
@@ -76,11 +90,11 @@ void updateDataNum(const char* key, double value) {
   // printf("%s\n", jsonStr);
   // free(jsonStr);
 
-  printf("%s, %lf\n", key, value);
+  // printf("%s, %lf\n", key, value);
 
 
   cJSON* item = cJSON_GetObjectItem(data, key);
-  printf("%d\n", (item != ((void *)0)));
+  // printf("%d\n", (item != ((void *)0)));
   if (item != NULL) {
     cJSON_SetNumberValue(item, value);
   }
@@ -89,15 +103,32 @@ void updateDataNum(const char* key, double value) {
     exit(12);
   }
 
-  FILE* file = { 0 };
-  fopen_s(&file, "config.json", "w");
-  if (file == NULL) {
-    fprintf(stderr, "failed to open config.json file for writing\n");
-    exit(13);
+  char* json_string = cJSON_Print(data);
+  int success = _writeJson(configFile, json_string);
+  free(json_string);
+}
+
+/**
+ * @brief updates a boolean value of config.json
+ * 
+ * @param key 
+ * @param value 
+ */
+void updateDataBool(const char* key, int value) {
+  cJSON* item = cJSON_GetObjectItem(data, key);
+  if (item != NULL) {
+    cJSON_SetBoolValue(item, value);
+  }
+  else {
+    fprintf(stderr, "attempted to update value of a field that does not exist. key: %s | value: %s\n", key, value ? "true" : "false");
+    exit(15);
   }
 
-  char* json_string = cJSON_Print(data);
-  fprintf(file, "%s", json_string);
-  free(json_string);
-  fclose(file);
+  char* jsonStr = cJSON_Print(data);
+  int success = _writeJson(configFile, jsonStr);
+  if (!success) {
+    fprintf(stderr, "failed to update value of config.json in updateDataBool\n");
+    exit(16);
+  }
+  free(jsonStr);
 }
