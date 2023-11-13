@@ -22,6 +22,7 @@
 #define NUM_MEME_FIRE_SOUNDS 6
 
 CP_Sound tankFire;
+CP_Sound collectPower;
 CP_Sound memeTankFire[NUM_MEME_FIRE_SOUNDS] = { 0 };
 
 extern double sfxVolume;
@@ -312,6 +313,7 @@ Position _getTurretCenter(Tank *t, Size turretSize)
 void playMemeFire(void) {
 	int fire = getRand(0, 5);
 	CP_Sound_PlayAdvanced(memeTankFire[fire], (float)sfxVolume, 1.f, false, MEME_SFX_GROUP);
+	debug_log("played fire %d/%d", fire + 1, NUM_MEME_FIRE_SOUNDS);
 }
 
 void _tankShoot(int i, enum AMMO_TYPES activeAmmo) { //int i is which tank it is in the array tanks[i] 
@@ -463,6 +465,8 @@ void initTank(void)
 	initQueue(&history);
 	tankFire = CP_Sound_Load("Assets/audio/sfx/tank_fire.mp3");
 	debug_log("loaded tank firing sfx\n");
+	collectPower = CP_Sound_Load("Assets/audio/sfx/collect_power_up.mp3");
+	debug_log("loaded collect power up sfx\n");
 	for (int i = 0; i < NUM_MEME_FIRE_SOUNDS; i++) {
 		char path[MAX] = "";
 		snprintf(path, MAX, "Assets/audio/meme/sfx/tank_shoot/bang_%d.mp3", i + 1);
@@ -520,7 +524,11 @@ void destroyTank(void)
 	}
 	debug_log("freed tank fire sfx\n");
 	for (int i = 0; i < NUM_MEME_FIRE_SOUNDS; i++) {
-		CP_Sound_Free(&memeTankFire[i]);
-		debug_log("freed meme tank fire %d/%d sfx\n",i+1,NUM_MEME_FIRE_SOUNDS);
+		if (memeTankFire[i] != NULL)
+		{
+			CP_Sound_Free(&memeTankFire[i]);
+			debug_log("freed meme tank fire %d/%d sfx\n", i + 1, NUM_MEME_FIRE_SOUNDS);
+		}
+
 	}
 }

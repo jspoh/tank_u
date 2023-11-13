@@ -278,8 +278,11 @@ void menuExit(void) {
 	}
 	if (titleMusic != NULL) {
 		CP_Sound_Free(&titleMusic);
-		CP_Sound_Free(&memeTitleMusic);
 		debug_log("freed menu title music\n");
+	}
+	if (memeTitleMusic != NULL) {
+		CP_Sound_Free(&memeTitleMusic);
+		debug_log("freed meme menu title music\n");
 	}
 
 	if (DEBUG_MODE) {
