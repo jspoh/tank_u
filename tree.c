@@ -1,6 +1,5 @@
 #include "cprocessing.h"
 #include <stdio.h> 
-#include <time.h>
 #include "config.h" // include as i am calling struct from here
 #include "tree.h"
 #include "utils.h"

@@ -185,7 +185,7 @@ void _renderMenuPage(void) {
 		Size rs = { firstBtn.size.width, firstBtn.size.height };
 		Position rp = { firstBtn.pos.x, firstBtn.pos.y + (i * (spaceBetweenBtns + rs.height)) };
 		Rect r = { rs, rp };
-		CP_Color col;
+		CP_Color col = {150,150,150,0};
 
 		/* detect hover and clicks */
 		if (mouseInRect(r, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
@@ -205,20 +205,20 @@ void _renderMenuPage(void) {
 			}
 			/* if hover */
 			else {
-				col = CP_Color_Create(255, 255, 255, 220);
+				col.a = 255;
 			}
 		}
 		else {
-			col = CP_Color_Create(200, 200, 200, 220);
+			col.a = 0;
 		}
 
 		/* draw button on screen */
-		drawRect(&r, &col, &invisColor);
+		drawRect(&r, &col, &white);
 
 		/* draw text on button*/
 		CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 		Position textPos = { rp.x + rs.width / 2, rp.y + rs.height / 2 };
-		drawText(buttons[i], &textPos, textSize, &black);
+		drawText(buttons[i], &textPos, textSize, &white);
 
 		if (mouseInRect(r, CP_Input_GetMouseX(), CP_Input_GetMouseY()) && CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 			if (!strcmp(buttons[i], "Play")) {
