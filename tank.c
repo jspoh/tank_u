@@ -24,6 +24,7 @@
 CP_Sound tankFire;
 CP_Sound collectPower;
 CP_Sound usePower;
+CP_Sound powerEnd;
 CP_Sound memeTankFire[NUM_MEME_FIRE_SOUNDS] = { 0 };
 
 extern double sfxVolume;
@@ -297,6 +298,7 @@ void _tankUsePowerUp(int i)
 		{
 			// Power-up duration has elapsed, reset activeAmmo to 0
 			tanks[i].activeAmmo = NORMAL;
+			CP_Sound_PlayAdvanced(powerEnd, (float)sfxVolume, 1.f, false, SFX_GROUP);
 			debug_log("tank %d powerup finished\n", i+1);
 		}
 	}
@@ -474,6 +476,8 @@ void initTank(void)
 	debug_log("loaded collect power up sfx\n");
 	usePower = CP_Sound_Load("Assets/audio/sfx/using_power_up.mp3");
 	debug_log("loaded using power up sfx\n");
+	powerEnd = CP_Sound_Load("Assets/audio/sfx/powerup_end.mp3");
+	debug_log("loaded end power up sfx\n");
 	for (int i = 0; i < NUM_MEME_FIRE_SOUNDS; i++) {
 		char path[MAX] = "";
 		snprintf(path, MAX, "Assets/audio/meme/sfx/tank_shoot/bang_%d.mp3", i + 1);
@@ -546,6 +550,10 @@ void destroyTank(void)
 	if (usePower != NULL)
 	{
 		CP_Sound_Free(&usePower);
+	}
+	if (powerEnd != NULL)
+	{
+		CP_Sound_Free(&powerEnd);
 	}
 
 }
