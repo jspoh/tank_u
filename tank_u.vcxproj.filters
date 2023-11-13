@@ -78,6 +78,9 @@
     <ClCompile Include="data.c">
       <Filter>util\data</Filter>
     </ClCompile>
+    <ClCompile Include="checkbox.c">
+      <Filter>components\menu\checkbox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="menu.h">
@@ -152,6 +155,9 @@
     </ClInclude>
     <ClInclude Include="data.h">
       <Filter>util\data</Filter>
+    </ClInclude>
+    <ClInclude Include="checkbox.h">
+      <Filter>components\menu\checkbox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +241,9 @@
     </Filter>
     <Filter Include="components\tank\tree">
       <UniqueIdentifier>{68d4405d-dae9-4b46-bc01-cefb1744384b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components\menu\checkbox">
+      <UniqueIdentifier>{822492a3-5c21-4d72-b433-889cb37eb1ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
