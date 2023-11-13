@@ -73,7 +73,7 @@ void _debugGame(void) {
 
 void _getWinner(void) {
 		for (int i = 0; i < NUM_PLAYERS; i++) {
-		if (tanks[i].health == 0) {
+		if (tanks[i].health <= 0) {
 			loser = i + 1;
 			//CP_Engine_SetNextGameState(winnerInit, winnerUpdate, winnerExit);
 			renderWinner();
