@@ -11,6 +11,7 @@
 #include <stdio.h>
 
 CP_Sound titleMusic;
+CP_Sound memeTitleMusic;
 int SFX_GROUP = CP_SOUND_GROUP_0;
 int MUSIC_GROUP = CP_SOUND_GROUP_1;
 
@@ -105,6 +106,9 @@ void _initVars(void) {
 	titleMusic = CP_Sound_LoadMusic("Assets/audio/music/title.mp3");
 	debug_log("loaded menu title music\n");
 
+	memeTitleMusic = CP_Sound_LoadMusic("Assets/audio/meme/music/title.mp3");
+	debug_log("loaded menu title music\n");
+
 	menuBg = CP_Image_Load("Assets/menu/menu_bg.png");
 	debug_log("loaded menu background image\n");
 
@@ -151,6 +155,7 @@ void menuInit(void) {
 	
 	_initVars();
 	CP_Sound_PlayAdvanced(titleMusic, (float)musicVolume, 1.f, true, MUSIC_GROUP);
+	CP_Sound_PlayAdvanced(memeTitleMusic, (float)musicVolume, 1.f, true, MEME_MUSIC_GROUP);
 }
 
 void _renderLaunchPage(void) {
@@ -273,6 +278,7 @@ void menuExit(void) {
 	}
 	if (titleMusic != NULL) {
 		CP_Sound_Free(&titleMusic);
+		CP_Sound_Free(&memeTitleMusic);
 		debug_log("freed menu title music\n");
 	}
 
