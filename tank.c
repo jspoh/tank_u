@@ -26,6 +26,7 @@ CP_Sound collectPower;
 CP_Sound usePower;
 CP_Sound powerEnd;
 CP_Sound memeTankFire[NUM_MEME_FIRE_SOUNDS] = { 0 };
+extern CP_Sound tankHit;
 
 extern double sfxVolume;
 extern int SFX_GROUP;
@@ -437,6 +438,7 @@ void _collisionsTank(void)
 		{
 			debug_log("cannonball collided with tank %d\n", i + 1);
 			_damageTank(&tanks[i], damageTaken);
+			CP_Sound_PlayAdvanced(tankHit, (float)sfxVolume, 1.f, false, SFX_GROUP);
 		}
 
 		bool hasCollidedTree = collisionTree(&tanks[i]);
