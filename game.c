@@ -24,6 +24,7 @@ CP_Font font;
 CP_Image gameBg;
 CP_Sound gameMusic;
 CP_Sound memeGameMusic;
+CP_Sound tankLose;
 
 bool gameMusicPlaying = false;
 bool isPaused = false;
@@ -78,7 +79,6 @@ void _getWinner(void) {
 		for (int i = 0; i < NUM_PLAYERS; i++) {
 		if (tanks[i].health <= 0) {
 			loser = i + 1;
-			//CP_Engine_SetNextGameState(winnerInit, winnerUpdate, winnerExit);
 			renderWinner();
 		}
 	}
@@ -90,10 +90,10 @@ void gameInit(void) {
 	font = CP_Font_Load("Assets/fonts/PixelifySans-Regular.ttf");
 	gameBg = CP_Image_Load("Assets/game/terrain.png");
 	debug_log("loaded game background img\n");
-	gameMusic = CP_Sound_LoadMusic("Assets/audio/music/game.mp3");
+	gameMusic = CP_Sound_LoadMusic("Assets/audio/music/game.ogg");
 	debug_log("loaded game music\n");
-	memeGameMusic = CP_Sound_LoadMusic("Assets/audio/meme/music/game.mp3");
-	debug_log("loaded meme game music\n");
+	memeGameMusic = CP_Sound_LoadMusic("Assets/audio/meme/music/game.ogg");
+	debug_log("loaded meme game music\n");	
 	CP_Font_Set(font);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
@@ -178,6 +178,7 @@ void gameExit(void) {
 		CP_Image_Free(&gameBg);
 		debug_log("freed game background\n");
 	}
+
 	isPaused = false;
 	freezeGame = false;
 
