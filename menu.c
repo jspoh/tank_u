@@ -12,7 +12,7 @@
 
 CP_Sound titleMusic;
 CP_Sound memeTitleMusic;
-CP_Sound clickSound;
+CP_Sound menuClickSound;
 int SFX_GROUP = CP_SOUND_GROUP_0;
 int MUSIC_GROUP = CP_SOUND_GROUP_1;
 int MEME_SFX_GROUP = CP_SOUND_GROUP_2;
@@ -112,8 +112,8 @@ void _initVars(void) {
 	memeTitleMusic = CP_Sound_LoadMusic("Assets/audio/meme/music/title.ogg");
 	debug_log("loaded meme menu title music\n");
 
-	clickSound = CP_Sound_LoadMusic("Assets/audio/sfx/button_click.mp3");
-	debug_log("loaded click Sound\n");
+	menuClickSound = CP_Sound_LoadMusic("Assets/audio/sfx/button_click.mp3");
+	debug_log("loaded menu click Sound\n");
 
 	menuBg = CP_Image_Load("Assets/menu/menu_bg.png");
 	debug_log("loaded menu background image\n");
@@ -181,7 +181,7 @@ void _renderLaunchPage(void) {
 	}
 	
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && mouseInRect(startContainer, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-		CP_Sound_PlayAdvanced(clickSound, (float)sfxVolume, 1.f, false, SFX_GROUP);
+		CP_Sound_PlayAdvanced(menuClickSound, (float)sfxVolume, 1.f, false, SFX_GROUP);
 		btnColor = CP_Color_Create(200, 200, 200, 220);
 		menuState = MENU_PAGE;
 	}
@@ -200,7 +200,7 @@ void _renderMenuPage(void) {
 		/* detect hover and clicks */
 		if (mouseInRect(r, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(clickSound, (float)sfxVolume, 1.f, false, SFX_GROUP);
+				CP_Sound_PlayAdvanced(menuClickSound, (float)sfxVolume, 1.f, false, SFX_GROUP);
 				if (!strcmp(buttons[i], "Options")) {
 					menuState = OPTIONS_PAGE;
 				}
@@ -295,9 +295,9 @@ void menuExit(void) {
 		CP_Sound_Free(&memeTitleMusic);
 		debug_log("freed meme menu title music\n");
 	}
-	if (clickSound != NULL) {
-		CP_Sound_Free(&clickSound);
-		debug_log("freed click button sound\n");
+	if (menuClickSound != NULL) {
+		CP_Sound_Free(&menuClickSound);
+		debug_log("freed menu click button sound\n");
 	}
 
 	if (DEBUG_MODE) {

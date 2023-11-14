@@ -25,6 +25,7 @@ CP_Image gameBg;
 CP_Sound gameMusic;
 CP_Sound memeGameMusic;
 CP_Sound tankLose;
+CP_Sound gameClickSound;
 
 bool gameMusicPlaying = false;
 bool isPaused = false;
@@ -94,6 +95,8 @@ void gameInit(void) {
 	debug_log("loaded game music\n");
 	memeGameMusic = CP_Sound_LoadMusic("Assets/audio/meme/music/game.ogg");
 	debug_log("loaded meme game music\n");	
+	gameClickSound = CP_Sound_LoadMusic("Assets/audio/sfx/button_click.mp3");
+	debug_log("loaded click Sound\n");
 	CP_Font_Set(font);
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
@@ -173,6 +176,10 @@ void gameExit(void) {
 	if (memeGameMusic != NULL) {
 		CP_Sound_Free(&memeGameMusic);
 		debug_log("freed meme game music\n");
+	}
+	if (gameClickSound != NULL) {
+		CP_Sound_Free(&gameClickSound);
+		debug_log("freed game click button sound\n");
 	}
 	if (gameBg != NULL) {
 		CP_Image_Free(&gameBg);

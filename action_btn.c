@@ -11,7 +11,7 @@ extern CP_Color white;
 extern CP_Color whiteHighlighted;
 extern CP_Color red;
 
-extern CP_Sound clickSound;
+extern CP_Sound menuClickSound;
 extern double sfxVolume;
 extern int SFX_GROUP;
 
@@ -89,7 +89,7 @@ bool renderArrowButton(enum DIRECTIONS direction, char* btnText, Position A) {
 	drawText(btnText, &textPos, backBtnTriangleLength, isHover ? &whiteHighlighted : &white);
 
 	if (isClicked) {
-		CP_Sound_PlayAdvanced(clickSound, (float)sfxVolume, 1.f, false, SFX_GROUP);
+		CP_Sound_PlayAdvanced(menuClickSound, (float)sfxVolume, 1.f, false, SFX_GROUP);
 	}
 
 	return isClicked;
