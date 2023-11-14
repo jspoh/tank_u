@@ -130,7 +130,7 @@ void updateDataNum(const char* key, double value) {
  */
 void updateDataBool(const char* key, int value) {
 
-  printf("%s, %d\n", key, value);
+  // printf("%s, %d\n", key, value);
 
   cJSON* item = cJSON_GetObjectItem(data, key);
   if (item != NULL) {

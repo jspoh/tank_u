@@ -29,6 +29,9 @@ extern CP_Color white;
 extern CP_Color invisColor;
 extern CP_Color red;
 extern double spaceBetweenBtns;
+extern CP_Sound gameClickSound;
+extern int SFX_GROUP;
+extern double sfxVolume;
 
 Size pauseBtnSize = { 200.0, 75.0 };
 Position firstBtnPos = { 0 };
@@ -79,6 +82,7 @@ void renderPause(void)
 
 			/*click event*/
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(gameClickSound, (float)sfxVolume, 1.f, false, SFX_GROUP);
 				switch (i) {
 				case RESUME:
 					isPaused = false;
