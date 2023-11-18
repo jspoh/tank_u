@@ -1,3 +1,13 @@
+/**
+ * @file tank.c
+ * @author MERYELENE <digipen id> - <what you did>
+ * @author POH JING SENG (jingseng.poh) - rendering of tank on screen, rotation and movement
+ * @brief 
+ * 
+ * @copyright Copyright Digipen 2023
+ * 
+ */
+
 #include "config.h"
 #include "cprocessing.h"
 #include "tank.h"
@@ -13,8 +23,8 @@
 #include "dropbox.h"
 #include "powerup.h"
 
-#define MOVEMENT_SPEED 500
-#define ACCELERATION 200
+#define MOVEMENT_SPEED 300
+#define ACCELERATION 300
 #define DECELERATION (ACCELERATION * 3)
 #define TURN_SPEED 100
 #define REPAIR_TIME 0.1 // seconds

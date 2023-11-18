@@ -1,3 +1,13 @@
+/**
+ * @file help.c
+ * @author POH JING SENG (jingseng.poh)
+ * @author ESHLYNE YAP SHUTING (e.yap) - PNG ASSETS
+ * @brief 
+ * 
+ * @copyright Copyright Digipen 2023
+ * 
+ */
+
 #include "backdrop.h"
 #include "config.h"
 #include "action_btn.h"

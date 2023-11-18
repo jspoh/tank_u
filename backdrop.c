@@ -1,3 +1,12 @@
+/**
+ * @file backdrop.c
+ * @author POH JING SENG (jingseng.poh)
+ * @brief 
+ * 
+ * @copyright Copyright Digipen 2023
+ * 
+ */
+
 #include "cprocessing.h"
 #include "config.h"
 

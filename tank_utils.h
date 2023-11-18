@@ -1,3 +1,12 @@
+/**
+ * @file tank_utils.h
+ * @author Merylene (fill in here thx)
+ * @brief 
+ * 
+ * @copyright Copyright Digipen 2023
+ * 
+ */
+
 #pragma once
 
 #include "config.h"

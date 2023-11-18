@@ -1,3 +1,12 @@
+/**
+ * @file healthbar.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "cprocessing.h"
 #include "config.h"
 #include "tank.h"

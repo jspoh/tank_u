@@ -1,3 +1,12 @@
+/**
+ * @file pause.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "config.h"
 #include "game.h"
 #include "backdrop.h"

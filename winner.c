@@ -1,3 +1,12 @@
+/**
+ * @file winner.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "tank.h"
 #include "game.h"
 #include "cprocessing.h"
