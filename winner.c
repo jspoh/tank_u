@@ -1,3 +1,20 @@
+﻿//---------------------------------------------------------
+// file:  winner.c
+// author:  Lim Jia Yin,Merylene , Poh Jing Seng
+// email:  jiayinmerrylene.lim@digipen.edu ,
+//		   jingseng.poh@digipen.edu
+//
+// brief:  This file is used to render the winner screen
+// and audio after a winner is being produced including
+// "restart" button rendered to restart the game if the
+// player would like to do so or "exit" button to exit to
+// the mainmenu if the user would like to exit after the 
+// game.
+// 
+//
+// Copyright � 2023 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include "tank.h"
 #include "game.h"
 #include "cprocessing.h"

@@ -1,3 +1,16 @@
+﻿//---------------------------------------------------------
+// file:  tank.c
+// author:  Lim Jia Yin,Merylene , Poh Jing Seng
+// email:  jiayinmerrylene.lim@digipen.edu ,
+//		   jingseng.poh@digipen.edu
+//
+// brief: used to initalise, assign attributes to the tank 
+// and allow the tank to make movements
+// 
+//
+// Copyright � 2023 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include "config.h"
 #include "cprocessing.h"
 #include "tank.h"
