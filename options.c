@@ -1,3 +1,12 @@
+/**
+ * @file options.c
+ * @author POH JING SENG (jingseng.poh)
+ * @brief 
+ * 
+ * @copyright Copyright Digipen 2023
+ * 
+ */
+
 #include "backdrop.h"
 #include "config.h"
 #include "action_btn.h"

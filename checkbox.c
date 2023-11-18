@@ -1,3 +1,13 @@
+/**
+ * @file checkbox.c
+ * @author POH JING SENG (jingseng.poh)
+ * @brief 
+ * 
+ * @copyright Copyright Digipen 2023
+ * 
+ * 
+ */
+
 #include "config.h"
 #include "utils.h"
 #include "math.h"

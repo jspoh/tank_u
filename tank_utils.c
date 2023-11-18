@@ -1,3 +1,13 @@
+/**
+ * @file tank_utils.c
+ * @author MERYLENE (<digipen id>) - <what you did>
+ * @author POH JING SENG (jingseng.poh)
+ * @brief 
+ * 
+ * @copyright Copyright Digipen 2023
+ * 
+ */
+
 #include "tank_utils.h"
 #include <math.h>
 #include <stdio.h>
@@ -83,10 +93,12 @@ double __getModifierAngle(Tank* t, Position rectTL) {
 }
 
 /**
- * @brief
- *
- *
-*/
+ * @brief 
+ * 
+ * @param t 
+ * @param fillColor 
+ * @param strokeColor 
+ */
 void drawTankAdvanced(Tank* t, CP_Color* fillColor, CP_Color* strokeColor) {
 	/*tank base*/
 	CP_Settings_RectMode(CP_POSITION_CENTER);

@@ -1,3 +1,12 @@
+/**
+ * @file utils.c
+ * @author POH JING SENG (jingseng.poh)
+ * @brief 
+ * 
+ * @copyright Copyright Digipen 2023
+ * 
+ */
+
 #include "utils.h"
 #include <math.h>
 #include <stdio.h>

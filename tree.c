@@ -1,3 +1,12 @@
+/**
+ * @file tree.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "cprocessing.h"
 #include <stdio.h> 
 #include "config.h" // include as i am calling struct from here

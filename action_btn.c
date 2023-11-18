@@ -1,3 +1,13 @@
+/**
+ * @file action_btn.c
+ * @author POH JING SENG (jingseng.poh)
+ * @brief 
+ * 
+ * @copyright Copyright Digipen 2023
+ * 
+ */
+
+
 #include "action_btn.h"
 #include "utils.h"
 #include "collision.h"

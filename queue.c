@@ -1,3 +1,12 @@
+/**
+ * @file queue.c
+ * @author POH JING SENG (jingseng.poh)
+ * @brief 
+ * 
+ * @copyright Copyright Digipen 2023
+ * 
+ */
+
 #include "queue.h"
 #include <stdio.h>
 
