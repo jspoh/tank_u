@@ -3,6 +3,27 @@
  * @author Lim Jia Yin,Merylene ( jiayinmerylene.lim) - tank collects the power up, uses the power up and centering of the cannonball coming out from the tank
  * @author POH JING SENG (jingseng.poh) - rendering of tank on screen, rotation and movement
  * @brief this file is used to render, assign attributes to the tank and trigger actions that are related to the tank eg. movement etc
+ * functions starting with _ at the front (eg._drawTank) is a in file function
+ * 
+ * _drawTank: used to draw the tank
+ * _setTankColor: used to initalise the inital color for the tanks
+ * _moveTanks: used to move tanks
+ * _tankConstructor: used to assign attributes to the tank to initalise it
+ * _createTank: used to call _tankConstructor to create a tank
+ * _rendertank: used to render the tank on the screen when called 
+ * _damageTank: used when the tank takes in damage
+ * _tankUsePowerUp : checks for the specific keybinding to activate the powerup
+ * _getTurretCenter: used to check where is the center of the turret
+ * _tankShoot : used to call onFireCannonball when the keybinding for it is clicked 
+ * _playMemeFire: used to play the meme sounds when the meme sounds settings are on 
+ * _tankRefillHealth: was used for testing in game
+ * _actiontank: used to iterate _tankShoot and _tankUsePowerUp to use it when needed 
+ * _debugTank: this was used for debugging purposes
+ * _findNoColTank: refer to the file level documentation for further details 
+ * _colliionTank: handles all the collisions related to the tank 
+ * initTank : Used to initalise values and load assets for the tank 
+ * updateTank: runs in the loop for the users to make changes to
+ * destoryTank: used to free all assests for the tank
  * 
  * @copyright Copyright Digipen 2023
  * 
@@ -272,11 +293,6 @@ void _renderTank(void)
 	}
 }
 
-// void _renderHealthBar(void) {
-//	for (int i = 0; i < NUM_PLAYERS; i++) {
-//		drawHealthBar(&tanks[i], i);
-//	}
-// }
 
 void _damageTank(Tank *tank, double damage)
 {
