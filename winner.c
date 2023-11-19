@@ -6,6 +6,12 @@
  * player would like to do so or "exit" button to exit to
  * the mainmenu if the user would like to exit after the game.
  * 
+ * _buttonconstructor: used to assign variables to the button to use
+ * _buttonSelection: used to check which button the player is clicking and the destination based on where the user clicks 
+ * initWinner: used to initalise and load values to be used for the winner screen
+ * destroyWinner: used to free all the assets (eg. images, audio etc)
+ * renderWinner: used to draw the images, play the sound when the winner is being announced.
+ * 
  * @copyright Copyright (c) 2023
  * 
  */
