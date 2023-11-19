@@ -1,7 +1,8 @@
 /**
  * @file tank.h
- * @author your name (you@domain.com)
- * @brief 
+ * @author Lim Jia Yin,Merylene ( jiayinmerylene.lim)
+ * @author POH JING SENG (jingseng.poh)
+ * @brief This file is used to declare functions and Struct Tank for the game to be used in other files
  * 
  * @copyright Copyright (c) 2023
  * 
