@@ -1,6 +1,5 @@
 /**
  * @file tank_utils.c
- * @author MERYLENE (<digipen id>) - <what you did>
  * @author POH JING SENG (jingseng.poh)
  * @brief 
  * 

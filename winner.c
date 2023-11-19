@@ -1,7 +1,10 @@
 /**
  * @file winner.c
- * @author your name (you@domain.com)
- * @brief 
+ * @author Lim Jia Yin,Merylene (jiayinmerylene.lim)
+ * @brief This file is used to render the winner screen and audio after a winner is being produced including
+ * "restart" button rendered to restart the game if the
+ * player would like to do so or "exit" button to exit to
+ * the mainmenu if the user would like to exit after the game.
  * 
  * @copyright Copyright (c) 2023
  * 
