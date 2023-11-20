@@ -1,7 +1,15 @@
 /**
  * @file healthbar.c
- * @author your name (you@domain.com)
- * @brief 
+ * @author TEO WENXIN (wenxin.teo@digipen.edu) - render healthbar, update status of health when tank takes damage, display collected powerups under healthbar
+ * @author LIM JIA YIN,MERYLENE (jiayinmerylene.lim) - render healthbar
+ * @brief this file is used to render and update the healthbar of the tanks as well as display powerup icons.
+ * 
+ * functions:
+ * _drawHealthBar : draws healthbar of each tank. calculate health percentage and adjust width of healthbar
+ * initHealthBar : load powerup images
+ * _renderHealthBar : draws health bar for all players
+ * updateHealthBar : update and draws health bar for all players
+ * destroyHealhBar : frees memory allocated for the power up images
  * 
  * @copyright Copyright (c) 2023
  * 

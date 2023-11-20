@@ -1,7 +1,12 @@
 /**
  * @file pause.c
- * @author your name (you@domain.com)
- * @brief 
+ * @author TEO WENXIN (wenxin.teo@digipen.edu)
+ * @brief this file is used to implement the pause menu. 
+ * the pause menu provides the option to resume, restart, access options, access help and exit.
+ * 
+ * functions:
+ * renderPause: render pause menu. switches game state
+ * initPause: initialise pause menu. sets position for buttons
  * 
  * @copyright Copyright (c) 2023
  * 
