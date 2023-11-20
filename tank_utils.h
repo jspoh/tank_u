@@ -1,6 +1,6 @@
 /**
  * @file tank_utils.h
- * @author POH JING SENG (fill in here thx)
+ * @author POH JING SENG (jingseng.poh)
  * @brief this file declares the functions that the tank component may use
  * 
  * @copyright Copyright 2020 DigiPen, All rights reserved.
