@@ -25,7 +25,7 @@
  * updateTank: runs in the loop for the users to make changes to
  * destoryTank: used to free all assests for the tank
  * 
- * @copyright Copyright Digipen 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  * 
  */
 

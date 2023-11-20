@@ -4,7 +4,7 @@
  * @author POH JING SENG (jingseng.poh)
  * @brief this file defines the functions used to read, write and update json file data
  * 
- * @copyright Copyright Digipen 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  * 
  */
 

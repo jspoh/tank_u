@@ -3,7 +3,7 @@
  * @author POH JING SENG (jingseng.poh)
  * @brief general utility functions for easier usage and calculations
  * 
- * @copyright Copyright Digipen 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  * 
  */
 
