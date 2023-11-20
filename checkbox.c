@@ -1,7 +1,7 @@
 /**
  * @file checkbox.c
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief this function renders the checkbox to toggle between meme or normal mode in the options menu
  * 
  * @copyright Copyright Digipen 2023
  * 

@@ -1,10 +1,10 @@
 /**
- * @file action_btn.h
+ * @file action_btn.c
  * @author POH JING SENG (jingseng.poh)
- * @brief 
- * 
+ * @brief this function is used to render the next and back button of game menu
+ *
  * @copyright Copyright Digipen 2023
- * 
+ *
  */
 
 #pragma once
