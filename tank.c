@@ -1,6 +1,6 @@
 /**
  * @file tank.c
- * @author Lim Jia Yin,Merylene ( jiayinmerylene.lim) - tank collects the power up, uses the power up and centering of the cannonball coming out from the tank
+ * @author LIM JIA YIN, MERYLENE (jiayinmerylene.lim) - tank collects the power up, uses the power up and centering of the cannonball coming out from the tank
  * @author POH JING SENG (jingseng.poh) - rendering of tank on screen, rotation and movement
  * @brief this file is used to render, assign attributes to the tank and trigger actions that are related to the tank eg. movement etc
  * functions starting with _ at the front (eg._drawTank) is a in file function
