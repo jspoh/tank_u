@@ -1,10 +1,12 @@
 /**
  * @file cannonball.h
- * @author Eshlyne Yap (e.yap)
- * @brief 
- * 
+ * @author ESHLYNE YAP SHUTING (e.yap) - onFireCannonball (RAPID_FIRE), move cannonball and destroy cannonball
+ * @author FOO KAR JUN (karjun.foo) - onFireCannonball (BIG_BULLET), update cannonball and constructor
+ * @author LIM JIA YIN, MERYLENE (jiayinmerylene.lim) - onFireCannonball (SHOTGUN) and rotate vector logic
+ * @brief this function is used to render cannonballs, assign attributes to the cannonballs such as movement, rotation and powerup.
+ *
  * @copyright Copyright (c) 2023
- * 
+ *
  */
 
 #pragma once

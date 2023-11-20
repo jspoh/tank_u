@@ -2,7 +2,7 @@
  * @file credits.c
  * @author POH JING SENG (jingseng.poh)
  * @author ESHLYNE YAP SHUTING (e.yap) - PNG ASSETS
- * @brief 
+ * @brief this function is used to render the credits page
  * 
  * @copyright Copyright Digipen 2023
  * 

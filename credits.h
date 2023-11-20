@@ -1,10 +1,11 @@
 /**
- * @file credits.h
+ * @file credits.c
  * @author POH JING SENG (jingseng.poh)
- * @brief 
- * 
+ * @author ESHLYNE YAP SHUTING (e.yap) - PNG ASSETS
+ * @brief this function is used to render the credits page
+ *
  * @copyright Copyright Digipen 2023
- * 
+ *
  */
 
 #pragma once

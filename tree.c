@@ -1,10 +1,10 @@
 /**
- * @file tree.c
- * @author your name (you@domain.com)
- * @brief 
- * 
+ * @file tree.h
+ * @author ESHLYNE YAP SHUTING (e.yap)
+ * @brief this function is used to draw trees
+ *
  * @copyright Copyright (c) 2023
- * 
+ *
  */
 
 #include "cprocessing.h"

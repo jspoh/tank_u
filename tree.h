@@ -1,10 +1,10 @@
 /**
  * @file tree.h
- * @author your name (you@domain.com)
- * @brief 
- * 
+ * @author ESHLYNE YAP SHUTING (e.yap)
+ * @brief this function is used to draw trees
+ *
  * @copyright Copyright (c) 2023
- * 
+ *
  */
 
 #pragma once
