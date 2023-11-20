@@ -30,6 +30,11 @@
 ![help 1](Assets/menu/help/help_1.png)
 ![help 2](Assets/menu/help/help_2.png)
 
+### Credits
+
+![Credits 1](Assets/menu/credits/credits_1.png)
+![Credits 2](Assets/menu/credits/credits_2.png)
+
 <hr />
 
 #### Copyright
