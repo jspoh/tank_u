@@ -1,5 +1,5 @@
 /**
- * @file checkbox.c
+ * @file checkbox.h
  * @author POH JING SENG (jingseng.poh)
  * @brief this file defines functions renders the checkbox to toggle between meme or normal mode in the options menu
  *

@@ -2,6 +2,7 @@
 /**
  * @file collision.c
  * @author POH JING SENG (jingseng.poh)
+ * @author FOO KAR JUN (karjun.foo) - cannonball bounce
  * @brief this file defines all collision functions
  * 
  * @copyright Copyright Digipen 2023
