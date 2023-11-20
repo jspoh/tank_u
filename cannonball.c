@@ -46,19 +46,12 @@ bool _removeCannonball(int index) {
 	}
 	numCbs--;
 
-	// !TODO: this method is more efficient but seems to screw something up. see ticket TU90
-	// to reproduce issue, fire a cannonball and then fire another one. the second one will be despawned at the same time as the first one
-	// issue does not seem to occur with the less efficient method above
-	// more efficient way but does not preserve order (but order isnt important in this context lol)
-	// activeCbs[index] = activeCbs[numCbs--];
-
 	// debug_log("%d\n", numCbs);
 	return true;
 }
 
 void destroyCannonball(int index) {
 	_removeCannonball(index);
-	// !TODO: if possible, draw exploding animation with circles (create new function for this in utils/animations/explosion)
 }
 
 void _moveCannonball(CannonBall* cb) {
@@ -99,11 +92,6 @@ CannonBall _cannonballConstructor(Position pos, Vector d, double damage, double 
 void clearCannonballs(void) {
 	numCbs = 0;
 }
-
-/**
- * @param ammoType enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE };
- * 
-*/
 
 Vector rotateVector(Vector v, float angle, int direction) // for direction 1 is clockwise, 0 is counterclockwise
 {
@@ -164,7 +152,6 @@ bool onFireCannonball(Position startPos, Vector d, int player, enum AMMO_TYPES a
 		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE * 2, CANNONBALL_RADIUS * 2);
 		break;
 	case SHOTGUN:
-		// !TODO: shotgun left and right cannonballs have issues
 		// so currently when tank facing up and down shotgun works normally
 		cb = _cannonballConstructor(startPos, d, DEFAULT_DAMAGE, CANNONBALL_RADIUS);
 		activeCbs[numCbs++] = cb;

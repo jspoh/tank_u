@@ -1,8 +1,8 @@
 
 /**
  * @file dropbox.c
- * @author your name (you@domain.com)
- * @brief 
+ * @author FOO KAR JUN (karjun.foo)
+ * @brief this file defines functions that draws and loads the image of the dropbox and randomises which powerup to give to the user.
  * 
  * @copyright Copyright (c) 2023
  * 
@@ -43,11 +43,6 @@ void renderDropbox(void) {
 
 	dropbox.size = size;
 	dropbox.pos = pos;
-	// so now instead of colour I load img of dropbox from asset
-	/*CP_Color fillCol = CP_Color_Create(100, 100, 100, 255);
-	CP_Color strokeCol = CP_Color_Create(0, 0, 0, 255);*/
-	// load img and draw image at pos and size of dropbox
-
 	const double dt = CP_System_GetDt();
 	if (powerupPickedUp) {
 		elapsedTime += dt;
@@ -62,7 +57,6 @@ void renderDropbox(void) {
 	if (!powerupPickedUp) {
 		CP_Image_Draw(dropboxImg, (float)dropbox.pos.x, (float)dropbox.pos.y, (float)dropbox.size.width, (float)dropbox.size.height, 255);
 	}
-	/*drawRect(&dropbox, &fillCol, &strokeCol);*/
 }
 
 void destroyDropbox(void) {

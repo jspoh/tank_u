@@ -1,5 +1,5 @@
 /**
- * @file tree.h
+ * @file tree.c
  * @author ESHLYNE YAP SHUTING (e.yap)
  * @brief this file defines functions that is used to draw trees
  *
