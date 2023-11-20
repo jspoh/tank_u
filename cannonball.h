@@ -19,7 +19,6 @@ typedef enum { NORMAL, BIG_BULLET, SHOTGUN, RAPID_FIRE, NUM_POWERUPS } AMMO_TYPE
 typedef struct {
 	Position pos;
 	double radius;
-	//double velocity;
 	double damage;
 	bool bounced;
 	Vector d;

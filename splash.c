@@ -1,5 +1,5 @@
 /**
- * @file splash.h
+ * @file splash.c
  * @author POH JING SENG (jingseng.poh)
  * @brief this file defines functions that is used to render the splash screen for our game
  *
