@@ -2,7 +2,7 @@
 /**
  * @file collision.c
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief this file defines all collision functions
  * 
  * @copyright Copyright Digipen 2023
  * 

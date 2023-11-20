@@ -1,7 +1,7 @@
 /**
  * @file queue.c
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief this files defines a queue circular queue data structure used to store the tank position history
  * 
  * @copyright Copyright Digipen 2023
  * 

@@ -1,7 +1,7 @@
 /**
  * @file menu.c
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief renders the menu screen and handles user input while in menu
  * 
  * @copyright Copyright Digipen 2023
  * 

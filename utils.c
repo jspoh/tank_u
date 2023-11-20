@@ -1,7 +1,7 @@
 /**
  * @file utils.c
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief general utility functions for easier usage and calculations
  * 
  * @copyright Copyright Digipen 2023
  * 

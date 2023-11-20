@@ -1,7 +1,7 @@
 /**
  * @file tank_utils.c
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief this file defines functions that the tank uses but may not be directly related to tank logic
  * 
  * @copyright Copyright Digipen 2023
  * 

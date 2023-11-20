@@ -1,7 +1,7 @@
 /**
  * @file splash.h
  * @author POH JING SENG (jingseng.poh)
- * @brief this function is used to render the splash screen for our game
+ * @brief this file declares functions that is used to render the splash screen for our game
  * 
  * @copyright Copyright Digipen 2023
  * 

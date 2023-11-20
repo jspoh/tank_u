@@ -1,7 +1,7 @@
 /**
  * @file utils.h
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief declares functions defined in utils.c for usage 
  * 
  * @copyright Copyright Digipen 2023
  * 

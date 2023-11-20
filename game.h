@@ -1,7 +1,7 @@
 /**
  * @file game.h
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief declare init update, exit functions and game states
  * 
  * @copyright Copyright Digipen 2023
  * 

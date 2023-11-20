@@ -1,7 +1,7 @@
 /**
  * @file backdrop.c
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief this file defines the backdrop rendering function
  * 
  * @copyright Copyright Digipen 2023
  * 

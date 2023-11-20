@@ -1,7 +1,7 @@
 /**
  * @file config.h
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief this file takes care of the project configs
  * 
  * @copyright Copyright Digipen 2023
  * 

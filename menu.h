@@ -1,7 +1,7 @@
 /**
  * @file menu.h
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief declares menu states, page numbers, and init update exit functions
  * 
  * @copyright Copyright Digipen 2023
  * 

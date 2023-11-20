@@ -1,7 +1,7 @@
 /**
  * @file queue.h
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief this file exposes functions to be used in other files to read or write the queue
  * 
  * @copyright Copyright Digipen 2023
  * 

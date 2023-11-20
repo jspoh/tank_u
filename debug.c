@@ -1,7 +1,7 @@
 /**
  * @file debug.c
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief this file is used to look for memory leaks
  * 
  * @copyright Copyright Digipen 2023
  * 

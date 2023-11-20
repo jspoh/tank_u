@@ -1,7 +1,7 @@
 /**
  * @file game.c
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief main game loop and conditional rendering
  * 
  * @copyright Copyright Digipen 2023
  * 

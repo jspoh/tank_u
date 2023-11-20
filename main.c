@@ -1,7 +1,7 @@
 /**
  * @file main.c
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief main entry point into the game. starts the c processing engine
  * 
  * @copyright Copyright Digipen 2023
  * 

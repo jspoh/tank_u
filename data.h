@@ -1,7 +1,7 @@
 /**
  * @file data.h
  * @author POH JING SENG (jingseng.poh)
- * @brief 
+ * @brief this file declares the functions used to read, write and update json file data
  * 
  * @copyright Copyright Digipen 2023
  * 

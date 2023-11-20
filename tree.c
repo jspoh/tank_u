@@ -1,7 +1,7 @@
 /**
  * @file tree.h
  * @author ESHLYNE YAP SHUTING (e.yap)
- * @brief this function is used to draw trees
+ * @brief this file defines functions that is used to draw trees
  *
  * @copyright Copyright (c) 2023
  *
