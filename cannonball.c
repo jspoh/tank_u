@@ -1,6 +1,6 @@
 /**
  * @file cannonball.c
- * @author your name (you@domain.com)
+ * @author Eshlyne Yap (e.yap)
  * @brief 
  * 
  * @copyright Copyright (c) 2023
