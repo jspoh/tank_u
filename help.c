@@ -4,7 +4,7 @@
  * @author ESHLYNE YAP SHUTING (e.yap) - PNG ASSETS
  * @brief this file defines functions that is used to render the help screen in menu
  * 
- * @copyright Copyright Digipen 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  * 
  */
 

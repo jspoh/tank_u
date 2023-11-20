@@ -3,7 +3,7 @@
  * @author POH JING SENG (jingseng.poh)
  * @brief main game loop and conditional rendering
  * 
- * @copyright Copyright Digipen 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  * 
  */
 

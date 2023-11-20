@@ -4,7 +4,7 @@
  * @author ESHLYNE YAP SHUTING (e.yap) - PNG ASSETS
  * @brief this file declares functions that is used to render the credits page
  *
- * @copyright Copyright Digipen 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  *
  */
 

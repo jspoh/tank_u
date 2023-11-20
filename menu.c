@@ -3,7 +3,7 @@
  * @author POH JING SENG (jingseng.poh)
  * @brief renders the menu screen and handles user input while in menu
  * 
- * @copyright Copyright Digipen 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  * 
  */
 

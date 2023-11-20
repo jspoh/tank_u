@@ -4,7 +4,7 @@
  * @author POH JING SENG (jingseng.poh)
  * @brief this file defines all collision functions
  * 
- * @copyright Copyright Digipen 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  * 
  */
 

@@ -3,7 +3,7 @@
  * @author POH JING SENG (jingseng.poh)
  * @brief declares menu states, page numbers, and init update exit functions
  * 
- * @copyright Copyright Digipen 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  * 
  */
 
