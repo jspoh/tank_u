@@ -115,19 +115,6 @@ void _menuFadeToGame(void) {
 }
 
 void _initVars(void) {
-	titleMusic = CP_Sound_LoadMusic("Assets/audio/music/title.ogg");
-	debug_log("loaded menu title music\n");
-
-	memeTitleMusic = CP_Sound_LoadMusic("Assets/audio/meme/music/title.ogg");
-	debug_log("loaded meme menu title music\n");
-
-	menuClickSound = CP_Sound_LoadMusic("Assets/audio/sfx/button_click.mp3");
-	debug_log("loaded menu click Sound\n");
-
-	menuBg = CP_Image_Load("Assets/menu/menu_bg.png");
-	debug_log("loaded menu background image\n");
-
-
 	/* structs */
 	startBtn = (Triangle){a,b,c};
 	startContainer = (Rect){ _scSize, _scPos };
@@ -153,8 +140,23 @@ void menuInit(void) {
 	CP_System_SetWindowSize((int)WINDOW_SIZE.width, (int)WINDOW_SIZE.height);
 	CP_System_SetFrameRate(FRAMERATE);
 	CP_Settings_RectMode(CP_POSITION_CORNER);
-	
+
+	/*load audio*/
+	titleMusic = CP_Sound_LoadMusic("Assets/audio/music/title.ogg");
+	debug_log("loaded menu title music\n");
+
+	memeTitleMusic = CP_Sound_LoadMusic("Assets/audio/meme/music/title.ogg");
+	debug_log("loaded meme menu title music\n");
+
+	menuClickSound = CP_Sound_LoadMusic("Assets/audio/sfx/button_click.mp3");
+	debug_log("loaded menu click Sound\n");
+
+	menuBg = CP_Image_Load("Assets/menu/menu_bg.png");
+	debug_log("loaded menu background image\n");
+
+	/*others*/
 	_initVars();
+
 	CP_Sound_PlayAdvanced(titleMusic, (float)musicVolume, 1.f, true, MUSIC_GROUP);
 	CP_Sound_PlayAdvanced(memeTitleMusic, (float)musicVolume, 1.f, true, MEME_MUSIC_GROUP);
 
