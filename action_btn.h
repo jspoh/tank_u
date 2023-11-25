@@ -13,8 +13,17 @@
 
 
 /**
-* @returns `true` if button is clicked, else `false`
-*/
+ * @brief renders back button on top left of screen
+ * 
+ * @return true if clicked
+ * @return false 
+ */
 bool renderBackButton(void);
 
+/**
+ * @brief renders next button on top right of screen
+ * 
+ * @return true if clicked
+ * @return false 
+ */
 bool renderNextButton(void);
