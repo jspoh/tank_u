@@ -343,9 +343,9 @@ Position _getTurretCenter(Tank *t, Size turretSize)
 }
 
 void _playMemeFire(void) {
-	int fire = getRand(0, 5);
-	CP_Sound_PlayAdvanced(memeTankFire[fire], (float)sfxVolume, 1.f, false, MEME_SFX_GROUP);
-	debug_log("played fire %d/%d", fire + 1, NUM_MEME_FIRE_SOUNDS);
+	int choice = getRand(0, 6);
+	CP_Sound_PlayAdvanced(memeTankFire[choice], (float)sfxVolume, 1.f, false, MEME_SFX_GROUP);
+	debug_log("played fire %d/%d", choice + 1, NUM_MEME_FIRE_SOUNDS);
 }
 
 void _tankShoot(int i, enum AMMO_TYPES activeAmmo) { //int i is which tank it is in the array tanks[i] 

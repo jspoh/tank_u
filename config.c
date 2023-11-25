@@ -61,6 +61,13 @@ int init(void) {
 	return 1;
 }
 
+/**
+ * @brief Get the Rand object inclusive of min exclusive of max
+ * 
+ * @param min 
+ * @param max 
+ * @return int 
+ */
 int getRand(int min, int max) {
 	return rand()%(max-min)+min;
 }
