@@ -42,7 +42,6 @@
 #include "queue.h"
 #include "winner.h"
 #include "dropbox.h"
-#include "powerup.h"
 
 #define MOVEMENT_SPEED 300
 #define ACCELERATION 300
