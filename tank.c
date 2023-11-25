@@ -426,7 +426,7 @@ Tank _findNoColTank(int player)
 		// debug_log("%d\n", history.data[i][player].hasCollided);
 		if (!history.data[i][player].hasCollided)
 		{
-			i = (i - 1 + MAX_HISTORY) % MAX_HISTORY; // move backwards in the queue
+			i = (i - 1 + MAX_HISTORY) % MAX_HISTORY; // go to 1 more frame prior because tank seems to get stuck. might be teleporting tank too close to the other object
 			Tank validTank = history.data[i][player];  // no collision
 			Tank tank = tanks[player];
 			tank.pos = validTank.pos;
