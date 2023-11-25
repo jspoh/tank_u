@@ -426,6 +426,7 @@ Tank _findNoColTank(int player)
 		// debug_log("%d\n", history.data[i][player].hasCollided);
 		if (!history.data[i][player].hasCollided)
 		{
+			i = (i - 1 + MAX_HISTORY) % MAX_HISTORY; // move backwards in the queue
 			Tank validTank = history.data[i][player];  // no collision
 			Tank tank = tanks[player];
 			tank.pos = validTank.pos;
