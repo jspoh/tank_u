@@ -250,7 +250,7 @@ bool _circleRectSAT(Rect* r, Circle* c, Vector* d, bool usingCenter) {
  * @param usingCenter if rect is rendered from center position or top left position
  * @return int enum direction (declared in utils.h)
  */
-int _circleRectAABB(Rect* r, Circle* c, bool usingCenter) {
+enum DIRECTIONS _circleRectAABB(Rect* r, Circle* c, bool usingCenter) {
     Position rCorners[4] = { 0 };
     Vector d = { 0, -1 };  // no change to d vector allowed since using AABB
     _getRectCorners(r, &d, rCorners, usingCenter);  // 0: topleft, 1: topright, 2: bottomleft, 3: bottomright
@@ -369,7 +369,7 @@ void colCbWall(void) {
 
             Circle c = {cb->radius, cb->pos};
             // bool cbWallCollided = _circleRectSAT(&wall, &c, &wallVector, false);
-            int cbWallCollided = _circleRectAABB(&wall, &c, false);
+            enum DIRECTIONS cbWallCollided = _circleRectAABB(&wall, &c, false);
 
             if (cbWallCollided) {
 
