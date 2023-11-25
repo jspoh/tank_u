@@ -129,34 +129,19 @@ void _initVars(void) {
 
 
 	/* structs */
-	startBtn.a = a;
-	startBtn.b = b;
-	startBtn.c = c;
-	startContainer.pos = _scPos;
-	startContainer.size = _scSize;
-	overlay.pos.x = 0.0;
-	overlay.pos.y = 0.0;
-	overlay.size.width = WINDOW_SIZE.width;
-	overlay.size.height = WINDOW_SIZE.height;
+	startBtn = (Triangle){a,b,c};
+	startContainer = (Rect){ _scSize, _scPos };
+	overlay = (Rect){ (Size) { WINDOW_SIZE.width, WINDOW_SIZE.height }, (Position) { 0.0,0.0 } };
+	
 	firstBtn.size = btnSize;
 	_firstBtnPos.x = (WINDOW_SIZE.width / 2) - (firstBtn.size.width / 2);
 	_firstBtnPos.y = (WINDOW_SIZE.height - ((sizeof(buttons) / sizeof(buttons[0])) * btnSize.height + (sizeof(buttons) / sizeof(buttons[0]) - 1) * spaceBetweenBtns)) / 2;
 	firstBtn.pos = _firstBtnPos;
 
 	/* fade stuff */
-	Size ___fadeRectLSize = { WINDOW_SIZE.width / 2, WINDOW_SIZE.height };
-	Position ___fadeRectLPos = { 0.0, 0.0 };
-	__fadeRectL.size = ___fadeRectLSize;
-	__fadeRectL.pos = ___fadeRectLPos;
-
-	Size ___fadeRectRSize = { WINDOW_SIZE.width / 2, WINDOW_SIZE.height };
-	Position ___fadeRectRPos = { WINDOW_SIZE.width / 2, 0.0 };
-	__fadeRectR.size = ___fadeRectRSize;
-	__fadeRectR.pos = ___fadeRectRPos;
-
-	Position __oFadeRectPos = { 0.0, 0.0 };
-	_oFadeRect.size = WINDOW_SIZE;
-	_oFadeRect.pos = __oFadeRectPos;
+	__fadeRectL = (Rect){ (Size) { WINDOW_SIZE.width / 2, WINDOW_SIZE.height }, (Position) { 0.0,0.0 } };
+	__fadeRectR = (Rect){ (Size) { WINDOW_SIZE.width / 2, WINDOW_SIZE.height }, (Position) { WINDOW_SIZE.width / 2, 0.0 } };
+	_oFadeRect = (Rect){ WINDOW_SIZE, (Position) { 0.0,0.0 } };
 }
 
 void menuInit(void) {
