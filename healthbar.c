@@ -11,7 +11,7 @@
  * updateHealthBar : update and draws health bar for all players
  * destroyHealhBar : frees memory allocated for the power up images
  * 
- * @copyright Copyright (c) 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  * 
  */
 

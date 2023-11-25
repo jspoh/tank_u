@@ -4,7 +4,7 @@
  * @author FOO KAR JUN (karjun.foo)
  * @brief this file defines functions that draws and loads the image of the dropbox and randomises which powerup to give to the user.
  * 
- * @copyright Copyright (c) 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  * 
  */
 

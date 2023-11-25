@@ -3,7 +3,7 @@
  * @author ESHLYNE YAP SHUTING (e.yap)
  * @brief this file declares functions that is used to draw trees
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  *
  */
 

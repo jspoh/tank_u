@@ -5,7 +5,7 @@
  * @author LIM JIA YIN, MERYLENE (jiayinmerylene.lim) - onFireCannonball (SHOTGUN) and rotate vector logic
  * @brief this file defines functions that is used to render cannonballs, assign attributes to the cannonballs such as movement, rotation and powerup.
  * 
- * @copyright Copyright (c) 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  * 
  */
 

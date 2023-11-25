@@ -12,7 +12,7 @@
  * destroyWinner: used to free all the assets (eg. images, audio etc)
  * renderWinner: used to draw the images, play the sound when the winner is being announced.
  * 
- * @copyright Copyright (c) 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  * 
  */
 

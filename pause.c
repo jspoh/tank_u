@@ -8,7 +8,7 @@
  * renderPause: render pause menu. switches game state
  * initPause: initialise pause menu. sets position for buttons
  * 
- * @copyright Copyright (c) 2023
+ * @copyright Copyright 2020 DigiPen, All rights reserved.
  * 
  */
 
