@@ -13,7 +13,7 @@
 
 ## Team members
 
-- POH JING SENG (jingseng.poh@digipen.edu)
+- Poh Jing Seng (jingseng.poh@digipen.edu)
 - Eshlyne Yap Shuting (e.yap@digipen.edu)
 - Foo Kar Jun (karjun.foo@digipen.edu)
 - Lim Jia Yin, Merylene (jiayinmerylene.lim@digipen.edu)
